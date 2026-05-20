@@ -2,19 +2,19 @@ import { defineAstroPaperConfig } from "./src/types/config";
 
 export default defineAstroPaperConfig({
   site: {
-    url: "https://astro-paper.pages.dev/",
-    title: "AstroPaper",
-    description: "A minimal, responsive and SEO-friendly Astro blog theme.",
-    author: "Sat Naing",
-    profile: "https://satna.ing",
+    url: "https://aitoolkitguide.com/",
+    title: "AI Toolkit Guide",
+    description: "Practical guides, tutorials, and honest comparisons for the best AI tools — written for real people, not developers.",
+    author: "AI Toolkit Guide",
+    profile: "",
     ogImage: "default-og.jpg",
     lang: "en",
-    timezone: "Asia/Bangkok",
+    timezone: "America/New_York",
     dir: "ltr",
   },
   posts: {
-    perPage: 4,
-    perIndex: 4,
+    perPage: 6,
+    perIndex: 6,
     scheduledPostMargin: 15 * 60 * 1000,
   },
   features: {
@@ -23,16 +23,13 @@ export default defineAstroPaperConfig({
     showArchives: true,
     showBackButton: true,
     editPost: {
-      enabled: true,
-      url: "https://github.com/satnaing/astro-paper/edit/main/",
+      enabled: false,
     },
     search: "pagefind",
   },
   socials: [
-    { name: "github",   url: "https://github.com/satnaing/astro-paper" },
-    { name: "x",        url: "https://x.com/username" },
-    { name: "linkedin", url: "https://www.linkedin.com/in/username/" },
-    { name: "mail",     url: "mailto:yourmail@gmail.com" },
+    { name: "x",   url: "https://x.com/aitoolkitguide" },
+    { name: "mail", url: "mailto:hello@aitoolkitguide.com" },
   ],
   shareLinks: [
     { name: "whatsapp", url: "https://wa.me/?text=" },

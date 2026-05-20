@@ -15,17 +15,17 @@ import config from "@/config";
 
 const { socials, posts: postsConfig } = config;
 
-const locale = Astro.currentLocale ?? config.site.lang;
+const locale = Astro.currentLocale ?? "cn";
 const t = useTranslations(locale);
 
-const posts = await getCollection("posts", ({ id }) => !id.startsWith("zh/"));
+const posts = await getCollection("posts", ({ id }) => id.startsWith("zh/"));
 const sortedPosts = getSortedPosts(posts);
 const featuredPosts = sortedPosts.filter(({ data }) => data.featured);
 const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
 const homePath = getRelativeLocaleUrl(locale, "");
 ---
 
-<Layout>
+<Layout title={`AI Toolkit Guide 中文版`}>
   <Header />
   <main
     id="main-content"
@@ -41,35 +41,34 @@ const homePath = getRelativeLocaleUrl(locale, "");
         target="_blank"
         href={getRelativeLocaleUrl(locale, "rss.xml")}
         class="inline-block"
-        aria-label="RSS Feed"
-        title="RSS Feed"
+        aria-label="RSS 订阅"
+        title="RSS 订阅"
       >
         <IconRss
           width={20}
           height={20}
           class="stroke-accent scale-125 stroke-3 rtl:-rotate-90"
         />
-        <span class="sr-only">RSS Feed</span>
+        <span class="sr-only">RSS 订阅</span>
       </a>
 
       <p>
-        Practical guides and honest comparisons for the best AI tools —
-        written for real people, not developers. Learn how to use ChatGPT,
-        Claude, Midjourney, and more to save time and get better results.
+        面向普通用户的 AI 工具实用教程——ChatGPT、Claude、Midjourney
+        等主流 AI 工具的使用指南和真实测评，帮你真正用好 AI，节省时间。
       </p>
       <p class="mt-2">
         <LinkButton
           class="hover:text-accent underline decoration-dashed underline-offset-4"
-          href="/cn"
+          href="/"
         >
-          中文版 →
+          English version →
         </LinkButton>
       </p>
       {
         socials.length > 0 && (
           <div class="mt-4 flex max-sm:flex-col sm:items-center">
             <div class="me-2 mb-1 whitespace-nowrap sm:mb-0">
-              {t.home.socialLinks}:
+              {t.home.socialLinks}：
             </div>
             <Socials />
           </div>
