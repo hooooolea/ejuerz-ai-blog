@@ -3,6 +3,7 @@ author: AI Toolkit Guide
 pubDatetime: 2025-05-10T09:00:00Z
 title: 如何用 ChatGPT 写简历（完整步骤指南）
 slug: chatgpt-xie-jianli-zhinan
+lang: zh
 featured: true
 draft: false
 tags:

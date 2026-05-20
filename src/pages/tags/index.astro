@@ -12,7 +12,7 @@ import config from "@/config";
 
 const posts = await getCollection(
   "posts",
-  ({ id, data }) => !data.draft && !id.startsWith("zh/")
+  ({ data }) => !data.draft && data.lang !== "zh"
 );
 const tags = getUniqueTags(posts);
 

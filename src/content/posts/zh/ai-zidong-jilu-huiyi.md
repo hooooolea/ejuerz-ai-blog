@@ -3,6 +3,7 @@ author: AI Toolkit Guide
 pubDatetime: 2025-05-16T09:00:00Z
 title: 用 AI 自动记录会议内容：最好用的工具和上手方法
 slug: ai-zidong-jilu-huiyi
+lang: zh
 featured: false
 draft: false
 tags:

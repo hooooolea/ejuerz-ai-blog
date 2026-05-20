@@ -3,6 +3,7 @@ author: AI Toolkit Guide
 pubDatetime: 2025-05-20T09:00:00Z
 title: 小微企业必用的 7 个 AI 工具（2025 年版）
 slug: ai-gongju-xiaoshangye-2025
+lang: zh
 featured: false
 draft: false
 tags:
