@@ -1,43 +1,152 @@
 ---
 const isChinese = Astro.currentLocale === "cn";
-const href = isChinese ? "/" : "/cn";
-const label = isChinese ? "EN" : "中文";
-const title = isChinese ? "Switch to English" : "切换到中文";
 ---
 
-<a href={href} title={title} aria-label={title} class="lang-switcher">
-  {label}
-</a>
+<div class="lang-switcher-wrap">
+  <button
+    id="lang-btn"
+    aria-label="Select language"
+    aria-haspopup="true"
+    aria-expanded="false"
+    class="lang-btn"
+  >
+    <!-- Globe SVG -->
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      width="20"
+      height="20"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.6"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      aria-hidden="true"
+    >
+      <circle cx="12" cy="12" r="10"></circle>
+      <ellipse cx="12" cy="12" rx="4" ry="10"></ellipse>
+      <line x1="2" y1="12" x2="22" y2="12"></line>
+      <line x1="4.5" y1="6.5" x2="19.5" y2="6.5"></line>
+      <line x1="4.5" y1="17.5" x2="19.5" y2="17.5"></line>
+    </svg>
+  </button>
+
+  <ul id="lang-menu" role="menu" class="lang-menu hidden">
+    <li role="none">
+      <a
+        href="/"
+        role="menuitem"
+        class:list={["lang-option", { active: !isChinese }]}
+      >
+        English
+      </a>
+    </li>
+    <li role="none">
+      <a
+        href="/cn"
+        role="menuitem"
+        class:list={["lang-option", { active: isChinese }]}
+      >
+        中文
+      </a>
+    </li>
+  </ul>
+</div>
 
 <style>
-  .lang-switcher {
+  .lang-switcher-wrap {
     position: fixed;
-    top: 1.25rem;
-    right: 1.25rem;
+    top: 1rem;
+    right: 1rem;
     z-index: 999;
+  }
+
+  .lang-btn {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 2.5rem;
-    height: 2.5rem;
+    width: 2.25rem;
+    height: 2.25rem;
     border-radius: 9999px;
-    background-color: var(--accent);
-    color: var(--accent-foreground);
-    font-size: 0.7rem;
-    font-weight: 700;
-    letter-spacing: 0.03em;
-    text-decoration: none;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+    background-color: var(--muted);
+    color: var(--muted-foreground);
+    border: 1px solid var(--border);
+    cursor: pointer;
     transition:
-      transform 0.15s ease,
-      box-shadow 0.15s ease,
-      opacity 0.15s ease;
-    opacity: 0.88;
+      background-color 0.15s ease,
+      color 0.15s ease,
+      transform 0.15s ease;
   }
 
-  .lang-switcher:hover {
-    transform: scale(1.1);
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.22);
-    opacity: 1;
+  .lang-btn:hover {
+    background-color: var(--accent);
+    color: var(--accent-foreground);
+    transform: scale(1.08);
+  }
+
+  .lang-menu {
+    position: absolute;
+    top: calc(100% + 0.5rem);
+    right: 0;
+    min-width: 7rem;
+    background-color: var(--background);
+    border: 1px solid var(--border);
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+    padding: 0.25rem;
+    list-style: none;
+    margin: 0;
+  }
+
+  .lang-menu.hidden {
+    display: none;
+  }
+
+  .lang-option {
+    display: block;
+    padding: 0.45rem 0.75rem;
+    border-radius: 0.35rem;
+    font-size: 0.85rem;
+    color: var(--foreground);
+    text-decoration: none;
+    transition: background-color 0.1s ease;
+  }
+
+  .lang-option:hover {
+    background-color: var(--muted);
+  }
+
+  .lang-option.active {
+    color: var(--accent);
+    font-weight: 600;
   }
 </style>
+
+<script>
+  function initLangSwitcher() {
+    const btn = document.getElementById("lang-btn");
+    const menu = document.getElementById("lang-menu");
+    if (!btn || !menu) return;
+
+    btn.addEventListener("click", e => {
+      e.stopPropagation();
+      const isOpen = !menu.classList.contains("hidden");
+      menu.classList.toggle("hidden", isOpen);
+      btn.setAttribute("aria-expanded", String(!isOpen));
+    });
+
+    document.addEventListener("click", () => {
+      menu.classList.add("hidden");
+      btn.setAttribute("aria-expanded", "false");
+    });
+
+    document.addEventListener("keydown", e => {
+      if (e.key === "Escape") {
+        menu.classList.add("hidden");
+        btn.setAttribute("aria-expanded", "false");
+      }
+    });
+  }
+
+  document.addEventListener("astro:page-load", initLangSwitcher);
+</script>
