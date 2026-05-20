@@ -3,6 +3,7 @@ author: AI Toolkit Guide
 pubDatetime: 2025-05-18T09:00:00Z
 title: 2025 年最好用的 AI 写作工具排名（真实测评）
 slug: zuihao-ai-xiezuo-gongju-2025
+lang: zh
 featured: true
 draft: false
 tags:

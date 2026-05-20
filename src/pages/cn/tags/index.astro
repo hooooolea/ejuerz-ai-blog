@@ -14,7 +14,7 @@ const t = useTranslations(locale);
 
 const posts = await getCollection(
   "posts",
-  ({ id, data }) => id.startsWith("zh/") && !data.draft
+  ({ data }) => data.lang === "zh" && !data.draft
 );
 const tags = getUniqueTags(posts);
 ---

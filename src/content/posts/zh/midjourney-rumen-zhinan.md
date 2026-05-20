@@ -3,6 +3,7 @@ author: AI Toolkit Guide
 pubDatetime: 2025-05-14T09:00:00Z
 title: Midjourney 新手入门指南：从零开始生成好看的图
 slug: midjourney-rumen-zhinan
+lang: zh
 featured: true
 draft: false
 tags:

@@ -3,6 +3,7 @@ author: AI Toolkit Guide
 pubDatetime: 2025-05-12T09:00:00Z
 title: Claude 和 ChatGPT 哪个更好？2025 年真实对比
 slug: claude-vs-chatgpt-duibi-2025
+lang: zh
 featured: true
 draft: false
 tags:
