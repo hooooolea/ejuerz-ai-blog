@@ -12,9 +12,8 @@ import { getPostsByGroupCondition } from "./_utils/getPostsByGroupCondition";
 import { useTranslations } from "@/i18n";
 import config from "@/config";
 
-const locale = Astro.currentLocale ?? config.site.lang;
+const locale = Astro.currentLocale ?? "cn";
 
-// Redirect to 404 page if `showArchives` config is false
 const notFoundUrl = getRelativeLocaleUrl(locale, "404");
 if (!config.features.showArchives && notFoundUrl) {
   return Astro.rewrite(notFoundUrl);
@@ -22,12 +21,12 @@ if (!config.features.showArchives && notFoundUrl) {
 
 const t = useTranslations(locale);
 
-const posts = await getCollection("posts", ({ id }) => !id.startsWith("zh/"));
+const posts = await getCollection("posts", ({ id }) => id.startsWith("zh/"));
 const filteredPosts = posts.filter(postFilter);
-const monthFormatter = new Intl.DateTimeFormat(locale, { month: "long" });
+const monthFormatter = new Intl.DateTimeFormat("zh-CN", { month: "long" });
 ---
 
-<Layout title={`${t.pages.archivesTitle} | ${config.site.title}`}>
+<Layout title={`${t.pages.archivesTitle} | AI Toolkit Guide`}>
   <Header />
 
   <Breadcrumb />
