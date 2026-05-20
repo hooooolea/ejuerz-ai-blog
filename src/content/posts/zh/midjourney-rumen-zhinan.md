@@ -49,6 +49,7 @@ Midjourney 的提示词不只是描述——它是一组指令，引导 AI 对�
 
 **`--ar`（宽高比）**
 控制图片的形状，常用值：
+
 - `--ar 1:1` — 正方形（适合社交媒体头像）
 - `--ar 16:9` — 宽屏（适合横幅和背景图）
 - `--ar 9:16` — 竖屏（适合手机壁纸）
@@ -71,6 +72,7 @@ Midjourney 的提示词不只是描述——它是一组指令，引导 AI 对�
 ### 明确风格和媒介
 
 不要只说"一幅山的画"，试试：
+
 > `snow-capped mountain peaks at sunrise, impressionist oil painting, thick visible brushstrokes, warm amber and violet tones`
 
 风格引用特别好用。试着加上"in the style of【艺术流派或年代】"，比如"in the style of Art Nouveau"或"in the style of 1970s vintage travel poster"。
@@ -78,6 +80,7 @@ Midjourney 的提示词不只是描述——它是一组指令，引导 AI 对�
 ### 明确描述光线
 
 光线是决定图片是否专业的最大因素之一。一些实用词：
+
 - `golden hour lighting` — 温暖的低角度阳光
 - `soft diffused light` — 均匀无阴影的光线（适合人像）
 - `neon-lit` — 彩色人工光源
@@ -87,6 +90,7 @@ Midjourney 的提示词不只是描述——它是一组指令，引导 AI 对�
 ### 加入相机或镜头描述（追求写实风格时）
 
 如果你想要看起来像真实照片的效果：
+
 > `portrait of a woman in a café, shallow depth of field, shot on 85mm lens, natural window light, film grain`
 
 "shot on Sony A7"、"35mm film"、"DSLR"、"macro photography"这类词都能把 Midjourney 往更写实的方向推。
@@ -102,18 +106,23 @@ Midjourney 的提示词不只是描述——它是一组指令，引导 AI 对�
 ## 可以直接用的示例提示词
 
 **写实人像：**
+
 > `close-up portrait of an elderly fisherman, weathered face, deep-set eyes, overcast coastal light, Leica photograph, sharp focus, documentary style --ar 4:5 --style raw`
 
 **奇幻场景：**
+
 > `ancient library inside a giant crystal cave, glowing bioluminescent mushrooms, floating books, ethereal atmosphere, digital art --ar 16:9 --v 6.1`
 
 **产品摄影：**
+
 > `minimalist perfume bottle on white marble surface, soft studio lighting, clean background, luxury editorial style, commercial photography --ar 1:1 --style raw`
 
 **旅行海报（复古风）：**
+
 > `vintage travel poster for Kyoto Japan, cherry blossoms, Mount Fuji, bold typography space, retro 1960s illustration style, limited color palette --ar 2:3`
 
 **社交媒体配图：**
+
 > `modern flat design illustration, productivity and focus concept, pastel colors, geometric shapes, clean lines, app icon style --ar 1:1`
 
 ## 新手常犯的错误

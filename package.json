@@ -8,6 +8,7 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro check && astro build && pagefind --site dist && cp -r dist/pagefind public/",
+    "build:ci": "astro build && pagefind --site dist && cp -r dist/pagefind public/",
     "preview": "astro preview",
     "sync": "astro sync",
     "astro": "astro",
@@ -19,7 +20,6 @@
     "@astrojs/mdx": "^5.0.6",
     "@astrojs/rss": "^4.0.18",
     "@astrojs/sitemap": "^3.7.2",
-    "@tailwindcss/vite": "^4.3.0",
     "astro": "^6.3.3",
     "dayjs": "^1.11.20",
     "lodash.kebabcase": "^4.1.1",
@@ -28,12 +28,13 @@
     "satori": "^0.26.0",
     "sharp": "^0.34.5",
     "slugify": "^1.6.9",
-    "tailwindcss": "^4.3.0"
+    "tailwindcss": "4.1.8"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.9",
     "@pagefind/default-ui": "^1.5.2",
     "@shikijs/transformers": "^4.0.2",
+    "@tailwindcss/postcss": "^4.3.0",
     "@tailwindcss/typography": "^0.5.19",
     "@types/lodash.kebabcase": "^4.1.9",
     "@typescript-eslint/parser": "^8.59.3",
