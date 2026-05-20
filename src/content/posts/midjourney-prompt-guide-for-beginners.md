@@ -49,6 +49,7 @@ Parameters are added to the end of your prompt with two dashes. You don't need t
 
 **`--ar` (aspect ratio)**
 Controls the shape of your image. Common values:
+
 - `--ar 1:1` — square (good for social media)
 - `--ar 16:9` — widescreen (good for banners and backgrounds)
 - `--ar 9:16` — portrait (good for phone wallpapers)
@@ -71,6 +72,7 @@ Tells Midjourney what to exclude. Example: `--no text, watermark, people` remove
 ### Be specific about style and medium
 
 Instead of "a painting of mountains," try:
+
 > `snow-capped mountain peaks at sunrise, impressionist oil painting, thick visible brushstrokes, warm amber and violet tones`
 
 Style references work especially well. Try adding: `in the style of [art movement]` — like "in the style of Art Nouveau" or "in the style of 1970s vintage travel poster."
@@ -78,6 +80,7 @@ Style references work especially well. Try adding: `in the style of [art movemen
 ### Describe lighting explicitly
 
 Lighting is one of the biggest factors in how professional an image looks. Some useful terms:
+
 - `golden hour lighting` — warm, low-angle sunlight
 - `soft diffused light` — even, shadow-free lighting (good for portraits)
 - `neon-lit` — colorful artificial light
@@ -87,6 +90,7 @@ Lighting is one of the biggest factors in how professional an image looks. Some 
 ### Reference camera or lens settings for photorealistic images
 
 If you want something that looks like a real photograph:
+
 > `portrait of a woman in a café, shallow depth of field, shot on 85mm lens, natural window light, film grain`
 
 Terms like "shot on Sony A7", "35mm film", "DSLR", and "macro photography" all push Midjourney toward more photorealistic outputs.
@@ -104,18 +108,23 @@ This tells Midjourney to emphasize the ocean most, the sunset somewhat, and trea
 Here are some ready-to-use prompts across different styles:
 
 **Realistic portrait:**
+
 > `close-up portrait of an elderly fisherman, weathered face, deep-set eyes, overcast coastal light, Leica photograph, sharp focus, documentary style --ar 4:5 --style raw`
 
 **Fantasy scene:**
+
 > `ancient library inside a giant crystal cave, glowing bioluminescent mushrooms, floating books, ethereal atmosphere, digital art --ar 16:9 --v 6.1`
 
 **Product photography:**
+
 > `minimalist perfume bottle on white marble surface, soft studio lighting, clean background, luxury editorial style, commercial photography --ar 1:1 --style raw`
 
 **Social media graphic:**
+
 > `modern flat design illustration, productivity and focus concept, pastel colors, geometric shapes, clean lines, app icon style --ar 1:1`
 
 **Travel poster:**
+
 > `vintage travel poster for Kyoto Japan, cherry blossoms, Mount Fuji, bold typography space, retro 1960s illustration style, limited color palette --ar 2:3`
 
 ## Common Beginner Mistakes

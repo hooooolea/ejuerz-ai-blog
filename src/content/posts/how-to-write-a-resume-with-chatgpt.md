@@ -13,7 +13,7 @@ tags:
 description: "Learn how to use ChatGPT to write a professional resume from scratch — including the exact prompts to use, what to customize, and common mistakes to avoid."
 ---
 
-Writing a resume is one of the most stressful parts of a job search. You stare at a blank page, unsure how to present yourself without sounding either too modest or too boastful. ChatGPT can solve this problem — not by writing your resume *for* you, but by working *with* you to shape your experience into something that gets noticed.
+Writing a resume is one of the most stressful parts of a job search. You stare at a blank page, unsure how to present yourself without sounding either too modest or too boastful. ChatGPT can solve this problem — not by writing your resume _for_ you, but by working _with_ you to shape your experience into something that gets noticed.
 
 This guide walks you through the exact process, step by step.
 
@@ -124,4 +124,4 @@ Before you send your resume out:
 - Keywords from the job description appear naturally throughout
 - You've had at least one human (friend, mentor, or career advisor) read it over
 
-ChatGPT is one of the most useful tools available for job seekers right now — but the best resume is still the one that honestly represents *you*. Use it as a co-writer, not a ghostwriter.
+ChatGPT is one of the most useful tools available for job seekers right now — but the best resume is still the one that honestly represents _you_. Use it as a co-writer, not a ghostwriter.

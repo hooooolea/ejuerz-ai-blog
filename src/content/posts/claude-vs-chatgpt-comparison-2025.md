@@ -96,18 +96,21 @@ Claude's standout feature is **Projects** — available on Claude Pro — which 
 Here's a practical guide based on use case:
 
 **Choose ChatGPT if you:**
+
 - Need image generation
 - Do a lot of coding or work in a development environment
 - Want access to a wide range of third-party integrations and custom GPTs
 - Use Microsoft products (Word, Teams, Outlook)
 
 **Choose Claude if you:**
+
 - Write a lot and care about voice and style
 - Work with long documents, reports, or research
 - Want an AI that's more careful and less likely to confidently hallucinate
 - Like the idea of organized Projects for ongoing tasks
 
 **Use both if you:**
+
 - Are serious about AI tools and want the best of both worlds
 - Find yourself hitting the limits of one tool regularly
 
