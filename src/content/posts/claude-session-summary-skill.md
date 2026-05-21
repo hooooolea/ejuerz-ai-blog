@@ -1,7 +1,7 @@
 ---
 title: "Never Lose Progress Again: A Session Summary Skill for AI Agents"
 description: "Long AI sessions degrade in quality — not just when context fills up, but well before that. Here's a simple skill that checkpoints everything into one file so any new session can resume instantly, regardless of which model or agent you're using."
-pubDatetime: 2026-05-21T10:00:00Z
+pubDatetime: 2026-05-20T10:00:00Z
 tags:
   - claude
   - productivity
