@@ -62,6 +62,13 @@ const btbuerPosts = getSortedPosts(allPosts).filter(p =>
 </Layout>
 
 <script>
+  document.addEventListener("astro:page-load", () => {
+    const main = document.querySelector("#main-content");
+    if (main) {
+      main.setAttribute("data-backurl", "/forbtbuer/");
+    }
+  });
+
   const u = "hoooooyea";
   const d = "163.com";
   const el = document.getElementById("email-link") as HTMLAnchorElement | null;
