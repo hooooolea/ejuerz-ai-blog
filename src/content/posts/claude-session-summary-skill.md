@@ -14,6 +14,17 @@ If you've used any AI agent — Claude Code, Hermes, Cursor, or similar tools �
 
 There's a straightforward fix. It's a "skill" — a short instruction file that tells the agent exactly how to create a structured session summary before you close out. The next time you open any agent, you hand it that summary file and pick up exactly where you left off. No re-explaining, no lost context.
 
+## Getting Started
+
+1. **Download the skill file**: [session-summary-skill.md](/downloads/session-summary-skill.md)
+2. **Add it to your Claude setup** (Claude Code users: drop it in your `.claude/skills/` folder; otherwise keep it handy to paste or reference)
+3. **At the end of any complex session**, say: "Summarize the session and write `.session_summary.md`"
+4. **Next session**: "Read `.session_summary.md` and resume from where we left off"
+
+That's it. One file, one habit, no more lost progress. Read on for why this works.
+
+---
+
 ## The Real Problem: Context Degradation
 
 Every AI agent, regardless of the model powering it, has a context window — a working memory that holds the current conversation. Claude Code, Hermes, Cursor, GPT-4-based tools: they all have one, and they all suffer from the same problem as it grows.
@@ -114,15 +125,6 @@ The structured format matters too. A freeform "here's what we did" paragraph is 
 ## A Note on API Keys and Sensitive Data
 
 The skill file explicitly tells Claude never to write actual API keys or credentials into the summary. If a service requires a key to run, the summary notes that a key is needed (and where to set it), but writes `[REDACTED]` for the value. Keep this in mind if you edit summaries manually — the whole point is that the file might get committed to a repo or shared.
-
-## Getting Started
-
-1. **Download the skill file**: [session-summary-skill.md](/downloads/session-summary-skill.md)
-2. **Add it to your Claude setup** (Claude Code users: drop it in your `.claude/skills/` folder; otherwise keep it handy to paste or reference)
-3. **At the end of any complex session**, say: "Summarize the session and write `.session_summary.md`"
-4. **Next session**: "Read `.session_summary.md` and resume from where we left off"
-
-That's it. One file, one habit, no more lost progress.
 
 ---
 
