@@ -6,10 +6,33 @@ import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
 import Card from "@/components/Card.astro";
 
+const SECTIONS = [
+  { id: "jing sai", label: "竞赛经验" },
+  { id: "ke she", label: "课设项目" },
+  { id: "qiu zhi", label: "求职实习" },
+  { id: "gong ju", label: "工具技巧" },
+  { id: "cai keng", label: "踩坑记录" },
+];
+
+const SECTION_TAG_MAP: Record<string, string> = {
+  "竞赛经验": "jing sai",
+  "课设项目": "ke she",
+  "求职实习": "qiu zhi",
+  "工具技巧": "gong ju",
+  "踩坑记录": "cai keng",
+};
+
 const allPosts = await getCollection("posts");
 const btbuerPosts = getSortedPosts(allPosts).filter(p =>
   p.data.tags?.includes("btbuer")
 );
+
+// Group posts by section
+const sectionPosts = SECTIONS.map(({ id, label }) => ({
+  id,
+  label,
+  posts: btbuerPosts.filter(p => p.data.tags?.includes(label)),
+})).filter(s => s.posts.length > 0);
 ---
 
 <Layout
@@ -39,14 +62,32 @@ const btbuerPosts = getSortedPosts(allPosts).filter(p =>
       </div>
     </section>
 
-    <!-- Articles -->
-    <section class="py-10">
-      {btbuerPosts.length > 0 ? (
-        <ul>
-          {btbuerPosts.map(post => (
-            <Card variant="h3" {...post} />
+    <!-- Section Nav -->
+    {sectionPosts.length > 0 && (
+      <nav class="border-border sticky top-0 z-10 border-b bg-background/95 backdrop-blur py-3">
+        <div class="flex gap-4 overflow-x-auto text-sm scrollbar-hide">
+          {sectionPosts.map(({ id, label }) => (
+            <a href={`#${id}`} class="whitespace-nowrap text-muted-foreground hover:text-foreground transition-colors">
+              {label}
+            </a>
           ))}
-        </ul>
+        </div>
+      </nav>
+    )}
+
+    <!-- Sections with Posts -->
+    <section class="py-10">
+      {sectionPosts.length > 0 ? (
+        sectionPosts.map(({ id, label, posts }) => (
+          <div id={id} class="mb-12 scroll-mt-24">
+            <h2 class="mb-6 text-xl font-semibold">{label}</h2>
+            <ul>
+              {posts.map(post => (
+                <Card variant="h3" {...post} />
+              ))}
+            </ul>
+          </div>
+        ))
       ) : (
         <div class="py-20 text-center">
           <p class="text-muted-foreground text-sm">还没有内容 — 成为第一个投稿的同学</p>
