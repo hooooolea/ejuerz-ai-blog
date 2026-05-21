@@ -37,6 +37,6 @@ featured: false
 
 ## 用法
 
-方括号换成你的，发给大模型。输出保存成 `index.html`，拖到 [Cloudflare Pages](/forbtbuer/jing-sai/deploy-site-cloudflare-pages-free) 上传框。
+方括号换成你的，发给大模型。输出文件下载下来，一般是 `index.html`，拖到 [Cloudflare Pages](/forbtbuer/jing-sai/deploy-site-cloudflare-pages-free) 上传框。
 
 不满意继续在对话里说，大模型会帮你改。
