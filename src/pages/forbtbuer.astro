@@ -1,4 +1,5 @@
 ---
+import { getCollection } from "astro:content";
 import Layout from "@/layouts/Layout.astro";
 import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
@@ -9,8 +10,14 @@ const SECTIONS = [
   { id: "qiu-zhi", label: "求职实习", desc: "面试经验、实习心得、简历技巧" },
   { id: "xue-xi-zi-liao", label: "学习资料", desc: "笔记、真题、课件，按课程整理" },
   { id: "cai-keng", label: "踩坑记录", desc: "避坑指南、错误排查、经验教训" },
+  { id: "hao-dong-xi", label: "好东西", desc: "音乐、游戏、美食，分享你喜欢的" },
   { id: "campus-pets", label: "校园宠物", desc: "校园里的学长学姐们" },
 ];
+
+const allPosts = await getCollection("btbuer");
+const activeSections = SECTIONS.filter(({ id }) =>
+  allPosts.some(p => p.id.startsWith(`${id}/`) && !p.data.draft)
+);
 ---
 
 <Layout
@@ -43,7 +50,7 @@ const SECTIONS = [
     <!-- Section Cards -->
     <section class="py-10">
       <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {SECTIONS.map(({ id, label, desc }) => (
+        {activeSections.map(({ id, label, desc }) => (
           <a
             href={`/forbtbuer/${id}`}
             class="border-border group flex flex-col gap-2 rounded-lg border p-5 transition-all hover:border-foreground active:bg-foreground/5 active:scale-[0.98]"
