@@ -9,10 +9,10 @@ const pagefindBundlePath = getAssetPath("pagefind/");
 ---
 
 <Layout title="搜索 | 工商人共享" description="搜索工商人共享的所有内容">
-  <Header />
+  <Header dividerBorderClass="border-black dark:border-border" />
   <main id="main-content" class="app-layout">
 
-    <section class="border-border border-b py-12">
+    <section class="app-divider-b py-12">
       <a href="/forbtbuer/" class="text-muted-foreground hover:text-foreground mb-6 inline-block text-sm transition-colors">← 工商人共享</a>
       <h1 class="mb-6 text-4xl font-bold sm:text-5xl">搜索</h1>
       <div
@@ -23,7 +23,7 @@ const pagefindBundlePath = getAssetPath("pagefind/");
     </section>
 
   </main>
-  <Footer />
+  <Footer dividerBorderClass="border-black dark:border-border" />
 </Layout>
 
 <script>
@@ -86,14 +86,18 @@ const pagefindBundlePath = getAssetPath("pagefind/");
     --pagefind-ui-font: var(--font-app);
     --pagefind-ui-text: var(--foreground);
     --pagefind-ui-background: var(--background);
-    --pagefind-ui-border: var(--border);
+    --pagefind-ui-border: var(--card-border);
     --pagefind-ui-primary: var(--accent);
     --pagefind-ui-tag: var(--background);
     --pagefind-ui-border-radius: 0.375rem;
     --pagefind-ui-border-width: 1px;
 
     form::before { background-color: var(--foreground); }
-    input { font-weight: 400; border: 1px solid var(--border); }
+    input { font-weight: 400; border: 1px solid var(--card-border); background: var(--card); }
+    .pagefind-ui__result {
+      background: var(--card);
+      border-color: var(--card-border);
+    }
     input:focus-visible { outline: 1px solid var(--accent); }
     .pagefind-ui__result-title a {
       color: var(--accent);
