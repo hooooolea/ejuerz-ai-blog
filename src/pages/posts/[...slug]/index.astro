@@ -19,10 +19,6 @@ export async function getStaticPaths() {
   const allPosts = await getCollection("posts");
   const sortedPosts = getSortedPosts(allPosts);
 
-  // Separate btbuer posts from regular posts
-  const btbuerPosts = sortedPosts.filter(p => p.data.tags?.includes("btbuer"));
-  const enPosts = sortedPosts.filter(p => !p.data.tags?.includes("btbuer"));
-
   const makeRoutes = (group: typeof sortedPosts) =>
     group.map((post, index) => ({
       params: { slug: getPostSlug(post.id, post.filePath) },
@@ -47,7 +43,7 @@ export async function getStaticPaths() {
       },
     }));
 
-  return [...makeRoutes(btbuerPosts), ...makeRoutes(enPosts)];
+  return [...makeRoutes(sortedPosts)];
 }
 
 type AdjacentPost = {

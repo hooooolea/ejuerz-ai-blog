@@ -24,11 +24,9 @@ const { section } = Astro.params;
 const { label, desc } = Astro.props;
 const sectionInfo = { label, desc };
 
-const allPosts = await getCollection("posts");
-const btbuerPosts = getSortedPosts(allPosts).filter(p =>
-  p.data.tags?.includes("btbuer")
-);
-const sectionPosts = btbuerPosts.filter(p =>
+const btbuerPosts = await getCollection("btbuer");
+const sortedPosts = getSortedPosts(btbuerPosts);
+const sectionPosts = sortedPosts.filter(p =>
   p.data.tags?.includes(sectionInfo.label)
 );
 ---
