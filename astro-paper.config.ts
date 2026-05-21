@@ -28,8 +28,8 @@ export default defineAstroPaperConfig({
     search: "pagefind",
   },
   socials: [
-    { name: "x",   url: "https://x.com/aitoolkitguide" },
-    { name: "mail", url: "mailto:hello@aitoolkitguide.com" },
+    { name: "x", url: "https://x.com/ejuerz" },
+    { name: "mail", url: "mailto:ejuer_z@163.com" },
   ],
   shareLinks: [
     { name: "whatsapp", url: "https://wa.me/?text=" },
