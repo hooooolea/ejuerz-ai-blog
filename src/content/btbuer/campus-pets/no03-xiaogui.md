@@ -3,6 +3,7 @@ title: "03号 · 小鬼"
 description: "良乡二组团附近的黑白长毛猫，趴着也很有派头。"
 pubDatetime: 2026-05-21T10:00:00Z
 author: 我讨厌六级
+cover: "/pets/03/03-1.jpg"
 tags:
   - campus-pets
   - 校园宠物
