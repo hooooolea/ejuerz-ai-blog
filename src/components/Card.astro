@@ -26,6 +26,13 @@ const { title, description, ...props } = data;
       {title}
     </Heading>
   </a>
-  <Datetime {...props} />
+  <div class="flex items-center gap-x-3">
+    <Datetime {...props} />
+    {data.author && (
+      <span class="text-muted-foreground text-sm before:mr-3 before:content-['·']">
+        {data.author}
+      </span>
+    )}
+  </div>
   <p>{description}</p>
 </li>
