@@ -1,0 +1,65 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+---
+
+<Layout title="GitHub Trending | AI Toolkit Guide" description="Explore what's trending on GitHub right now — top open source projects updated in real time.">
+  <Header />
+  <main id="main-content" class="app-layout py-12">
+    <h1 class="text-3xl font-bold mb-2">🔥 GitHub Trending</h1>
+    <p class="text-muted-foreground mb-8">Top open source projects trending on GitHub right now.</p>
+
+    <div id="trending-list" class="space-y-4">
+      <p class="text-muted-foreground">Loading...</p>
+    </div>
+  </main>
+  <Footer />
+</Layout>
+
+<script>
+  async function loadTrending() {
+    const container = document.getElementById("trending-list");
+    if (!container) return;
+
+    try {
+      // GitHub Search API: repos updated recently, sorted by stars
+      const res = await fetch(
+        "https://api.github.com/search/repositories?q=stars:%3E1000+pushed:%3E2026-05-01&sort=stars&order=desc&per_page=25",
+        { headers: { Accept: "application/vnd.github+json" } }
+      );
+      const data = await res.json();
+      const repos = data.items ?? [];
+
+      if (repos.length === 0) {
+        container.innerHTML = "<p>No data available right now. Try again later.</p>";
+        return;
+      }
+
+      container.innerHTML = repos
+        .map(
+          (repo: any, i: number) => `
+          <a href="${repo.html_url}" target="_blank" rel="noopener noreferrer"
+            class="group border border-border rounded-lg p-4 flex gap-4 items-start hover:border-accent transition-colors block no-underline">
+            <span class="text-muted-foreground text-sm font-mono w-6 shrink-0 pt-0.5">${i + 1}</span>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center gap-2 flex-wrap">
+                <span class="font-semibold group-hover:text-accent transition-colors">${repo.full_name}</span>
+                ${repo.language ? `<span class="text-xs bg-muted text-muted-foreground px-2 py-0.5 rounded-full">${repo.language}</span>` : ""}
+              </div>
+              <p class="text-muted-foreground text-sm mt-1 line-clamp-2">${repo.description ?? "No description"}</p>
+              <div class="flex gap-4 mt-2 text-xs text-muted-foreground">
+                <span>⭐ ${repo.stargazers_count.toLocaleString()}</span>
+                <span>🍴 ${repo.forks_count.toLocaleString()}</span>
+              </div>
+            </div>
+          </a>`
+        )
+        .join("");
+    } catch (e) {
+      if (container) container.innerHTML = "<p>Failed to load. Please try again later.</p>";
+    }
+  }
+
+  document.addEventListener("astro:page-load", loadTrending);
+</script>
