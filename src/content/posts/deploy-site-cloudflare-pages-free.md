@@ -1,7 +1,7 @@
 ---
 title: "5 分钟在 Cloudflare 上发布一个网站，不需要域名"
 description: "做完竞赛项目，想快速给评委看一个在线展示页面？Cloudflare Pages 免费提供 .pages.dev 域名，上传文件就能用，不需要买域名，不需要服务器。"
-pubDatetime: 2026-05-21T09:00:00Z
+pubDatetime: 2026-05-20T09:00:00Z
 tags:
   - 教程
   - cloudflare

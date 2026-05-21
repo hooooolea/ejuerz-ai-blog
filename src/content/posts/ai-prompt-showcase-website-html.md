@@ -1,7 +1,7 @@
 ---
 title: "让 AI 帮你做一个可以直接上传的展示网站"
 description: "让 ChatGPT 或 Claude 帮你生成网站代码，但要在提示词里说清楚用纯 HTML/CSS，不然它会生成 React，你就没法直接拖到 Cloudflare 上了。"
-pubDatetime: 2026-05-21T10:00:00Z
+pubDatetime: 2026-05-20T10:00:00Z
 tags:
   - 教程
   - ai-tools
