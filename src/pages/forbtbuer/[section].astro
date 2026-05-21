@@ -72,7 +72,7 @@ const sectionPosts = btbuerPosts.filter(p =>
   document.addEventListener("astro:page-load", () => {
     const main = document.querySelector("#main-content");
     const sectionEl = document.querySelector("[data-section]");
-    const sec = sectionEl?.dataset.section;
+    const sec = (sectionEl as HTMLElement)?.dataset.section;
     if (main && sec) {
       main.setAttribute("data-backurl", `/forbtbuer/${sec}`);
       sessionStorage.setItem("backUrl", `/forbtbuer/${sec}`);
