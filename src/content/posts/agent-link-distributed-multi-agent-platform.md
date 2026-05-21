@@ -10,6 +10,8 @@ tags:
 featured: true
 ---
 
+> **Work in progress** — Agent Link is under active development. Some features described here may not be fully stable yet. Follow the [repo](https://github.com/hooooolea/agent-link) for updates.
+
 Most AI agent workflows look like this: you give the agent a task, it works through it step by step, and you wait. That's fine for simple tasks. But if you need to process a hundred documents, run a research job across dozens of topics, or execute a complex multi-step pipeline — a single agent session becomes a bottleneck.
 
 [Agent Link](https://github.com/hooooolea/agent-link) is an open-source platform built to solve that. It splits a large task into subtasks, dispatches them to multiple Hermes workers running in parallel, and then runs a separate Review Agent that audits every output and retries anything that doesn't pass quality checks.
