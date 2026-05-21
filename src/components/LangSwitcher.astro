@@ -1,5 +1,7 @@
 ---
 const isChinese = Astro.currentLocale === "cn";
+const isTrending = Astro.url.pathname.startsWith("/trending");
+const cnHref = isTrending ? "/" : "/cn";
 ---
 
 <div class="lang-switcher-wrap">
@@ -43,7 +45,7 @@ const isChinese = Astro.currentLocale === "cn";
     </li>
     <li role="none">
       <a
-        href="/cn"
+        href={cnHref}
         role="menuitem"
         class:list={["lang-option", { active: isChinese }]}
       >
