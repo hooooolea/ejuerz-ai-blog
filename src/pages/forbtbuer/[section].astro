@@ -12,7 +12,7 @@ export function getStaticPaths() {
     { id: "qiu-zhi", label: "求职实习", desc: "面试经验、实习心得、简历技巧" },
     { id: "gong-ju", label: "工具技巧", desc: "效率工具、使用技巧、软件推荐" },
     { id: "cai-keng", label: "踩坑记录", desc: "避坑指南、错误排查、经验教训" },
-    { id: "campus-pets", label: "校园宠物", desc: "校园小动物的故事和领养信息" },
+    { id: "campus-pets", label: "校园宠物", desc: "校园里的学长学姐们" },
   ];
   return SECTIONS.map(({ id, label, desc }) => ({
     params: { section: id },
