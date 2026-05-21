@@ -1,134 +1,75 @@
 ---
+import { getCollection } from "astro:content";
+import { getSortedPosts } from "@/utils/getSortedPosts";
 import Layout from "@/layouts/Layout.astro";
 import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
+import Card from "@/components/Card.astro";
+
+const allPosts = await getCollection("posts");
+const btbuerPosts = getSortedPosts(allPosts).filter(p =>
+  p.data.tags?.includes("btbuer")
+);
 ---
 
 <Layout
   title="工商人共享 | AI Toolkit Guide"
-  description="面向北京工商大学同学的内容共享平台，分享你的笔记、经验、资源，帮助更多人。"
+  description="工商大同学的内容共享平台——笔记、经验、资源，由同学写给同学。"
 >
   <Header />
-  <main id="main-content" class="app-layout py-12">
+  <main id="main-content" class="app-layout py-10">
 
     <!-- Hero -->
-    <div class="mb-12 text-center">
-      <div class="mb-4 text-5xl">🎓</div>
-      <h1 class="mb-4 text-4xl font-bold">工商人，一起共享</h1>
-      <p class="text-muted-foreground mx-auto max-w-xl text-lg">
-        这里是专门给工商大同学开的一个小角落。<br />
-        你有什么想分享给大家的，直接发过来就行。
-      </p>
-    </div>
-
-    <!-- What to share -->
-    <div class="mb-12">
-      <h2 class="mb-6 text-center text-2xl font-semibold">可以分享什么？</h2>
-      <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-
-        <div class="border-border rounded-xl border p-6">
-          <div class="mb-3 text-3xl">📝</div>
-          <h3 class="mb-2 font-semibold">学习笔记 / 课件</h3>
-          <p class="text-muted-foreground text-sm">
-            期末笔记、课程总结、重点整理、老师的 PPT 补充说明……只要你觉得有用就行。
-          </p>
-        </div>
-
-        <div class="border-border rounded-xl border p-6">
-          <div class="mb-3 text-3xl">💡</div>
-          <h3 class="mb-2 font-semibold">选课 / 考试经验</h3>
-          <p class="text-muted-foreground text-sm">
-            哪门课好过，哪门课要注意，考试有什么坑，实习面试踩过的坑……这些对学弟学妹太有用了。
-          </p>
-        </div>
-
-        <div class="border-border rounded-xl border p-6">
-          <div class="mb-3 text-3xl">🔗</div>
-          <h3 class="mb-2 font-semibold">资源推荐</h3>
-          <p class="text-muted-foreground text-sm">
-            好用的网站、工具、书单、公众号……你觉得值得分享的都行，不限主题。
-          </p>
-        </div>
-
-        <div class="border-border rounded-xl border p-6">
-          <div class="mb-3 text-3xl">🚀</div>
-          <h3 class="mb-2 font-semibold">自己做的项目</h3>
-          <p class="text-muted-foreground text-sm">
-            课设、比赛项目、课外做的小工具……想让更多人看到就发过来，帮你推一下。
-          </p>
-        </div>
-
-        <div class="border-border rounded-xl border p-6">
-          <div class="mb-3 text-3xl">✍️</div>
-          <h3 class="mb-2 font-semibold">随便写点什么</h3>
-          <p class="text-muted-foreground text-sm">
-            实习感悟、校园生活、踩过的坑、想对同学说的话……真实的内容比什么都有价值。
-          </p>
-        </div>
-
-        <div class="border-border rounded-xl border p-6">
-          <div class="mb-3 text-3xl">🤷</div>
-          <h3 class="mb-2 font-semibold">不确定？直接发</h3>
-          <p class="text-muted-foreground text-sm">
-            没有审核标准，没有字数要求。你觉得有人会用得上，就值得分享。
-          </p>
-        </div>
-
+    <div class="mb-8 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
+      <div>
+        <h1 class="mb-1 text-3xl font-bold">🎓 工商人共享</h1>
+        <p class="text-muted-foreground">同学写给同学的笔记、经验和资源</p>
       </div>
+      <a
+        href="/btbuer-submit"
+        class="bg-accent text-background hover:opacity-80 flex-shrink-0 rounded-xl px-6 py-3 font-semibold transition-opacity"
+      >
+        ✍️ 我要投稿
+      </a>
     </div>
 
-    <!-- How to submit -->
-    <div class="border-border bg-card mb-12 rounded-2xl border p-8 text-center">
-      <h2 class="mb-4 text-2xl font-semibold">怎么投？</h2>
-      <p class="text-muted-foreground mb-6 text-lg">
-        直接发邮件，没有固定格式，说清楚内容是什么就行。
-      </p>
-
-      <!-- Fast track -->
-      <div class="bg-accent/10 border-accent/30 mb-6 rounded-xl border px-6 py-4">
-        <p class="text-accent mb-1 text-sm font-semibold">⚡ 工商专属快速通道</p>
-        <p class="text-muted-foreground text-sm">工商大同学发这个邮箱，优先处理，当天回复</p>
-        <a
-          href="mailto:hoooooyea@163.com?subject=工商共享投稿"
-          class="bg-accent text-background hover:opacity-80 mt-3 inline-block rounded-lg px-6 py-3 text-base font-semibold transition-opacity"
-        >
-          📬 hoooooyea@163.com
-        </a>
+    <!-- Submit banner -->
+    <div class="border-accent/30 bg-accent/5 mb-10 flex flex-col items-start justify-between gap-3 rounded-2xl border p-5 sm:flex-row sm:items-center">
+      <div>
+        <p class="font-medium">📬 有想分享的内容？直接发过来</p>
+        <p class="text-muted-foreground text-sm">
+          笔记、选课经验、项目、随便写的都行 ——
+          <a href="/btbuer-submit" class="text-accent underline underline-offset-2">查看投稿说明</a>
+        </p>
       </div>
-
-      <p class="text-muted-foreground text-sm">
-        主题写「工商共享投稿」就行，其他同学也可以发 ejuer_z@163.com
-      </p>
+      <a
+        href="mailto:hoooooyea@163.com?subject=工商共享投稿"
+        class="border-accent text-accent hover:bg-accent hover:text-background flex-shrink-0 rounded-lg border px-5 py-2 text-sm font-medium transition-colors"
+      >
+        hoooooyea@163.com
+      </a>
     </div>
 
-    <!-- FAQ -->
-    <div class="mb-12">
-      <h2 class="mb-6 text-2xl font-semibold">常见问题</h2>
-      <div class="space-y-4">
-        <div class="border-border rounded-xl border p-5">
-          <p class="mb-1 font-medium">会署名吗？</p>
-          <p class="text-muted-foreground text-sm">你想署就署，不想就匿名发布，完全你说了算。</p>
-        </div>
-        <div class="border-border rounded-xl border p-5">
-          <p class="mb-1 font-medium">内容会被修改吗？</p>
-          <p class="text-muted-foreground text-sm">只做基本的格式整理，内容不会动。如果有什么问题我会先跟你说。</p>
-        </div>
-        <div class="border-border rounded-xl border p-5">
-          <p class="mb-1 font-medium">有没有什么不能发的？</p>
-          <p class="text-muted-foreground text-sm">侵权、隐私、广告这些不行，其他的都欢迎。</p>
-        </div>
-        <div class="border-border rounded-xl border p-5">
-          <p class="mb-1 font-medium">多久会发布？</p>
-          <p class="text-muted-foreground text-sm">一般 2-3 天内，忙的时候会慢一点，会回邮件告知。</p>
-        </div>
+    <!-- Articles -->
+    {btbuerPosts.length > 0 ? (
+      <section>
+        <h2 class="mb-4 text-xl font-semibold">已发布的内容</h2>
+        <ul>
+          {btbuerPosts.map(post => (
+            <Card variant="h3" {...post} />
+          ))}
+        </ul>
+      </section>
+    ) : (
+      <div class="border-border rounded-2xl border border-dashed py-20 text-center">
+        <div class="mb-3 text-4xl">📭</div>
+        <p class="font-medium">还没有内容</p>
+        <p class="text-muted-foreground mt-1 text-sm">
+          成为第一个投稿的同学 →
+          <a href="/btbuer-submit" class="text-accent underline underline-offset-2">投稿说明</a>
+        </p>
       </div>
-    </div>
-
-    <!-- Footer note -->
-    <div class="text-muted-foreground text-center text-sm">
-      <p>这个网站是我自己做着玩的，内容共享这块完全公益，不商业化。</p>
-      <p class="mt-1">有问题随时发邮件 · <a href="/about" class="underline">关于这个网站</a></p>
-    </div>
+    )}
 
   </main>
   <Footer />
