@@ -1,6 +1,5 @@
 ---
 import { getCollection } from "astro:content";
-import { getSortedPosts } from "@/utils/getSortedPosts";
 import Layout from "@/layouts/Layout.astro";
 import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
@@ -25,10 +24,18 @@ const { label, desc } = Astro.props;
 const sectionInfo = { label, desc };
 
 const btbuerPosts = await getCollection("btbuer");
-const sortedPosts = getSortedPosts(btbuerPosts);
-const sectionPosts = sortedPosts.filter(p =>
-  p.id.startsWith(`${section}/`)
-);
+const sectionPosts = btbuerPosts
+  .filter(p => p.id.startsWith(`${section}/`))
+  .sort(
+    (a, b) =>
+      Math.floor(
+        new Date(b.data.modDatetime ?? b.data.pubDatetime).getTime() / 1000
+      ) -
+      Math.floor(
+        new Date(a.data.modDatetime ?? a.data.pubDatetime).getTime() / 1000
+      )
+  )
+  .filter(p => !p.data.draft);
 ---
 
 <Layout
@@ -50,7 +57,7 @@ const sectionPosts = sortedPosts.filter(p =>
       {sectionPosts.length > 0 ? (
         <ul>
           {sectionPosts.map(post => (
-            <Card variant="h3" {...post} />
+            <Card variant="h3" {...(post as any)} />
           ))}
         </ul>
       ) : (

@@ -7,7 +7,7 @@ import { postFilter } from "./postFilter";
  *
  * Note: filtering respects drafts and scheduled posts via `postFilter()`.
  */
-export function getSortedPosts<T extends CollectionEntry<any>>(posts: T[]) {
+export function getSortedPosts(posts: CollectionEntry<"posts">[]) {
   return posts
     .filter(postFilter)
     .sort(
