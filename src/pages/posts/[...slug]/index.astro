@@ -19,8 +19,8 @@ export async function getStaticPaths() {
   const allPosts = await getCollection("posts");
 
   // Split into two language groups so adjacent navigation never crosses
-  const enPosts = getSortedPosts(allPosts.filter(p => p.data.lang !== "zh"));
-  const zhPosts = getSortedPosts(allPosts.filter(p => p.data.lang === "zh"));
+  const enPosts = getSortedPosts(allPosts);
+  const zhPosts = getSortedPosts([]);
 
   const makeRoutes = (group: typeof allPosts) =>
     group.map((post, index) => ({

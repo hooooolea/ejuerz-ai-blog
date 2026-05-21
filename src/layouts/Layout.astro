@@ -6,7 +6,6 @@ import { resolveDefaultOgImagePath } from "@/utils/resolveDefaultOgImagePath";
 import { getAssetPath } from "@/utils/withBase";
 import config from "@/config";
 import "@/styles/global.css";
-import LangSwitcher from "@/components/LangSwitcher.astro";
 
 type Props = {
   title?: string;
@@ -119,7 +118,6 @@ const rssHref = getRelativeLocaleUrl(
     class="bg-background font-app text-foreground selection:bg-accent/75 selection:text-accent-foreground flex min-h-svh flex-col"
   >
     <slot />
-    <LangSwitcher />
     <script>
       import "@/scripts/theme";
     </script>
