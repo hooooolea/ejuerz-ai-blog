@@ -12,11 +12,6 @@ export default defineAstroPaperConfig({
     timezone: "America/New_York",
     dir: "ltr",
   },
-  posts: {
-    perPage: 6,
-    perIndex: 6,
-    scheduledPostMargin: 15 * 60 * 1000,
-  },
   features: {
     lightAndDarkMode: true,
     dynamicOgImage: true,
