@@ -2,7 +2,7 @@ import { defineAstroPaperConfig } from "./src/types/config";
 
 export default defineAstroPaperConfig({
   site: {
-    url: "https://aitoolkitguide.com/",
+    url: "https://ejuerz.com/",
     title: "AI Toolkit Guide",
     description: "Practical guides, tutorials, and honest comparisons for the best AI tools — written for real people, not developers.",
     author: "AI Toolkit Guide",
