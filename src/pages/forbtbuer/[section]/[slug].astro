@@ -4,6 +4,7 @@ import Layout from "@/layouts/Layout.astro";
 import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
 import Datetime from "@/components/Datetime.astro";
+
 const SECTIONS: Record<string, string> = {
   "jing-sai": "竞赛经验",
   "ke-she": "课设项目",
@@ -16,21 +17,41 @@ const SECTIONS: Record<string, string> = {
 
 export async function getStaticPaths() {
   const allPosts = await getCollection("btbuer");
-  return allPosts
-    .filter(p => !p.data.draft)
-    .map(post => {
-      const parts = post.id.split("/");
-      const section = parts[0];
-      const slug = parts[parts.length - 1].replace(/\.(md|mdx)$/, "");
-      return {
-        params: { section, slug },
-        props: { post },
-      };
-    });
+  const filtered = allPosts.filter(p => !p.data.draft);
+
+  return filtered.map(post => {
+    const parts = post.id.split("/");
+    const section = parts[0];
+    const slug = parts[parts.length - 1].replace(/\.(md|mdx)$/, "");
+
+    // Adjacent posts within the same section, sorted by date
+    const sectionPosts = filtered
+      .filter(p => p.id.startsWith(`${section}/`))
+      .sort((a, b) =>
+        new Date(a.data.pubDatetime).getTime() -
+        new Date(b.data.pubDatetime).getTime()
+      );
+
+    const idx = sectionPosts.findIndex(p => p.id === post.id);
+    const prevPost = idx > 0 ? sectionPosts[idx - 1] : null;
+    const nextPost = idx < sectionPosts.length - 1 ? sectionPosts[idx + 1] : null;
+
+    const prevSlug = prevPost ? prevPost.id.split("/").pop()?.replace(/\.(md|mdx)$/, "") : null;
+    const nextSlug = nextPost ? nextPost.id.split("/").pop()?.replace(/\.(md|mdx)$/, "") : null;
+
+    return {
+      params: { section, slug },
+      props: {
+        post,
+        prevPost: prevPost ? { title: prevPost.data.title, href: `/forbtbuer/${section}/${prevSlug}` } : null,
+        nextPost: nextPost ? { title: nextPost.data.title, href: `/forbtbuer/${section}/${nextSlug}` } : null,
+      },
+    };
+  });
 }
 
 const { section } = Astro.params;
-const { post } = Astro.props;
+const { post, prevPost, nextPost } = Astro.props;
 const { title, description, pubDatetime, modDatetime, timezone, author } = post.data;
 const { Content } = await render(post);
 
@@ -73,12 +94,22 @@ const sectionLabel = SECTIONS[section] ?? section;
 
     <hr class="my-8 border-dashed" />
 
-    <a
-      href={`/forbtbuer/${section}`}
-      class="text-muted-foreground hover:text-foreground text-sm transition-colors"
-    >
-      ← 返回{sectionLabel}
-    </a>
+    <nav class="flex justify-between gap-4 text-sm">
+      <div>
+        {prevPost && (
+          <a href={prevPost.href} class="text-muted-foreground hover:text-foreground transition-colors">
+            ← {prevPost.title}
+          </a>
+        )}
+      </div>
+      <div class="text-right">
+        {nextPost && (
+          <a href={nextPost.href} class="text-muted-foreground hover:text-foreground transition-colors">
+            {nextPost.title} →
+          </a>
+        )}
+      </div>
+    </nav>
 
   </main>
   <Footer />
