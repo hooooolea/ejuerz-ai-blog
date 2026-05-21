@@ -40,7 +40,7 @@ const sectionPosts = btbuerPosts.filter(p =>
   <main id="main-content" class="app-layout">
 
     <!-- Hero -->
-    <section class="border-border border-b py-12">
+    <section data-section={section} class="border-border border-b py-12">
       <a href="/forbtbuer/" class="text-muted-foreground hover:text-foreground mb-6 inline-block text-sm transition-colors">← 工商人共享</a>
       <h1 class="mb-3 text-4xl font-bold sm:text-5xl">{sectionInfo.label}</h1>
       <p class="text-muted-foreground max-w-md text-base">{sectionInfo.desc}</p>
@@ -71,9 +71,11 @@ const sectionPosts = btbuerPosts.filter(p =>
 <script>
   document.addEventListener("astro:page-load", () => {
     const main = document.querySelector("#main-content");
-    if (main) {
-      main.setAttribute("data-backurl", `/forbtbuer/${section}`);
-      sessionStorage.setItem("backUrl", `/forbtbuer/${section}`);
+    const sectionEl = document.querySelector("[data-section]");
+    const sec = sectionEl?.dataset.section;
+    if (main && sec) {
+      main.setAttribute("data-backurl", `/forbtbuer/${sec}`);
+      sessionStorage.setItem("backUrl", `/forbtbuer/${sec}`);
     }
   });
 </script>
