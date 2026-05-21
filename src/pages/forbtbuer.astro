@@ -66,6 +66,7 @@ const btbuerPosts = getSortedPosts(allPosts).filter(p =>
     const main = document.querySelector("#main-content");
     if (main) {
       main.setAttribute("data-backurl", "/forbtbuer/");
+      sessionStorage.setItem("backUrl", "/forbtbuer/");
     }
   });
 
