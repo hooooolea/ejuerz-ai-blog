@@ -22,7 +22,7 @@ import Footer from "@/components/Footer.astro";
         <a id="email-fast" href="#" class="bg-foreground text-background hover:opacity-80 rounded-lg px-5 py-2.5 text-sm font-semibold transition-opacity">
           发邮件
         </a>
-        <p class="text-muted-foreground mt-3 text-xs">工商大同学发快速通道，优先处理，当天回复</p>
+        <p class="text-muted-foreground mt-3 text-xs">工商大同学发快速通道，优先处理，尽量当天回复</p>
       </div>
     </section>
 
@@ -46,15 +46,17 @@ import Footer from "@/components/Footer.astro";
             </li>
           ))}
         </ul>
+        <p class="text-muted-foreground mt-4 text-xs">发邮件时附上想用的署名（可以是昵称），不填默认匿名。</p>
       </div>
 
       <div>
         <h2 class="mb-5 text-lg font-semibold">常见问题</h2>
         <div class="space-y-4 text-sm">
           {[
+            ["署名怎么填？", "邮件里带上你想用的名字就行，真名、昵称、网名都可以。不填就匿名发布。"],
             ["会署名吗？", "你想署就署，不想就匿名，完全你说了算。"],
             ["内容会被修改吗？", "只做基本格式整理，内容不动。有问题会先跟你说。"],
-            ["有什么不能发的？", "侵权、隐私、广告不行，其他都欢迎。"],
+            ["有什么不能发的？", "侵权、隐私、广告不行，其他都欢迎。请确认内容为本人原创或有权分享。"],
             ["多久会发布？", "一般 2-3 天内，会回邮件告知。"],
           ].map(([q, a]) => (
             <div>
@@ -68,9 +70,12 @@ import Footer from "@/components/Footer.astro";
     </section>
 
     <!-- Other email -->
-    <section class="py-8">
+    <section class="border-border border-t py-8">
       <p class="text-muted-foreground text-sm">
         非工商大同学也欢迎投稿，发 <a id="email-other" href="#" class="text-foreground underline underline-offset-2"></a> 即可。
+      </p>
+      <p class="text-muted-foreground mt-3 text-sm">
+        如果本站内容侵犯了您的权利，请发邮件至 <a id="email-dmca" href="#" class="text-foreground underline underline-offset-2"></a> 说明情况，核实后即刻下架。
       </p>
     </section>
 
@@ -81,7 +86,9 @@ import Footer from "@/components/Footer.astro";
 <script>
   const fast = document.getElementById("email-fast") as HTMLAnchorElement | null;
   const other = document.getElementById("email-other") as HTMLAnchorElement | null;
+  const dmca = document.getElementById("email-dmca") as HTMLAnchorElement | null;
   const u1 = "hoooooyea", u2 = "ejuer_z", d = "163.com";
   if (fast) { fast.href = `mailto:${u1}@${d}?subject=工商共享投稿`; }
   if (other) { other.href = `mailto:${u2}@${d}?subject=工商共享投稿`; other.textContent = `${u2}@${d}`; }
+  if (dmca) { dmca.href = `mailto:${u2}@${d}?subject=侵权投诉`; dmca.textContent = `${u2}@${d}`; }
 </script>
