@@ -9,69 +9,79 @@ import Footer from "@/components/Footer.astro";
   description="向工商人共享平台投稿，分享你的笔记、经验、资源。"
 >
   <Header />
-  <main id="main-content" class="app-layout py-10">
+  <main id="main-content" class="app-layout">
 
-    <div class="mb-8">
-      <a href="/forbtbuer" class="text-muted-foreground hover:text-foreground text-sm transition-colors">← 返回工商共享</a>
-    </div>
-
-    <div class="border-border mb-10 border-b pb-6">
-      <h1 class="mb-1 text-3xl font-bold">投稿说明</h1>
-      <p class="text-muted-foreground text-sm">发邮件就行，没有固定格式</p>
-    </div>
-
-    <!-- Email -->
-    <div class="border-border mb-10 rounded-xl border p-6">
-      <p class="mb-1 text-sm font-medium">工商大同学专属，优先处理</p>
-      <p class="text-muted-foreground mb-4 text-sm">一般当天回复</p>
-      <a
-        href="mailto:hoooooyea@163.com?subject=工商共享投稿"
-        class="border-border hover:border-foreground text-foreground inline-block rounded-lg border px-5 py-2.5 font-mono text-sm font-medium transition-colors"
-      >
-        hoooooyea@163.com
-      </a>
-      <p class="text-muted-foreground mt-4 text-xs">
-        其他同学发 ejuer_z@163.com 也可以，主题写「工商共享投稿」
+    <!-- Hero -->
+    <section class="border-border border-b py-12">
+      <a href="/forbtbuer" class="text-muted-foreground hover:text-foreground mb-6 inline-block text-sm transition-colors">← 工商人共享</a>
+      <h1 class="mb-3 text-4xl font-bold sm:text-5xl">投稿说明</h1>
+      <p class="text-muted-foreground max-w-sm text-base">
+        发邮件就行，没有格式要求。
       </p>
-    </div>
-
-    <!-- What to share -->
-    <div class="mb-10">
-      <h2 class="mb-4 text-lg font-semibold">可以发什么</h2>
-      <div class="border-border divide-border divide-y rounded-xl border text-sm">
-        {[
-          ["学习笔记 / 课件", "期末笔记、课程总结、重点整理，科目不限"],
-          ["选课 / 考试经验", "哪门课好过，考试有什么坑，实习面试踩过的雷"],
-          ["资源推荐", "好用的网站、工具、书单，任何觉得有价值的东西"],
-          ["自己做的项目", "课设、比赛项目、课外做的小工具，想让更多人看到就发过来"],
-          ["随便写点什么", "实习感悟、校园生活、想对同学说的话"],
-        ].map(([title, desc]) => (
-          <div class="px-5 py-4">
-            <p class="mb-0.5 font-medium">{title}</p>
-            <p class="text-muted-foreground">{desc}</p>
-          </div>
-        ))}
+      <div class="mt-6">
+        <a id="email-fast" href="#" class="bg-foreground text-background hover:opacity-80 rounded-lg px-5 py-2.5 text-sm font-semibold transition-opacity">
+          发邮件
+        </a>
+        <p class="text-muted-foreground mt-3 text-xs">工商大同学发快速通道，优先处理，当天回复</p>
       </div>
-    </div>
+    </section>
 
-    <!-- FAQ -->
-    <div>
-      <h2 class="mb-4 text-lg font-semibold">常见问题</h2>
-      <div class="border-border divide-border divide-y rounded-xl border text-sm">
-        {[
-          ["会署名吗？", "你想署就署，不想就匿名，完全你说了算。"],
-          ["内容会被修改吗？", "只做基本格式整理，内容不动。有问题会先跟你说。"],
-          ["有什么不能发的？", "侵权、隐私、广告这些不行，其他都欢迎。"],
-          ["多久会发布？", "一般 2-3 天内，会回邮件告知。"],
-        ].map(([q, a]) => (
-          <div class="px-5 py-4">
-            <p class="mb-0.5 font-medium">{q}</p>
-            <p class="text-muted-foreground">{a}</p>
-          </div>
-        ))}
+    <!-- Content split -->
+    <section class="border-border grid gap-12 border-b py-12 sm:grid-cols-2">
+
+      <div>
+        <h2 class="mb-5 text-lg font-semibold">可以发什么</h2>
+        <ul class="text-muted-foreground space-y-3 text-sm">
+          {[
+            ["学习笔记 / 课件", "期末笔记、课程总结、重点整理，科目不限"],
+            ["选课 / 考试经验", "哪门课好过，考试有什么坑，实习面试踩过的雷"],
+            ["资源推荐", "好用的网站、工具、书单，觉得值得分享的都行"],
+            ["自己做的项目", "课设、比赛项目、课外小工具"],
+            ["随便写点什么", "实习感悟、校园生活、想对同学说的话"],
+          ].map(([title, desc]) => (
+            <li>
+              <span class="text-foreground font-medium">{title}</span>
+              <span class="mx-2">—</span>
+              {desc}
+            </li>
+          ))}
+        </ul>
       </div>
-    </div>
+
+      <div>
+        <h2 class="mb-5 text-lg font-semibold">常见问题</h2>
+        <div class="space-y-4 text-sm">
+          {[
+            ["会署名吗？", "你想署就署，不想就匿名，完全你说了算。"],
+            ["内容会被修改吗？", "只做基本格式整理，内容不动。有问题会先跟你说。"],
+            ["有什么不能发的？", "侵权、隐私、广告不行，其他都欢迎。"],
+            ["多久会发布？", "一般 2-3 天内，会回邮件告知。"],
+          ].map(([q, a]) => (
+            <div>
+              <p class="text-foreground mb-0.5 font-medium">{q}</p>
+              <p class="text-muted-foreground">{a}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+    </section>
+
+    <!-- Other email -->
+    <section class="py-8">
+      <p class="text-muted-foreground text-sm">
+        非工商大同学也欢迎投稿，发 <a id="email-other" href="#" class="text-foreground underline underline-offset-2"></a> 即可。
+      </p>
+    </section>
 
   </main>
   <Footer />
 </Layout>
+
+<script>
+  const fast = document.getElementById("email-fast");
+  const other = document.getElementById("email-other");
+  const u1 = "hoooooyea", u2 = "ejuer_z", d = "163.com";
+  if (fast) { fast.href = `mailto:${u1}@${d}?subject=工商共享投稿`; }
+  if (other) { other.href = `mailto:${u2}@${d}?subject=工商共享投稿`; other.textContent = `${u2}@${d}`; }
+</script>
