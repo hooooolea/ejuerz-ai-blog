@@ -1,0 +1,123 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "@/layouts/Layout.astro";
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+
+const SECTIONS: Record<string, string> = {
+  "jing-sai": "竞赛经验",
+  "ke-she": "课设项目",
+  "qiu-zhi": "求职实习",
+  "xue-xi-zi-liao": "学习资料",
+  "cai-keng": "踩坑记录",
+  "hao-dong-xi": "好东西",
+  "campus-pets": "校园宠物",
+};
+
+const allPosts = await getCollection("btbuer");
+const searchData = allPosts
+  .filter(p => !p.data.draft)
+  .map(post => {
+    const parts = post.id.split("/");
+    const section = parts[0];
+    const slug = parts[parts.length - 1].replace(/\.(md|mdx)$/, "");
+    return {
+      title: post.data.title,
+      description: post.data.description,
+      author: post.data.author ?? "",
+      section: SECTIONS[section] ?? section,
+      href: `/forbtbuer/${section}/${slug}`,
+    };
+  });
+---
+
+<Layout title="搜索 | 工商人共享" description="搜索工商人共享的所有内容">
+  <Header />
+  <main id="main-content" class="app-layout">
+
+    <section class="border-border border-b py-12">
+      <a href="/forbtbuer/" class="text-muted-foreground hover:text-foreground mb-6 inline-block text-sm transition-colors">← 工商人共享</a>
+      <h1 class="mb-6 text-4xl font-bold sm:text-5xl">搜索</h1>
+      <div class="relative max-w-lg">
+        <input
+          id="search-input"
+          type="text"
+          placeholder="搜索标题、描述、作者……"
+          autocomplete="off"
+          class="border-border bg-background text-foreground placeholder:text-muted-foreground w-full rounded-lg border px-4 py-3 text-sm outline-none focus:border-foreground"
+        />
+      </div>
+    </section>
+
+    <section class="py-8">
+      <p id="search-hint" class="text-muted-foreground text-sm">输入关键词开始搜索</p>
+      <ul id="search-results" class="hidden"></ul>
+      <p id="no-results" class="text-muted-foreground hidden text-sm">没有找到相关内容</p>
+    </section>
+
+  </main>
+  <Footer />
+</Layout>
+
+<script define:vars={{ searchData }}>
+  const input = document.getElementById("search-input");
+  const resultsList = document.getElementById("search-results");
+  const hint = document.getElementById("search-hint");
+  const noResults = document.getElementById("no-results");
+
+  function highlight(text, query) {
+    if (!query) return text;
+    const escaped = query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    return text.replace(new RegExp(`(${escaped})`, "gi"), "<mark class=\"bg-accent/20 text-foreground rounded px-0.5\">$1</mark>");
+  }
+
+  function render(results, query) {
+    hint.classList.add("hidden");
+    if (results.length === 0) {
+      resultsList.classList.add("hidden");
+      noResults.classList.remove("hidden");
+      return;
+    }
+    noResults.classList.add("hidden");
+    resultsList.classList.remove("hidden");
+    resultsList.innerHTML = results.map(r => `
+      <li class="my-6">
+        <a href="${r.href}" class="text-accent inline-block text-lg font-medium decoration-dashed underline-offset-4 hover:underline">
+          ${highlight(r.title, query)}
+        </a>
+        <div class="text-muted-foreground mt-0.5 flex items-center gap-x-2 text-sm">
+          <span>${r.section}</span>
+          ${r.author ? `<span class="before:mr-2 before:content-['·']">${highlight(r.author, query)}</span>` : ""}
+        </div>
+        <p class="text-sm mt-1">${highlight(r.description, query)}</p>
+      </li>
+    `).join("");
+  }
+
+  input?.addEventListener("input", () => {
+    const q = input.value.trim().toLowerCase();
+    if (!q) {
+      hint.classList.remove("hidden");
+      resultsList.classList.add("hidden");
+      noResults.classList.add("hidden");
+      resultsList.innerHTML = "";
+      return;
+    }
+    const results = searchData.filter(r =>
+      r.title.toLowerCase().includes(q) ||
+      r.description.toLowerCase().includes(q) ||
+      r.author.toLowerCase().includes(q) ||
+      r.section.toLowerCase().includes(q)
+    );
+    render(results, q);
+  });
+
+  // Support ?q= in URL
+  const params = new URLSearchParams(window.location.search);
+  const q = params.get("q");
+  if (q && input) {
+    input.value = q;
+    input.dispatchEvent(new Event("input"));
+  }
+  input?.focus();
+</script>
