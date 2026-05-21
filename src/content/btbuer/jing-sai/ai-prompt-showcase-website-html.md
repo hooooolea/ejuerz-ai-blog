@@ -13,7 +13,7 @@ author: ejuer
 featured: false
 ---
 
-[怎么把网站拖上 Cloudflare Pages](/posts/deploy-site-cloudflare-pages-free/)说过了，这篇说怎么让大模型生成代码。
+[怎么把网站拖上 Cloudflare Pages](/forbtbuer/jing-sai/deploy-site-cloudflare-pages-free)说过了，这篇说怎么让大模型生成代码。
 
 大模型直接写会出 React/Vue，上传不了。加一句「纯 HTML + CSS + JS」就行。
 
@@ -37,6 +37,6 @@ featured: false
 
 ## 用法
 
-方括号换成你的，发给大模型。输出保存成 `index.html`，拖到 [Cloudflare Pages](/posts/deploy-site-cloudflare-pages-free/) 上传框。
+方括号换成你的，发给大模型。输出保存成 `index.html`，拖到 [Cloudflare Pages](/forbtbuer/jing-sai/deploy-site-cloudflare-pages-free) 上传框。
 
 不满意继续在对话里说，大模型会帮你改。
