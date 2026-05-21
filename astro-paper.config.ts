@@ -3,9 +3,9 @@ import { defineAstroPaperConfig } from "./src/types/config";
 export default defineAstroPaperConfig({
   site: {
     url: "https://ejuerz.com/",
-    title: "AI Toolkit Guide",
-    description: "Practical guides, tutorials, and honest comparisons for the best AI tools — written for real people, not developers.",
-    author: "AI Toolkit Guide",
+    title: "工商人共享",
+    description: "工商大同学的内容共享平台——笔记、经验、资源，由同学写给同学。",
+    author: "工商人共享",
     profile: "",
     ogImage: "default-og.jpg",
     lang: "en",
