@@ -1,0 +1,86 @@
+---
+import { getCollection, render } from "astro:content";
+import Layout from "@/layouts/Layout.astro";
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+import Datetime from "@/components/Datetime.astro";
+import config from "@/config";
+
+const SECTIONS: Record<string, string> = {
+  "jing-sai": "竞赛经验",
+  "ke-she": "课设项目",
+  "qiu-zhi": "求职实习",
+  "gong-ju": "工具技巧",
+  "cai-keng": "踩坑记录",
+  "campus-pets": "校园宠物",
+};
+
+export async function getStaticPaths() {
+  const allPosts = await getCollection("btbuer");
+  return allPosts
+    .filter(p => !p.data.draft)
+    .map(post => {
+      const parts = post.id.split("/");
+      const section = parts[0];
+      const slug = parts[parts.length - 1].replace(/\.(md|mdx)$/, "");
+      return {
+        params: { section, slug },
+        props: { post },
+      };
+    });
+}
+
+const { section, slug } = Astro.params;
+const { post } = Astro.props;
+const { title, description, pubDatetime, modDatetime, timezone, author } = post.data;
+const { Content } = await render(post);
+
+const sectionLabel = SECTIONS[section] ?? section;
+---
+
+<Layout title={`${title} | 工商人共享`} description={description}>
+  <Header />
+  <main id="main-content" class="app-layout mt-8">
+
+    <a
+      href={`/forbtbuer/${section}`}
+      class="text-muted-foreground hover:text-foreground mb-6 inline-block text-sm transition-colors"
+    >
+      ← {sectionLabel}
+    </a>
+
+    <h1 class="text-accent inline-block text-2xl font-bold sm:text-3xl">
+      {title}
+    </h1>
+
+    <div class="my-2 flex items-center gap-x-3">
+      <Datetime {pubDatetime} {modDatetime} {timezone} size="lg" />
+      {author && (
+        <span class="text-muted-foreground text-sm before:mr-3 before:content-['·']">
+          {author}
+        </span>
+      )}
+    </div>
+
+    <article
+      class:list={[
+        "mt-8 w-full",
+        "app-prose max-w-app",
+        "prose-pre:bg-(--shiki-light-bg) dark:prose-pre:bg-(--shiki-dark-bg)",
+      ]}
+    >
+      <Content />
+    </article>
+
+    <hr class="my-8 border-dashed" />
+
+    <a
+      href={`/forbtbuer/${section}`}
+      class="text-muted-foreground hover:text-foreground text-sm transition-colors"
+    >
+      ← 返回{sectionLabel}
+    </a>
+
+  </main>
+  <Footer />
+</Layout>

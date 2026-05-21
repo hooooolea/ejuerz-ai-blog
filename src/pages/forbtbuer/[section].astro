@@ -57,9 +57,11 @@ const sectionPosts = btbuerPosts
     <section class="py-10">
       {sectionPosts.length > 0 ? (
         <ul>
-          {sectionPosts.map(post => (
-            <Card variant="h3" {...(post as any)} />
-          ))}
+          {sectionPosts.map(post => {
+            const slug = post.id.split("/").pop();
+            const href = `/forbtbuer/${section}/${slug}`;
+            return <Card variant="h3" href={href} {...(post as any)} />;
+          })}
         </ul>
       ) : (
         <div class="py-20 text-center">
