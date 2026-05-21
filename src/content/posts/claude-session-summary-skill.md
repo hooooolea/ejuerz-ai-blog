@@ -17,7 +17,7 @@ There's a straightforward fix. It's a "skill" — a short instruction file that 
 ## Getting Started
 
 1. **Download the skill file**: [session-summary-skill.md](/downloads/session-summary-skill.md)
-2. **Add it to your Claude setup** (Claude Code users: drop it in your `.claude/skills/` folder; otherwise keep it handy to paste or reference)
+2. **Install it** — see [how to install skills in Claude Code or Hermes](/posts/how-to-install-ai-agent-skills/)
 3. **At the end of any complex session**, say: "Summarize the session and write `.session_summary.md`"
 4. **Next session**: "Read `.session_summary.md` and resume from where we left off"
 
