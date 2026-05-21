@@ -1,0 +1,79 @@
+---
+import { getCollection } from "astro:content";
+import { getSortedPosts } from "@/utils/getSortedPosts";
+import Layout from "@/layouts/Layout.astro";
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+import Card from "@/components/Card.astro";
+
+const SECTIONS = [
+  { id: "jing-sai", label: "竞赛经验", desc: "比赛项目、参赛经验、获奖技巧" },
+  { id: "ke-she", label: "课设项目", desc: "课程设计、大作业、学期项目" },
+  { id: "qiu-zhi", label: "求职实习", desc: "面试经验、实习心得、简历技巧" },
+  { id: "gong-ju", label: "工具技巧", desc: "效率工具、使用技巧、软件推荐" },
+  { id: "cai-keng", label: "踩坑记录", desc: "避坑指南、错误排查、经验教训" },
+];
+
+const SECTION_MAP = Object.fromEntries(SECTIONS.map(s => [s.id, s]));
+
+const { section } = Astro.params;
+const sectionInfo = section ? SECTION_MAP[section] : null;
+
+if (!sectionInfo) {
+  return Astro.redirect("/forbtbuer/");
+}
+
+const allPosts = await getCollection("posts");
+const btbuerPosts = getSortedPosts(allPosts).filter(p =>
+  p.data.tags?.includes("btbuer")
+);
+const sectionPosts = btbuerPosts.filter(p =>
+  p.data.tags?.includes(sectionInfo.label)
+);
+---
+
+<Layout
+  title={`${sectionInfo.label} | 工商人共享`}
+  description={`${sectionInfo.desc}——同学写给同学。`}
+>
+  <Header />
+  <main id="main-content" class="app-layout">
+
+    <!-- Hero -->
+    <section class="border-border border-b py-12">
+      <a href="/forbtbuer/" class="text-muted-foreground hover:text-foreground mb-6 inline-block text-sm transition-colors">← 工商人共享</a>
+      <h1 class="mb-3 text-4xl font-bold sm:text-5xl">{sectionInfo.label}</h1>
+      <p class="text-muted-foreground max-w-md text-base">{sectionInfo.desc}</p>
+    </section>
+
+    <!-- Articles -->
+    <section class="py-10">
+      {sectionPosts.length > 0 ? (
+        <ul>
+          {sectionPosts.map(post => (
+            <Card variant="h3" {...post} />
+          ))}
+        </ul>
+      ) : (
+        <div class="py-20 text-center">
+          <p class="text-muted-foreground text-sm">这个板块还没有内容</p>
+          <a href="/btbuer-submit" class="text-foreground mt-2 inline-block text-sm underline underline-offset-4">
+            成为第一个投稿的同学
+          </a>
+        </div>
+      )}
+    </section>
+
+  </main>
+  <Footer />
+</Layout>
+
+<script>
+  document.addEventListener("astro:page-load", () => {
+    const main = document.querySelector("#main-content");
+    if (main) {
+      main.setAttribute("data-backurl", `/forbtbuer/${section}`);
+      sessionStorage.setItem("backUrl", `/forbtbuer/${section}`);
+    }
+  });
+</script>

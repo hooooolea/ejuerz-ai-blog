@@ -1,38 +1,15 @@
 ---
-import { getCollection } from "astro:content";
-import { getSortedPosts } from "@/utils/getSortedPosts";
 import Layout from "@/layouts/Layout.astro";
 import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
-import Card from "@/components/Card.astro";
 
 const SECTIONS = [
-  { id: "jing sai", label: "竞赛经验" },
-  { id: "ke she", label: "课设项目" },
-  { id: "qiu zhi", label: "求职实习" },
-  { id: "gong ju", label: "工具技巧" },
-  { id: "cai keng", label: "踩坑记录" },
+  { id: "jing-sai", label: "竞赛经验", desc: "比赛项目、参赛经验、获奖技巧" },
+  { id: "ke-she", label: "课设项目", desc: "课程设计、大作业、学期项目" },
+  { id: "qiu-zhi", label: "求职实习", desc: "面试经验、实习心得、简历技巧" },
+  { id: "gong-ju", label: "工具技巧", desc: "效率工具、使用技巧、软件推荐" },
+  { id: "cai-keng", label: "踩坑记录", desc: "避坑指南、错误排查、经验教训" },
 ];
-
-const SECTION_TAG_MAP: Record<string, string> = {
-  "竞赛经验": "jing sai",
-  "课设项目": "ke she",
-  "求职实习": "qiu zhi",
-  "工具技巧": "gong ju",
-  "踩坑记录": "cai keng",
-};
-
-const allPosts = await getCollection("posts");
-const btbuerPosts = getSortedPosts(allPosts).filter(p =>
-  p.data.tags?.includes("btbuer")
-);
-
-// Group posts by section
-const sectionPosts = SECTIONS.map(({ id, label }) => ({
-  id,
-  label,
-  posts: btbuerPosts.filter(p => p.data.tags?.includes(label)),
-})).filter(s => s.posts.length > 0);
 ---
 
 <Layout
@@ -62,40 +39,19 @@ const sectionPosts = SECTIONS.map(({ id, label }) => ({
       </div>
     </section>
 
-    <!-- Section Nav -->
-    {sectionPosts.length > 0 && (
-      <nav class="border-border sticky top-0 z-10 border-b bg-background/95 backdrop-blur py-3">
-        <div class="flex gap-4 overflow-x-auto text-sm scrollbar-hide">
-          {sectionPosts.map(({ id, label }) => (
-            <a href={`#${id}`} class="whitespace-nowrap text-muted-foreground hover:text-foreground transition-colors">
-              {label}
-            </a>
-          ))}
-        </div>
-      </nav>
-    )}
-
-    <!-- Sections with Posts -->
+    <!-- Section Cards -->
     <section class="py-10">
-      {sectionPosts.length > 0 ? (
-        sectionPosts.map(({ id, label, posts }) => (
-          <div id={id} class="mb-12 scroll-mt-24">
-            <h2 class="mb-6 text-xl font-semibold">{label}</h2>
-            <ul>
-              {posts.map(post => (
-                <Card variant="h3" {...post} />
-              ))}
-            </ul>
-          </div>
-        ))
-      ) : (
-        <div class="py-20 text-center">
-          <p class="text-muted-foreground text-sm">还没有内容 — 成为第一个投稿的同学</p>
-          <a href="/btbuer-submit" class="text-foreground mt-2 inline-block text-sm underline underline-offset-4">
-            查看投稿说明
+      <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {SECTIONS.map(({ id, label, desc }) => (
+          <a
+            href={`/forbtbuer/${id}`}
+            class="border-border group flex flex-col gap-2 rounded-lg border p-5 transition-colors hover:border-foreground"
+          >
+            <h2 class="text-lg font-semibold group-hover:underline">{label}</h2>
+            <p class="text-muted-foreground text-sm">{desc}</p>
           </a>
-        </div>
-      )}
+        ))}
+      </div>
     </section>
 
   </main>
