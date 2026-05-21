@@ -43,12 +43,15 @@ Create a `.session_summary.md` file in the project's root directory. For example
 ---
 
 ## Project Overview
+
 [2-3 sentences: what this project is, its purpose, tech stack]
 
 ## Current Active Work
+
 [What is currently in progress RIGHT NOW — exact file, line, job ID, state]
 
 ## Goal
+
 [The specific goal this session was working toward]
 
 ## Completed Actions (Chronological)
@@ -62,45 +65,54 @@ Create a `.session_summary.md` file in the project's root directory. For example
    ...
 
 ## Current State
+
 [Exactly where work stopped — job ID, line number, progress %, etc.]
 
 ## Key Files Modified
-| File | Purpose | Last Modified |
-|------|---------|---------------|
-| `/path/a.py` | What it does | YYYY-MM-DD |
-| `/path/b.js` | What it does | YYYY-MM-DD |
+
+| File         | Purpose      | Last Modified |
+| ------------ | ------------ | ------------- |
+| `/path/a.py` | What it does | YYYY-MM-DD    |
+| `/path/b.js` | What it does | YYYY-MM-DD    |
 
 ## Known Issues / Blockers
+
 - **[Issue name]**: [description], [status/attempted fix]
 - ...
 
 ## Next Steps (Priority Order)
+
 1. [Next immediate action — exact command or file]
 2. [Next action]
 3. ...
 
 ## Critical Context
+
 - Service running: [PID, port, status]
 - API keys: [REDACTED — never expose actual keys]
 - Restart command: [exact command to bring service back up]
 - Backup files: [/path/to/backup, description]
 
 ## Environment & Config
+
 - [Key environment variables required (values REDACTED)]
 - [Any non-obvious setup steps: e.g., "must run `source .env` first"]
 - [Ports used by this project]
 
 ## Git / Version Control
+
 - [What branch we're on]
 - [Uncommitted changes, if any]
 - [Push rules: what can be pushed vs. what must stay local]
 - E.g. "Never push `.env` or any file containing credentials"
 
 ## Resolved in This Session
+
 - [Bug/issue]: root cause → fix applied
 - ...
 
 ## User Preferences & Conventions
+
 - [Any preferences learned during the session]
 - [E.g. "User prefers to run git commands themselves"]
 - [E.g. "User wants brief responses, no bullet walls"]
