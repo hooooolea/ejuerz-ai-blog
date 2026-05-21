@@ -3,8 +3,6 @@ import { getCollection } from "astro:content";
 import Layout from "@/layouts/Layout.astro";
 import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
-import Card from "@/components/Card.astro";
-
 export function getStaticPaths() {
   const SECTIONS = [
     { id: "jing-sai", label: "竞赛经验", desc: "比赛项目、参赛经验、获奖技巧" },
@@ -92,7 +90,30 @@ const sectionPosts = btbuerPosts
                 </li>
               );
             }
-            return <Card variant="h3" href={href} {...(post as any)} />;
+            return (
+              <li class="my-6">
+                <a href={href} class="block">
+                  <h3 class="text-accent text-lg font-medium hover:underline underline-offset-4">
+                    {post.data.title}
+                  </h3>
+                  <div class="flex items-center gap-x-3">
+                    <span class="text-muted-foreground text-sm">
+                      {new Date(post.data.pubDatetime).toLocaleDateString("en-US", {
+                        month: "short",
+                        day: "numeric",
+                        year: "numeric",
+                      })}
+                    </span>
+                    {post.data.author && (
+                      <span class="text-muted-foreground text-sm before:mr-3 before:content-['·']">
+                        {post.data.author}
+                      </span>
+                    )}
+                  </div>
+                  <p>{post.data.description}</p>
+                </a>
+              </li>
+            );
           })}
         </ul>
       ) : (
