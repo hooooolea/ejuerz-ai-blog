@@ -1,6 +1,6 @@
 ---
 title: "让 AI 帮你做一个可以直接上传的展示网站"
-description: "让 ChatGPT 或 Claude 帮你生成网站代码，但要在提示词里说清楚用纯 HTML/CSS，不然它会生成 React，你就没法直接拖到 Cloudflare 上了。"
+description: "让大模型帮你生成网站代码，但要在提示词里说清楚用纯 HTML/CSS，不然它会生成 React，你就没法直接拖到 Cloudflare 上了。"
 pubDatetime: 2026-05-20T10:00:00Z
 tags:
   - 教程
@@ -109,7 +109,7 @@ featured: false
 
 ## 用法
 
-把模板贴到 ChatGPT 或 Claude，把方括号内容换成你的，发送。
+把模板贴到大模型，把方括号内容换成你的，发送。
 
 **单文件**：AI 输出的代码保存成 `index.html`，直接拖到 Cloudflare Pages 上传框。
 
