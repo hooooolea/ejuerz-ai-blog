@@ -15,6 +15,20 @@ I also run a [GitHub Trending](/trending) section that tracks what's gaining mom
 
 ---
 
+## Write for Us
+
+Got something worth sharing about AI tools, open source, or developer productivity? Guest posts are welcome.
+
+Send your draft or pitch to **[ejuer_z@163.com](mailto:ejuer_z@163.com)** with the subject line `Guest Post`. A few things that help:
+
+- A working title and a short summary (2–3 sentences)
+- Practical, experience-based content — tutorials, comparisons, or honest reviews
+- Original work not published elsewhere
+
+I'll get back to you as soon as I can.
+
+---
+
 ## Get in touch
 
 Have a question, suggestion, or just want to say hi?
