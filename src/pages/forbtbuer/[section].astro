@@ -14,14 +14,16 @@ const SECTIONS = [
   { id: "cai-keng", label: "踩坑记录", desc: "避坑指南、错误排查、经验教训" },
 ];
 
-const SECTION_MAP = Object.fromEntries(SECTIONS.map(s => [s.id, s]));
+export function getStaticPaths() {
+  return SECTIONS.map(({ id, label, desc }) => ({
+    params: { section: id },
+    props: { label, desc },
+  }));
+}
 
 const { section } = Astro.params;
-const sectionInfo = section ? SECTION_MAP[section] : null;
-
-if (!sectionInfo) {
-  return Astro.redirect("/forbtbuer/");
-}
+const { label, desc } = Astro.props;
+const sectionInfo = { label, desc };
 
 const allPosts = await getCollection("posts");
 const btbuerPosts = getSortedPosts(allPosts).filter(p =>
