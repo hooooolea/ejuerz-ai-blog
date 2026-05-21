@@ -24,11 +24,11 @@ const activeSections = SECTIONS.filter(({ id }) =>
   title="工商人共享"
   description="工商大同学的内容共享平台——笔记、经验、资源，由同学写给同学。"
 >
-  <Header />
+  <Header dividerBorderClass="border-black dark:border-border" />
   <main id="main-content" class="app-layout">
 
     <!-- Hero -->
-    <section class="border-border border-b py-12">
+    <section class="border-b border-black py-12 dark:border-border">
       <p class="text-muted-foreground mb-2 text-sm font-medium tracking-widest uppercase">For BTBU</p>
       <h1 class="mb-3 text-4xl font-bold sm:text-5xl">工商人共享</h1>
       <div class="flex items-center gap-3">
@@ -64,7 +64,7 @@ const activeSections = SECTIONS.filter(({ id }) =>
         {activeSections.map(({ id, label, desc }) => (
           <a
             href={`/forbtbuer/${id}`}
-            class="border-border group flex flex-col gap-2 rounded-lg border p-5 transition-all hover:border-foreground active:bg-foreground/5 active:scale-[0.98]"
+            class="group flex flex-col gap-2 rounded-lg border border-black bg-white p-5 transition-all hover:border-foreground active:bg-foreground/5 active:scale-[0.98] dark:border-border dark:bg-transparent"
           >
             <h2 class="text-lg font-semibold group-hover:underline">{label}</h2>
             <p class="text-muted-foreground text-sm">{desc}</p>
@@ -74,7 +74,7 @@ const activeSections = SECTIONS.filter(({ id }) =>
     </section>
 
   </main>
-  <Footer />
+  <Footer dividerBorderClass="border-black dark:border-border" />
 </Layout>
 
 <script>

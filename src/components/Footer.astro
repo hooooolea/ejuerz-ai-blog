@@ -5,9 +5,15 @@ import { useTranslations } from "@/i18n";
 
 type Props = {
   noMarginTop?: boolean;
+  dividerBorderClass?: string;
 } & HTMLAttributes<"footer">;
 
-const { noMarginTop = false, class: className, ...attrs } = Astro.props;
+const {
+  noMarginTop = false,
+  dividerBorderClass = "border-border",
+  class: className,
+  ...attrs
+} = Astro.props;
 
 const t = useTranslations(Astro.currentLocale);
 const currentYear = new Date().getFullYear();
@@ -18,7 +24,7 @@ const currentYear = new Date().getFullYear();
   {...attrs}
 >
   <div
-    class="border-border flex flex-col items-center justify-between border-t py-6 sm:flex-row-reverse sm:py-4"
+    class:list={["border-t", dividerBorderClass, "flex flex-col items-center justify-between py-6 sm:flex-row-reverse sm:py-4"]}
   >
     <Socials />
     <div class="my-2 flex flex-col items-center whitespace-nowrap sm:flex-row">
