@@ -1,6 +1,6 @@
 ---
-title: "How to Install Custom Skills in Claude Code and Hermes Agent"
-description: "A skill file does nothing sitting in your Downloads folder. Here's the exact steps to install one in Claude Code or Hermes so it actually works."
+title: "How to Install Custom Skills in Your AI Agent"
+description: "A skill file does nothing sitting in your Downloads folder. Here's the exact steps to install one in Claude Code, Hermes, or any compatible agent so it actually works."
 pubDatetime: 2026-05-20T12:00:00Z
 tags:
   - claude

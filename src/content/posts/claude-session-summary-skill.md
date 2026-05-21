@@ -1,6 +1,6 @@
 ---
 title: "Never Lose Progress Again: A Session Summary Skill for AI Agents"
-description: "Long AI sessions degrade in quality — not just when context fills up, but well before that. Here's a simple skill that checkpoints everything into one file so any new session can resume instantly, regardless of which model or agent you're using."
+description: "Long AI agent sessions degrade in quality well before hitting the context limit. This skill file checkpoints everything into one file so any new session resumes instantly — works with Claude Code, Hermes, Cursor, and any agent that supports SKILL.md."
 pubDatetime: 2026-05-20T10:00:00Z
 tags:
   - claude
@@ -10,7 +10,7 @@ tags:
 featured: true
 ---
 
-If you've used any AI agent — Claude Code, Hermes, Cursor, or similar tools — for a complex or multi-step project, you've probably noticed this: somewhere in the middle of a long session, things start going sideways. The model misses something it knew earlier. It repeats a fix you already tried. The responses feel less sharp. And when you eventually start a new session, you're back to explaining everything from scratch.
+If you've used any AI agent for a complex or multi-step project, you've probably noticed this: somewhere in the middle of a long session, things start going sideways. The agent misses something it knew earlier. It repeats a fix you already tried. The responses feel less sharp. And when you eventually start a new session, you're back to explaining everything from scratch.
 
 There's a straightforward fix. It's a "skill" — a short instruction file that tells the agent exactly how to create a structured session summary before you close out. The next time you open any agent, you hand it that summary file and pick up exactly where you left off. No re-explaining, no lost context.
 
@@ -55,11 +55,11 @@ Then, next session:
 
 > "Read `.session_summary.md` and resume from where we left off."
 
-That one line is all it takes. Claude reads the file and has everything it needs.
+That one line is all it takes. The agent reads the file and has everything it needs.
 
 ## The Skill File
 
-A Claude "skill" is a Markdown file with a YAML header that defines the skill's name, description, and triggers. You can add it to your Claude setup so that Claude knows to generate a properly structured summary whenever you ask.
+A "skill" is a Markdown file with a YAML header that defines the skill's name, description, and triggers. Most modern AI agents — Claude Code, Hermes, Cursor — support this format. You add it once, and the agent knows to generate a properly structured summary whenever you ask.
 
 Here's what triggers it:
 
