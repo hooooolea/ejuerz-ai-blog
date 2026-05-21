@@ -64,7 +64,7 @@ const btbuerPosts = getSortedPosts(allPosts).filter(p =>
 <script>
   const u = "hoooooyea";
   const d = "163.com";
-  const el = document.getElementById("email-link");
+  const el = document.getElementById("email-link") as HTMLAnchorElement | null;
   if (el) {
     el.href = `mailto:${u}@${d}?subject=工商共享投稿`;
     el.textContent = `${u}@${d}`;

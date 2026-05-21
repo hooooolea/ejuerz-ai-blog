@@ -79,8 +79,8 @@ import Footer from "@/components/Footer.astro";
 </Layout>
 
 <script>
-  const fast = document.getElementById("email-fast");
-  const other = document.getElementById("email-other");
+  const fast = document.getElementById("email-fast") as HTMLAnchorElement | null;
+  const other = document.getElementById("email-other") as HTMLAnchorElement | null;
   const u1 = "hoooooyea", u2 = "ejuer_z", d = "163.com";
   if (fast) { fast.href = `mailto:${u1}@${d}?subject=工商共享投稿`; }
   if (other) { other.href = `mailto:${u2}@${d}?subject=工商共享投稿`; other.textContent = `${u2}@${d}`; }
