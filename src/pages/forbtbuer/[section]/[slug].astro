@@ -4,8 +4,6 @@ import Layout from "@/layouts/Layout.astro";
 import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
 import Datetime from "@/components/Datetime.astro";
-import config from "@/config";
-
 const SECTIONS: Record<string, string> = {
   "jing-sai": "竞赛经验",
   "ke-she": "课设项目",
@@ -30,7 +28,7 @@ export async function getStaticPaths() {
     });
 }
 
-const { section, slug } = Astro.params;
+const { section } = Astro.params;
 const { post } = Astro.props;
 const { title, description, pubDatetime, modDatetime, timezone, author } = post.data;
 const { Content } = await render(post);
