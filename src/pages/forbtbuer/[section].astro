@@ -27,7 +27,7 @@ const sectionInfo = { label, desc };
 const btbuerPosts = await getCollection("btbuer");
 const sortedPosts = getSortedPosts(btbuerPosts);
 const sectionPosts = sortedPosts.filter(p =>
-  p.data.tags?.includes(sectionInfo.label)
+  p.id.startsWith(`${section}/`)
 );
 ---
 
