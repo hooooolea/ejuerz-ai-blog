@@ -3,7 +3,7 @@ title: "01号 · 长毛虎斑"
 description: "校园里最有气场的猫。走路带风，眼神凌厉。"
 pubDatetime: 2026-05-20T08:00:00Z
 author: ejuer
-cover: "/pets/01/01-1.jpg"
+cover: "/pets/01/01-2.jpg"
 tags:
   - campus-pets
   - 校园宠物
