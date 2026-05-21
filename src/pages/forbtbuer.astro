@@ -48,13 +48,6 @@ const SECTIONS = [
             href={`/forbtbuer/${id}`}
             class="border-border group flex flex-col gap-2 rounded-lg border p-5 transition-all hover:border-foreground active:bg-foreground/5 active:scale-[0.98]"
           >
-            {id === "campus-pets" && (
-              <img
-                src="/pets/01/01-1.jpg"
-                alt="校园宠物"
-                style="width:64px;height:64px;border-radius:8px;object-fit:cover;margin-bottom:4px;"
-              />
-            )}
             <h2 class="text-lg font-semibold group-hover:underline">{label}</h2>
             <p class="text-muted-foreground text-sm">{desc}</p>
           </a>
