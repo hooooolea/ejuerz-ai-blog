@@ -3,6 +3,7 @@ title: "02号 · 橘猫"
 description: "阜成路校区的橘猫学长，端坐如佛，眼神沧桑。"
 pubDatetime: 2026-05-21T09:00:00Z
 author: 裂开看到奶油的泡芙
+cover: "/pets/02/02-1.jpg"
 tags:
   - campus-pets
   - 校园宠物
