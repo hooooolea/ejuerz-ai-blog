@@ -30,11 +30,11 @@ const SECTIONS = [
       <div class="mt-6 flex items-center gap-4">
         <a
           href="/btbuer-submit"
-          class="bg-foreground text-background hover:opacity-80 rounded-lg px-5 py-2.5 text-sm font-semibold transition-opacity"
+          class="bg-foreground text-background hover:opacity-80 active:opacity-60 active:scale-95 rounded-lg px-5 py-2.5 text-sm font-semibold transition-all"
         >
           投稿说明
         </a>
-        <a id="email-link" href="#" class="text-muted-foreground hover:text-foreground text-sm transition-colors">
+        <a id="email-link" href="#" class="text-muted-foreground hover:text-foreground active:opacity-50 text-sm transition-all">
           发邮件
         </a>
       </div>
@@ -46,7 +46,7 @@ const SECTIONS = [
         {SECTIONS.map(({ id, label, desc }) => (
           <a
             href={`/forbtbuer/${id}`}
-            class="border-border group flex flex-col gap-2 rounded-lg border p-5 transition-colors hover:border-foreground"
+            class="border-border group flex flex-col gap-2 rounded-lg border p-5 transition-all hover:border-foreground active:bg-foreground/5 active:scale-[0.98]"
           >
             <h2 class="text-lg font-semibold group-hover:underline">{label}</h2>
             <p class="text-muted-foreground text-sm">{desc}</p>
