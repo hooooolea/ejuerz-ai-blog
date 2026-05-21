@@ -1,6 +1,6 @@
 ---
 title: "有机化学（上册）"
-description: "2022 年春季学期期末试题，含答案。"
+description: "2022 年春季学期期末试题。"
 pubDatetime: 2026-05-21T08:00:00Z
 author: ejuer
 tags:
