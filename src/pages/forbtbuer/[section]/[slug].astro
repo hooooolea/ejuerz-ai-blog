@@ -25,8 +25,9 @@ export async function getStaticPaths() {
     const slug = parts[parts.length - 1].replace(/\.(md|mdx)$/, "");
 
     // Adjacent posts within the same section, sorted by date
+    // Posts with a parent field are sub-posts and excluded from prev/next navigation
     const sectionPosts = filtered
-      .filter(p => p.id.startsWith(`${section}/`))
+      .filter(p => p.id.startsWith(`${section}/`) && !p.data.parent)
       .sort((a, b) =>
         new Date(a.data.pubDatetime).getTime() -
         new Date(b.data.pubDatetime).getTime()
