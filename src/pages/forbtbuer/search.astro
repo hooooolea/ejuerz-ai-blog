@@ -88,12 +88,11 @@ const searchData = allPosts
 
     hint.classList.add("hidden");
 
-    const matched = searchData.filter(r =>
-      r.title.toLowerCase().includes(q) ||
-      r.description.toLowerCase().includes(q) ||
-      r.author.toLowerCase().includes(q) ||
-      r.section.toLowerCase().includes(q)
-    );
+    const terms = q.split(/\s+/).filter(Boolean);
+    const matched = searchData.filter(r => {
+      const hay = [r.title, r.description, r.author, r.section].join(" ").toLowerCase();
+      return terms.every(t => hay.includes(t));
+    });
 
     if (matched.length === 0) {
       noResults.classList.remove("hidden");

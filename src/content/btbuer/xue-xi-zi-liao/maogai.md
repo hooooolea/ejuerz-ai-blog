@@ -1,6 +1,6 @@
 ---
 title: "毛泽东思想和中国特色社会主义理论体系概论"
-description: "历年期末真题，含 2019、2021 年试卷。"
+description: "毛概历年期末真题，含 2019、2021 年试卷。"
 pubDatetime: 2026-05-21T08:00:00Z
 author: ejuer
 tags:
