@@ -8,6 +8,7 @@ tags:
   - 真题
   - 期末
 featured: false
+draft: true
 ---
 
 - [2019-2020-2 统计学 A 卷](/resources/tongji/1_2019-2020-2 学期 统计学A卷0622.pdf)

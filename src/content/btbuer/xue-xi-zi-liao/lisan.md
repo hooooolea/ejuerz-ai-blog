@@ -8,6 +8,7 @@ tags:
   - 真题
   - 期末
 featured: false
+draft: true
 ---
 
 - [2022-2023-1 离散数学 A（计科）](/resources/lisan/2022-2023-1离散数学A计科.pdf)

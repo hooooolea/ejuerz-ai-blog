@@ -8,6 +8,7 @@ tags:
   - 真题
   - 期末
 featured: false
+draft: true
 ---
 
 - [2024 秋线性代数总复习](/resources/xianxingdaishu/！2024秋线性代数总复习.pdf)

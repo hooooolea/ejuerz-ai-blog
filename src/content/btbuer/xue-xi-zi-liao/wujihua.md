@@ -8,6 +8,7 @@ tags:
   - 真题
   - 期末
 featured: false
+draft: true
 ---
 
 - [2022 无机与分析化学试卷 A](/resources/wujihua/1_无机与分析化学-试卷A-2022.pdf)

@@ -8,6 +8,7 @@ tags:
   - 真题
   - 期末
 featured: false
+draft: true
 ---
 
 - [2021-2022 第二学期管理学试卷 A](/resources/guanlixue/2021-2022第二学期《管理学》试卷A.pdf)

@@ -8,6 +8,7 @@ tags:
   - 真题
   - 期末
 featured: false
+draft: true
 ---
 
 - [2022 价格理论与应用期末 A 卷](/resources/jiage-lilun/2022年价格理论与应用试卷A(1).pdf)
