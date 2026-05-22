@@ -92,6 +92,10 @@ const sectionPosts = btbuerPosts
                 </li>
               );
             }
+            if (section === "hao-dong-xi") {
+              const postData = { ...post.data, author: "" };
+              return <Card variant="h3" href={href} {...(post as any)} data={postData} />;
+            }
             return <Card variant="h3" href={href} {...(post as any)} />;
           })}
         </ul>
