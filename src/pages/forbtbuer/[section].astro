@@ -27,7 +27,7 @@ const sectionInfo = { label, desc };
 
 const btbuerPosts = await getCollection("btbuer");
 const sectionPosts = btbuerPosts
-  .filter(p => p.id.startsWith(`${section}/`))
+  .filter(p => p.id.startsWith(`${section}/`) && !p.data.parent)
   .sort(
     (a, b) =>
       Math.floor(
