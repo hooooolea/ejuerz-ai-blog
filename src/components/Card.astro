@@ -21,6 +21,7 @@ const { title, description, ...props } = data;
       "text-accent inline-block text-lg font-medium",
       "decoration-dashed underline-offset-4 hover:underline",
       "focus-visible:no-underline focus-visible:underline-offset-0",
+      "active:opacity-60 transition-opacity",
     ]}
   >
     <Heading transition:name={slugifyStr(title.replaceAll(".", "-"))}>

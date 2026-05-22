@@ -99,14 +99,14 @@ const sectionLabel = SECTIONS[section] ?? section;
     <nav class="flex justify-between gap-4 text-sm">
       <div>
         {prevPost && (
-          <a href={prevPost.href} class="text-muted-foreground hover:text-foreground transition-colors">
+          <a href={prevPost.href} class="text-muted-foreground hover:text-foreground active:opacity-50 transition-all">
             ← {prevPost.title}
           </a>
         )}
       </div>
       <div class="text-right">
         {nextPost && (
-          <a href={nextPost.href} class="text-muted-foreground hover:text-foreground transition-colors">
+          <a href={nextPost.href} class="text-muted-foreground hover:text-foreground active:opacity-50 transition-all">
             {nextPost.title} →
           </a>
         )}
@@ -116,3 +116,9 @@ const sectionLabel = SECTIONS[section] ?? section;
   </main>
   <Footer />
 </Layout>
+
+<style is:global>
+  .app-prose a:active {
+    opacity: 0.55;
+  }
+</style>

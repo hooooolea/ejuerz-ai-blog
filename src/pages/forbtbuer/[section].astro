@@ -64,7 +64,7 @@ const sectionPosts = btbuerPosts
             if (section === "campus-pets") {
               return (
                 <li class="my-6">
-                  <a href={href} class="flex gap-4 items-start">
+                  <a href={href} class="flex gap-4 items-start active:opacity-60 transition-opacity">
                     {post.data.cover && (
                       <img
                         src={post.data.cover}
