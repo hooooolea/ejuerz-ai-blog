@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
 import BtbuLogo from "./BtbuLogo.vue";
+import SubmitDialog from "./SubmitDialog.vue";
 
 const isMenuOpen = ref(false);
 
@@ -27,6 +28,8 @@ onMounted(() => {
       </a>
 
       <div class="flex shrink-0 items-center gap-1">
+        <SubmitDialog />
+
         <button
           id="theme-btn"
           type="button"

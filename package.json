@@ -7,8 +7,9 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "astro check && astro build && pagefind --site dist && cp -r dist/pagefind public/",
-    "build:ci": "astro build && pagefind --site dist && cp -r dist/pagefind public/",
+    "build": "astro check && astro build && pagefind --site dist && shx cp -r dist/pagefind public/",
+    "build:ci": "astro build && pagefind --site dist && shx cp -r dist/pagefind public/",
+    "deploy:test": "astro build && pagefind --site dist && wrangler pages deploy dist --project-name=uninverse-talking-test --branch=dev1 --commit-dirty=true",
     "preview": "astro preview",
     "sync": "astro sync",
     "astro": "astro",
@@ -21,6 +22,7 @@
     "@astrojs/rss": "^4.0.18",
     "@astrojs/sitemap": "^3.7.2",
     "@astrojs/vue": "^6.0.1",
+    "@ryyr/worker-mailer": "^0.2.0",
     "astro": "^6.3.3",
     "dayjs": "^1.11.20",
     "lodash.kebabcase": "^4.1.1",
@@ -46,6 +48,7 @@
     "prettier": "3.8.3",
     "prettier-plugin-astro": "0.14.1",
     "prettier-plugin-tailwindcss": "^0.8.0",
+    "shx": "^0.4.0",
     "typescript": "^6.0.3"
   }
 }

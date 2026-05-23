@@ -1,0 +1,7 @@
+name = "uninverse-talking"
+compatibility_date = "2024-09-23"
+compatibility_flags = ["nodejs_compat"]
+
+[vars]
+SMTP_HOST = "smtp.163.com"
+SMTP_PORT = "465"

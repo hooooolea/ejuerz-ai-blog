@@ -4,6 +4,7 @@ import IconSunHigh from "@/assets/icons/IconSunHigh.svg";
 import IconSearch from "@/assets/icons/IconSearch.svg";
 import IconMoon from "@/assets/icons/IconMoon.svg";
 import LinkButton from "./LinkButton.astro";
+import SubmitDialog from "@/components/forbtbuer/SubmitDialog.vue";
 import { useTranslations } from "@/i18n";
 import config from "@/config";
 
@@ -51,6 +52,7 @@ const t = useTranslations(locale);
           </LinkButton>
         )
       }
+      <SubmitDialog client:load />
       {
         features.lightAndDarkMode && (
           <button
