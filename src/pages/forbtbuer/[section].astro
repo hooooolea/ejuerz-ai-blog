@@ -60,12 +60,19 @@ const sectionPosts = btbuerPosts
           {sectionPosts.map(post => {
             const slug = post.id.split("/").pop();
             const href = `/forbtbuer/${section}/${slug}`;
+            const formattedDate = new Date(post.data.pubDatetime).toLocaleDateString(
+              "en-US",
+              { month: "short", day: "numeric", year: "numeric" }
+            );
+            const showAuthor = section !== "hao-dong-xi" && post.data.author;
+
             if (section === "campus-pets") {
               return (
-                <li class="my-4">
-                  <a href={href} class="app-card-interactive flex items-start gap-4 p-5">
                 <li class="my-6">
-                  <a href={href} class="flex gap-4 items-start active:opacity-60 transition-opacity">
+                  <a
+                    href={href}
+                    class="flex items-start gap-4 transition-opacity active:opacity-60"
+                  >
                     {post.data.cover && (
                       <img
                         src={post.data.cover}
@@ -78,10 +85,8 @@ const sectionPosts = btbuerPosts
                         {post.data.title}
                       </h3>
                       <div class="flex items-center gap-x-3">
-                        <span class="text-muted-foreground text-sm">
-                          {new Date(post.data.pubDatetime).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
-                        </span>
-                        {post.data.author && (
+                        <span class="text-muted-foreground text-sm">{formattedDate}</span>
+                        {showAuthor && (
                           <span class="text-muted-foreground text-sm before:mr-3 before:content-['·']">
                             {post.data.author}
                           </span>
@@ -93,11 +98,7 @@ const sectionPosts = btbuerPosts
                 </li>
               );
             }
-            if (section === "hao-dong-xi") {
-              const postData = { ...post.data, author: "" };
-              return <Card variant="h3" href={href} {...(post as any)} data={postData} />;
-            }
-            return <Card variant="h3" href={href} {...(post as any)} />;
+
             return (
               <li class="my-4">
                 <a href={href} class="app-card-interactive block p-5">
@@ -105,14 +106,8 @@ const sectionPosts = btbuerPosts
                     {post.data.title}
                   </h3>
                   <div class="flex items-center gap-x-3">
-                    <span class="text-muted-foreground text-sm">
-                      {new Date(post.data.pubDatetime).toLocaleDateString("en-US", {
-                        month: "short",
-                        day: "numeric",
-                        year: "numeric",
-                      })}
-                    </span>
-                    {post.data.author && (
+                    <span class="text-muted-foreground text-sm">{formattedDate}</span>
+                    {showAuthor && (
                       <span class="text-muted-foreground text-sm before:mr-3 before:content-['·']">
                         {post.data.author}
                       </span>
