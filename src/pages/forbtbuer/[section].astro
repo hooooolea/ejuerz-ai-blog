@@ -25,7 +25,7 @@ const sectionInfo = { label, desc };
 
 const btbuerPosts = await getCollection("btbuer");
 const sectionPosts = btbuerPosts
-  .filter(p => p.id.startsWith(`${section}/`))
+  .filter(p => p.id.startsWith(`${section}/`) && !p.data.parent)
   .sort(
     (a, b) =>
       Math.floor(
@@ -41,6 +41,7 @@ const sectionPosts = btbuerPosts
 <Layout
   title={`${sectionInfo.label} | 工商人共享`}
   description={`${sectionInfo.desc}——同学写给同学。`}
+  noAds={true}
 >
   <Header dividerBorderClass="border-black dark:border-border" />
   <main id="main-content" class="app-layout">
@@ -63,6 +64,8 @@ const sectionPosts = btbuerPosts
               return (
                 <li class="my-4">
                   <a href={href} class="app-card-interactive flex items-start gap-4 p-5">
+                <li class="my-6">
+                  <a href={href} class="flex gap-4 items-start active:opacity-60 transition-opacity">
                     {post.data.cover && (
                       <img
                         src={post.data.cover}
@@ -90,6 +93,11 @@ const sectionPosts = btbuerPosts
                 </li>
               );
             }
+            if (section === "hao-dong-xi") {
+              const postData = { ...post.data, author: "" };
+              return <Card variant="h3" href={href} {...(post as any)} data={postData} />;
+            }
+            return <Card variant="h3" href={href} {...(post as any)} />;
             return (
               <li class="my-4">
                 <a href={href} class="app-card-interactive block p-5">

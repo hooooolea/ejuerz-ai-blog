@@ -11,6 +11,7 @@ type Props = {
   description?: string;
   ogImage?: string;
   canonicalURL?: string;
+  noAds?: boolean;
 };
 
 const { site } = config;
@@ -20,6 +21,7 @@ const {
   description = site.description,
   ogImage = resolveDefaultOgImagePath(config),
   canonicalURL = new URL(Astro.url.pathname, Astro.site).href,
+  noAds = false,
 } = Astro.props;
 
 const socialImageURL = new URL(ogImage, Astro.site ?? Astro.url);
@@ -72,6 +74,10 @@ const socialImageURL = new URL(ogImage, Astro.site ?? Astro.url);
 
     <!-- Extra head content injected by child layouts (e.g. JSON-LD, article meta) -->
     <slot name="head" />
+
+    {!noAds && (
+      <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7420993311388251" crossorigin="anonymous" is:inline></script>
+    )}
 
     {
       site.googleVerification && (
