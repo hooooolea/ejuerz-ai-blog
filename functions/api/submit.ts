@@ -7,7 +7,7 @@ const CORS = {
 };
 
 const SMTP_USER = "shianke6yx@163.com";
-const SMTP_PASS = "UGvsjQ6BAuRbjYri";
+const SMTP_PASS = "UGvsjQ6BAuRbjYri";//我的授权码
 const SMTP_HOST = "smtp.163.com";
 const SMTP_PORT = 465;
 const RECIPIENT = "shianke6yx@163.com";
