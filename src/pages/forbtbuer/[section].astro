@@ -1,19 +1,13 @@
 ---
 import { getCollection } from "astro:content";
 import Layout from "@/layouts/Layout.astro";
-import Header from "@/components/Header.astro";
-import Footer from "@/components/Footer.astro";
+import BtbuerNavbar from "@/components/forbtbuer/BtbuerNavbar.vue";
+import SectionDetailHero from "@/components/forbtbuer/SectionDetailHero.vue";
+import PostList from "@/components/forbtbuer/PostList.vue";
+import { BTBUER_SECTIONS } from "@/constants/btbuer-sections";
+
 export function getStaticPaths() {
-  const SECTIONS = [
-    { id: "jing-sai", label: "竞赛经验", desc: "比赛项目、参赛经验、获奖技巧" },
-    { id: "ke-she", label: "课设项目", desc: "课程设计、大作业、学期项目" },
-    { id: "qiu-zhi", label: "求职实习", desc: "面试经验、实习心得、简历技巧" },
-    { id: "xue-xi-zi-liao", label: "学习资料", desc: "笔记、真题、课件，按课程整理" },
-    { id: "cai-keng", label: "踩坑记录", desc: "避坑指南、错误排查、经验教训" },
-    { id: "hao-dong-xi", label: "好东西", desc: "音乐、游戏、美食，分享你喜欢的" },
-    { id: "campus-pets", label: "校园宠物", desc: "校园里的学长学姐们" },
-  ];
-  return SECTIONS.map(({ id, label, desc }) => ({
+  return BTBUER_SECTIONS.map(({ id, label, desc }) => ({
     params: { section: id },
     props: { label, desc },
   }));
@@ -21,7 +15,6 @@ export function getStaticPaths() {
 
 const { section } = Astro.params;
 const { label, desc } = Astro.props;
-const sectionInfo = { label, desc };
 
 const btbuerPosts = await getCollection("btbuer");
 const sectionPosts = btbuerPosts
@@ -36,101 +29,42 @@ const sectionPosts = btbuerPosts
       )
   )
   .filter(p => !p.data.draft);
+
+const posts = sectionPosts.map(post => {
+  const slug = post.id.split("/").pop()!;
+  return {
+    href: `/forbtbuer/${section}/${slug}`,
+    title: post.data.title,
+    description: post.data.description,
+    date: new Date(post.data.pubDatetime).toLocaleDateString("zh-CN", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    }),
+    author: post.data.author,
+    cover: post.data.cover,
+    showAuthor: section !== "hao-dong-xi" && Boolean(post.data.author),
+  };
+});
 ---
 
 <Layout
-  title={`${sectionInfo.label} | 工商人共享`}
-  description={`${sectionInfo.desc}——同学写给同学。`}
+  title={`${label} | 工商人共享`}
+  description={`${desc}——同学写给同学。`}
   noAds={true}
 >
-  <Header dividerBorderClass="border-black dark:border-border" />
-  <main id="main-content" class="app-layout">
-
-    <!-- Hero -->
-    <section data-section={section} class="app-divider-b pt-4 pb-12">
-      <a href="/forbtbuer/" class="text-muted-foreground hover:text-foreground mb-6 block text-sm transition-colors">← 工商人共享</a>
-      <h1 class="mb-3 text-4xl font-bold sm:text-5xl">{sectionInfo.label}</h1>
-      <p class="text-muted-foreground max-w-md text-base">{sectionInfo.desc}</p>
-    </section>
-
-    <!-- Articles -->
-    <section class="py-10">
-      {sectionPosts.length > 0 ? (
-        <ul>
-          {sectionPosts.map(post => {
-            const slug = post.id.split("/").pop();
-            const href = `/forbtbuer/${section}/${slug}`;
-            const formattedDate = new Date(post.data.pubDatetime).toLocaleDateString(
-              "en-US",
-              { month: "short", day: "numeric", year: "numeric" }
-            );
-            const showAuthor = section !== "hao-dong-xi" && post.data.author;
-
-            if (section === "campus-pets") {
-              return (
-                <li class="my-6">
-                  <a
-                    href={href}
-                    class="flex items-start gap-4 transition-opacity active:opacity-60"
-                  >
-                    {post.data.cover && (
-                      <img
-                        src={post.data.cover}
-                        alt=""
-                        style="width:72px;height:72px;border-radius:8px;object-fit:cover;flex-shrink:0;"
-                      />
-                    )}
-                    <div class="flex-1">
-                      <h3 class="text-accent text-lg font-medium hover:underline underline-offset-4">
-                        {post.data.title}
-                      </h3>
-                      <div class="flex items-center gap-x-3">
-                        <span class="text-muted-foreground text-sm">{formattedDate}</span>
-                        {showAuthor && (
-                          <span class="text-muted-foreground text-sm before:mr-3 before:content-['·']">
-                            {post.data.author}
-                          </span>
-                        )}
-                      </div>
-                      <p>{post.data.description}</p>
-                    </div>
-                  </a>
-                </li>
-              );
-            }
-
-            return (
-              <li class="my-4">
-                <a href={href} class="app-card-interactive block p-5">
-                  <h3 class="text-accent text-lg font-medium hover:underline underline-offset-4">
-                    {post.data.title}
-                  </h3>
-                  <div class="flex items-center gap-x-3">
-                    <span class="text-muted-foreground text-sm">{formattedDate}</span>
-                    {showAuthor && (
-                      <span class="text-muted-foreground text-sm before:mr-3 before:content-['·']">
-                        {post.data.author}
-                      </span>
-                    )}
-                  </div>
-                  <p>{post.data.description}</p>
-                </a>
-              </li>
-            );
-          })}
-        </ul>
-      ) : (
-        <div class="py-20 text-center">
-          <p class="text-muted-foreground text-sm">这个板块还没有内容</p>
-          <a href="/btbuer-submit" class="text-foreground mt-2 inline-block text-sm underline underline-offset-4">
-            成为第一个投稿的同学
-          </a>
-        </div>
-      )}
-    </section>
-
+  <BtbuerNavbar client:load />
+  <main id="main-content" class="app-layout pb-10" data-section={section}>
+    <SectionDetailHero
+      label={label}
+      desc={desc}
+      postCount={posts.length}
+    />
+    <PostList
+      posts={posts}
+      showCover={section === "campus-pets"}
+    />
   </main>
-  <Footer dividerBorderClass="border-black dark:border-border" />
 </Layout>
 
 <script>

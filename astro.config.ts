@@ -6,6 +6,7 @@ import {
 } from "astro/config";
 import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
+import vue from "@astrojs/vue";
 import remarkToc from "remark-toc";
 import remarkCollapse from "remark-collapse";
 import {
@@ -19,6 +20,7 @@ import config from "./astro-paper.config";
 export default defineConfig({
   site: config.site.url,
   integrations: [
+    vue(),
     mdx(),
     sitemap({
       filter: page =>

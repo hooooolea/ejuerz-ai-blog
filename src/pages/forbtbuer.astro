@@ -1,71 +1,30 @@
 ---
 import { getCollection } from "astro:content";
 import Layout from "@/layouts/Layout.astro";
-import Header from "@/components/Header.astro";
-import Footer from "@/components/Footer.astro";
-
-const SECTIONS = [
-  { id: "jing-sai", label: "竞赛经验", desc: "比赛项目、参赛经验、获奖技巧" },
-  { id: "ke-she", label: "课设项目", desc: "课程设计、大作业、学期项目" },
-  { id: "qiu-zhi", label: "求职实习", desc: "面试经验、实习心得、简历技巧" },
-  { id: "xue-xi-zi-liao", label: "学习资料", desc: "笔记、真题、课件，按课程整理" },
-  { id: "cai-keng", label: "踩坑记录", desc: "避坑指南、错误排查、经验教训" },
-  { id: "hao-dong-xi", label: "好东西", desc: "音乐、游戏、美食，分享你喜欢的" },
-  { id: "campus-pets", label: "校园宠物", desc: "校园里的学长学姐们" },
-];
+import BtbuerNavbar from "@/components/forbtbuer/BtbuerNavbar.vue";
+import BtbuerHero from "@/components/forbtbuer/BtbuerHero.vue";
+import SectionExploreList from "@/components/forbtbuer/SectionExploreList.vue";
+import { BTBUER_SECTIONS } from "@/constants/btbuer-sections";
 
 const allPosts = await getCollection("btbuer");
-const activeSections = SECTIONS.filter(({ id }) =>
-  allPosts.some(p => p.id.startsWith(`${id}/`) && !p.data.draft)
-);
+
+const sectionsWithCount = BTBUER_SECTIONS.map(section => ({
+  ...section,
+  postCount: allPosts.filter(
+    p => p.id.startsWith(`${section.id}/`) && !p.data.draft && !p.data.parent
+  ).length,
+})).filter(section => section.postCount > 0);
 ---
 
 <Layout
   title="工商人共享"
   description="工商大同学的内容共享平台——笔记、经验、资源，由同学写给同学。"
 >
-  <Header dividerBorderClass="border-black dark:border-border" />
-  <main id="main-content" class="app-layout">
-
-    <!-- Hero -->
-    <section class="app-divider-b pt-4 pb-12">
-      <p class="text-muted-foreground mb-2 text-sm font-medium tracking-widest uppercase">For BTBU</p>
-      <h1 class="mb-3 text-4xl font-bold sm:text-5xl">工商人共享</h1>
-      <div class="flex items-center gap-3">
-        <p class="text-muted-foreground text-base">
-          同学写给同学的笔记、经验和资源。欢迎投稿。
-        </p>
-      </div>
-      <div class="mt-6 flex items-center gap-4">
-        <a
-          href="/btbuer-submit"
-          class="bg-foreground text-background hover:opacity-80 active:opacity-60 active:scale-95 rounded-lg px-5 py-2.5 text-sm font-semibold transition-all"
-        >
-          投稿说明
-        </a>
-        <a id="email-link" href="#" class="text-muted-foreground hover:text-foreground active:opacity-50 text-sm transition-all">
-          发邮件
-        </a>
-      </div>
-    </section>
-
-    <!-- Section Cards -->
-    <section class="py-10">
-      <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {activeSections.map(({ id, label, desc }) => (
-          <a
-            href={`/forbtbuer/${id}`}
-            class="app-card-interactive group flex flex-col gap-2 p-5"
-          >
-            <h2 class="text-lg font-semibold group-hover:underline">{label}</h2>
-            <p class="text-muted-foreground text-sm">{desc}</p>
-          </a>
-        ))}
-      </div>
-    </section>
-
+  <BtbuerNavbar client:load />
+  <main id="main-content" class="app-layout pb-10">
+    <BtbuerHero />
+    <SectionExploreList sections={sectionsWithCount} />
   </main>
-  <Footer dividerBorderClass="border-black dark:border-border" />
 </Layout>
 
 <script>
@@ -76,12 +35,4 @@ const activeSections = SECTIONS.filter(({ id }) =>
       sessionStorage.setItem("backUrl", "/forbtbuer/");
     }
   });
-
-  const u = "hoooooyea";
-  const d = "163.com";
-  const el = document.getElementById("email-link") as HTMLAnchorElement | null;
-  if (el) {
-    el.href = `mailto:${u}@${d}?subject=工商共享投稿`;
-    el.textContent = `${u}@${d}`;
-  }
 </script>

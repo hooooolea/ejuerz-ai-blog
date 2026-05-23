@@ -1,7 +1,7 @@
 ---
+// const isTrending = Astro.url.pathname.startsWith("/trending");
 const isChinese = Astro.currentLocale === "cn";
-const isTrending = Astro.url.pathname.startsWith("/trending");
-const cnHref = isTrending ? "/" : "/cn";
+const cnHref = "/cn";
 ---
 
 <div class="lang-switcher-wrap">

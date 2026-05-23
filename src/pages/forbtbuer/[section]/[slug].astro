@@ -2,7 +2,6 @@
 import { getCollection, render } from "astro:content";
 import Layout from "@/layouts/Layout.astro";
 import Header from "@/components/Header.astro";
-import Footer from "@/components/Footer.astro";
 import Datetime from "@/components/Datetime.astro";
 
 const SECTIONS: Record<string, string> = {
@@ -61,7 +60,7 @@ const sectionLabel = SECTIONS[section] ?? section;
 
 <Layout title={`${title} | 工商人共享`} description={description} noAds={true}>
   <Header />
-  <main id="main-content" class="app-layout mt-8">
+  <main id="main-content" class="app-layout mt-8 pb-10">
 
     <a
       href={`/forbtbuer/${section}`}
@@ -115,7 +114,6 @@ const sectionLabel = SECTIONS[section] ?? section;
     </nav>
 
   </main>
-  <Footer />
 </Layout>
 
 <style is:global>
