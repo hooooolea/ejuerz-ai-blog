@@ -142,8 +142,8 @@ onUnmounted(() => {
         aria-labelledby="submit-dialog-title"
         @click="handleBackdropClick"
       >
-        <div class="app-card w-full max-w-md p-5 shadow-lg">
-          <div class="mb-4 flex items-start justify-between gap-3">
+        <div class="bg-background border-card-border dark:border-border w-full max-w-md overflow-hidden rounded-lg border shadow-lg">
+          <div class="flex items-start justify-between gap-3 p-5 pb-4">
             <div>
               <h2 id="submit-dialog-title" class="text-lg font-bold">投稿</h2>
               <p class="text-muted-foreground mt-1 text-sm">分享你在校园的见解......</p>
@@ -172,16 +172,16 @@ onUnmounted(() => {
             </button>
           </div>
 
-          <div class="border-border focus-within:ring-accent/30 overflow-hidden rounded-lg border focus-within:ring-2">
+          <div class="border-border focus-within:ring-accent/30 border-t focus-within:ring-2 focus-within:ring-inset">
             <textarea
               v-model="message"
               rows="6"
               placeholder="写下你想分享的内容..."
-              class="placeholder:text-muted-foreground w-full resize-none border-0 bg-transparent px-3 py-3 text-sm outline-none"
+              class="placeholder:text-muted-foreground w-full resize-none border-0 bg-transparent px-5 py-3 text-sm outline-none"
               :disabled="isSubmitting"
             />
 
-            <div class="border-border flex items-center justify-between gap-2 border-t px-3 py-2">
+            <div class="border-border flex items-center justify-between gap-2 border-t px-5 py-2">
               <div class="flex min-w-0 items-center gap-2">
                 <input
                   ref="fileInputRef"
@@ -244,7 +244,7 @@ onUnmounted(() => {
 
           <p
             v-if="feedback"
-            class="mt-3 text-sm"
+            class="px-5 pb-4 pt-2 text-sm"
             :class="feedback.type === 'success' ? 'text-accent' : 'text-red-500'"
             role="status"
           >
