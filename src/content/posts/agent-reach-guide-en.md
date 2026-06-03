@@ -136,6 +136,8 @@ But **I know when it's working and when it isn't.** That transparency alone is w
 
 Tell it: *"Install this and set it up for me."* A decent agent will read the README, run the install, and tell you which platforms are ready and which need your browser cookies. You just provide the cookies when it asks.
 
+> **OpenClaw users:** the default messaging profile can't run shell commands. Have your agent run `openclaw config set tools.profile "coding"` and restart the Gateway first — otherwise the install will silently fail.
+
 ## What I'd Tell Someone Starting Out
 
 If you're using any AI agent (Claude Code, Cursor, Hermes, OpenClaw — it works with all of them), and you've ever asked it to "search the web for X" only to get vague or imaginary results back: **install Agent Reach.**

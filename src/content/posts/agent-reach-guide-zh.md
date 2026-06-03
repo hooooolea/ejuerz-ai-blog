@@ -130,26 +130,13 @@ mcporter call exa.web_search_exa query="QuickBooks pricing complaints 2026"
 
 但**我知道什么时候它在干活，什么时候它没在干活。** 光是这个透明度，就值得花那三分钟装一下。
 
-## 三分钟，三条命令
+## 怎么装
 
-```bash
-pip install https://github.com/Panniantong/agent-reach/archive/main.zip
-agent-reach install --env=auto
-agent-reach doctor
-```
+> **不用自己敲命令。** 把这个链接发给你的 AI Agent：`https://github.com/Panniantong/agent-reach`
 
-最后那条命令会明明白白告诉你哪些平台已经通了、哪些还需要配置。不模糊：
+跟它说一句"帮我装上配好"。它会自己读 README、跑安装，然后告诉你哪些平台通了、哪些需要你的浏览器 Cookie。你只需要在它要 Cookie 的时候提供就行。
 
-```
-✅ Web (Jina Reader)      — 正常
-✅ YouTube (yt-dlp)        — 正常
-✅ Exa Search (mcporter)   — 正常
-✅ GitHub (gh CLI)         — 正常
-⬜ Twitter/X               — 需要配 Cookie
-⬜ XiaoHongShu             — 需要配 Cookie
-```
-
-需要 Cookie 的平台，浏览器登录 → Cookie-Editor 导出 → 喂给 Agent。Cookie 不会离开你的电脑——一切都在本地运行。
+> **OpenClaw 用户注意**：默认配置跑不了 shell 命令，先让 Agent 执行 `openclaw config set tools.profile "coding"`，然后重启 Gateway，否则装不上。
 
 ## 我想对刚开始用的人说
 
