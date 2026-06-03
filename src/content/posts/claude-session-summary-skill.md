@@ -17,7 +17,7 @@ There's a straightforward fix. It's a "skill" — a short instruction file that 
 ## Getting Started
 
 1. **Download the skill file**: [session-summary-skill.md](/downloads/session-summary-skill.md)
-2. **Install it** — see [how to install skills in Claude Code or Hermes](/posts/how-to-install-ai-agent-skills/)
+2. **Install it** — see [how to install skills in your AI agent](/posts/how-to-install-ai-agent-skills/)
 3. **At the end of any complex session**, say: "Summarize the session and write `.session_summary.md`"
 4. **Next session**: "Read `.session_summary.md` and resume from where we left off"
 
@@ -27,7 +27,7 @@ That's it. One file, one habit, no more lost progress. Read on for why this work
 
 ## The Real Problem: Context Degradation
 
-Every AI agent, regardless of the model powering it, has a context window — a working memory that holds the current conversation. Claude Code, Hermes, Cursor, GPT-4-based tools: they all have one, and they all suffer from the same problem as it grows.
+Every AI agent, regardless of the model powering it, has a context window — a working memory that holds the current conversation. They all have one, and they all suffer from the same problem as it grows.
 
 The hard limit (hitting the maximum and getting cut off) is only part of it. The more insidious issue is that **model quality degrades well before the limit**. As the context grows:
 
@@ -36,13 +36,13 @@ The hard limit (hitting the maximum and getting cut off) is only part of it. The
 - Subtle details from 50 messages ago get lost or misremembered
 - Responses slow down and lose focus
 
-This isn't a Claude problem or a GPT problem. It's a fundamental property of how transformer-based models handle long sequences. The longer the context, the more the signal-to-noise ratio drops.
+This isn't a problem with any specific model. It's a fundamental property of how transformer-based models handle long sequences. The longer the context, the more the signal-to-noise ratio drops.
 
 The real issue isn't the context window size. It's that there's no structured handoff when quality starts to slip.
 
 ## The Fix: A `.session_summary.md` File
 
-The idea is simple. Before ending a session (or at any major milestone), you ask Claude to write a summary file — `.session_summary.md` — in your project's root directory. This file captures:
+The idea is simple. Before ending a session (or at any major milestone), you ask your agent to write a summary file — `.session_summary.md` — in your project's root directory. This file captures:
 
 - What the project is and what you're trying to accomplish
 - What was done in this session (with exact file paths and line numbers)
@@ -67,11 +67,11 @@ Here's what triggers it:
 - A complex session is ending with work still in progress
 - You hit a milestone you want to checkpoint
 
-**[Download the skill file](/downloads/session-summary-skill.md)** — save it as `.session_summary.md` in your project, or add it to your Claude skills folder if you're using Claude Code or a similar setup.
+**[Download the skill file](/downloads/session-summary-skill.md)** — save it as `.session_summary.md` in your project, or add it to your Claude skills folder if you're using any agent that supports skills.
 
 ## What the Summary Looks Like
 
-Here's the structure Claude fills in:
+Here's the structure the agent fills in:
 
 ```
 # Session Summary — My Project
@@ -114,17 +114,17 @@ Clean, specific, and immediately actionable.
 
 ## Why This Works Better Than Hoping the Agent Remembers
 
-No AI agent persists memory between sessions by default. When you close a chat or start a new agent run, the context window is gone — whether you're on Claude, GPT-4, Gemini, or a local model. There's no background storage, no automatic journaling.
+No AI agent persists memory between sessions by default. When you close a chat or start a new agent run, the context window is gone. There's no background storage, no automatic journaling.
 
 Even within a session, if you've noticed quality starting to drift, the right move is often to start a fresh session with a clean context — not to keep pushing into a degraded one. The summary file makes that practical. Fresh context, full information.
 
 Writing a structured file sidesteps the degradation problem entirely. The file lives on your computer, in your project. You control it. You can read it yourself, edit it, or share it. And because it's just a Markdown file, any agent can read it back instantly at the start of a new session.
 
-The structured format matters too. A freeform "here's what we did" paragraph is easy to write but hard to parse quickly. The skill enforces specific sections — current state, next steps, known issues — so the new session gets oriented in seconds rather than minutes. This works the same whether you hand it to Claude, pass it to a Hermes agent, or feed it to any other tool that accepts a prompt.
+The structured format matters too. A freeform "here's what we did" paragraph is easy to write but hard to parse quickly. The skill enforces specific sections — current state, next steps, known issues — so the new session gets oriented in seconds rather than minutes. This works the same regardless of which agent you use.
 
 ## A Note on API Keys and Sensitive Data
 
-The skill file explicitly tells Claude never to write actual API keys or credentials into the summary. If a service requires a key to run, the summary notes that a key is needed (and where to set it), but writes `[REDACTED]` for the value. Keep this in mind if you edit summaries manually — the whole point is that the file might get committed to a repo or shared.
+The skill file explicitly tells the agent never to write actual API keys or credentials into the summary. If a service requires a key to run, the summary notes that a key is needed (and where to set it), but writes `[REDACTED]` for the value. Keep this in mind if you edit summaries manually — the whole point is that the file might get committed to a repo or shared.
 
 ---
 
