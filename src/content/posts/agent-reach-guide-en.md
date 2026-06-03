@@ -151,6 +151,8 @@ That last command tells you exactly which platforms are ready and which need con
 
 For the ones that need cookies, you log into the platform in your browser, export with Cookie-Editor, and feed it to your agent. Cookies never leave your machine — everything runs locally.
 
+> **Too lazy to read all this?** Just send the repo link to your AI agent: `https://github.com/Panniantong/agent-reach` — tell it "install this and set it up for me." A decent agent can read the README and configure itself. You just need to provide your browser cookies when it asks.
+
 ## What I'd Tell Someone Starting Out
 
 If you're using any AI agent (Claude Code, Cursor, Hermes, OpenClaw — it works with all of them), and you've ever asked it to "search the web for X" only to get vague or imaginary results back: **install Agent Reach.**
