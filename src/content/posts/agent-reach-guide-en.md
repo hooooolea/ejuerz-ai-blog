@@ -130,28 +130,11 @@ Is it perfect? No. Some platforms require occasional cookie refreshes. Reddit bl
 
 But **I know when it's working and when it isn't.** That transparency alone is worth the setup time.
 
-## The Setup (Three Minutes, Three Commands)
+## The Setup
 
-```bash
-pip install https://github.com/Panniantong/agent-reach/archive/main.zip
-agent-reach install --env=auto
-agent-reach doctor
-```
+> **You don't need to run any commands.** Just send this link to your AI agent: `https://github.com/Panniantong/agent-reach`
 
-That last command tells you exactly which platforms are ready and which need configuration. No ambiguity:
-
-```
-✅ Web (Jina Reader)      — OK
-✅ YouTube (yt-dlp)        — OK
-✅ Exa Search (mcporter)   — OK
-✅ GitHub (gh CLI)         — OK
-⬜ Twitter/X               — Needs cookie
-⬜ XiaoHongShu             — Needs cookie
-```
-
-For the ones that need cookies, you log into the platform in your browser, export with Cookie-Editor, and feed it to your agent. Cookies never leave your machine — everything runs locally.
-
-> **Too lazy to read all this?** Just send the repo link to your AI agent: `https://github.com/Panniantong/agent-reach` — tell it "install this and set it up for me." A decent agent can read the README and configure itself. You just need to provide your browser cookies when it asks.
+Tell it: *"Install this and set it up for me."* A decent agent will read the README, run the install, and tell you which platforms are ready and which need your browser cookies. You just provide the cookies when it asks.
 
 ## What I'd Tell Someone Starting Out
 
