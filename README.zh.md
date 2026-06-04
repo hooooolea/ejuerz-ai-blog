@@ -15,6 +15,18 @@
 - **集成 AdSense**（仅英文文章区投广告；`/forbtbuer/` 学生共享区完全无广告）
 - **i18n 已就绪**（当前只配 `en`）
 
+## 📸 界面预览
+
+**首页**
+![ejuerz.com 首页](assets/homepage.png)
+
+**精选文章**
+
+| Agent Reach — 给 AI 接上眼睛 | Session Summary 技能 |
+| --- | --- |
+| ![Agent Reach 指南](assets/article-agent-reach.png) | ![Session Summary 技能](assets/article-session-summary.png) |
+| 一个免费的网页平台，让任何 AI agent 都能免 API key 搜索和阅读 Twitter、Reddit、GitHub、arXiv、Hacker News、YouTube 等 12+ 数据源。 | 一个 SKILL.md 文件，把长 agent 会话的所有进度写入一个文件——新会话瞬间接力。兼容 Claude Code、Hermes、Cursor。 |
+
 ## 🛠 技术栈
 
 | 层        | 工具                                                    |

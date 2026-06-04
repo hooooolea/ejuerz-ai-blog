@@ -15,6 +15,18 @@ Forked from [satnaing/astro-paper](https://github.com/satnaing/astro-paper) (Ast
 - **AdSense-integrated** (only on English posts — the student sharing platform under `/forbtbuer/` runs ad-free)
 - **i18n ready** (configured `en` only)
 
+## 📸 Screenshots
+
+**Homepage**
+![ejuerz.com homepage](assets/homepage.png)
+
+**Featured articles**
+
+| Agent Reach — give your AI eyes | Session Summary skill |
+| --- | --- |
+| ![Agent Reach guide](assets/article-agent-reach.png) | ![Session Summary skill](assets/article-session-summary.png) |
+| A free web platform that lets any AI agent search and read Twitter, Reddit, GitHub, arXiv, Hacker News, YouTube, and 12+ other sources without API keys. | A SKILL.md file that checkpoints long agent sessions into one file — any new session resumes instantly. Works with Claude Code, Hermes, Cursor. |
+
 ## 🛠 Tech Stack
 
 | Layer       | Tool                                                   |
