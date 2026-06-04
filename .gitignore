@@ -20,6 +20,9 @@ pnpm-debug.log*
 # macOS-specific files
 .DS_Store
 
+# Chinese versions of posts — ejuerz.com is English-only (中文不上传)
+src/content/posts/*-zh.md
+
 # jetbrains setting folder
 .idea/
 
