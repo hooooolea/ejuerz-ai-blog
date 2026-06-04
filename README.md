@@ -8,7 +8,7 @@ Forked from [satnaing/astro-paper](https://github.com/satnaing/astro-paper) (Ast
 
 ## ✨ What's Inside
 
-- **5 English articles** (and counting) on AI agent skills, CLI basics, and multi-agent workflows
+- **3 English articles** (and counting) on AI agent skills, CLI basics, and multi-agent workflows
 - **Dynamic OG images** generated per post (Satori + Sharp)
 - **Static search** powered by Pagefind
 - **Dark/light mode** with smooth transitions
