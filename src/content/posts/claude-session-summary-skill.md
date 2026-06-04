@@ -16,10 +16,9 @@ There's a straightforward fix. It's a "skill" — a short instruction file that 
 
 ## Getting Started
 
-1. **Download the skill file**: [session-summary-skill.md](/downloads/session-summary-skill.md)
-2. **Install it** — see [how to install skills in your AI agent](/posts/how-to-install-ai-agent-skills/)
-3. **At the end of any complex session**, say: "Summarize the session and write `.session_summary.md`"
-4. **Next session**: "Read `.session_summary.md` and resume from where we left off"
+1. **Download the skill file**: [session-summary-skill.md](/downloads/session-summary-skill.md) — drop it into your agent's skills folder (e.g. `~/.claude/skills/session-summary/SKILL.md` for Claude Code, or `~/.hermes/skills/session-summary.md` for Hermes).
+2. **At the end of any complex session**, say: "Summarize the session and write `.session_summary.md`"
+3. **Next session**: "Read `.session_summary.md` and resume from where we left off"
 
 That's it. One file, one habit, no more lost progress. Read on for why this works.
 
