@@ -23,6 +23,9 @@ pnpm-debug.log*
 # Chinese versions of posts — ejuerz.com is English-only (中文不上传)
 src/content/posts/*-zh.md
 
+# Session summaries — local handoff notes, never push to GitHub
+.session_summary.md
+
 # jetbrains setting folder
 .idea/
 
