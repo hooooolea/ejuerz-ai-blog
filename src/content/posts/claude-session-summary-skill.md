@@ -16,7 +16,7 @@ There's a straightforward fix. It's a "skill" — a short instruction file that 
 
 ## Getting Started
 
-1. **Download the skill file**: [session-summary-skill.md](/downloads/session-summary-skill.md) — drop it into your agent's skills folder (e.g. `~/.claude/skills/session-summary/SKILL.md` for Claude Code, or `~/.hermes/skills/session-summary.md` for Hermes).
+1. **Download the skill file**: [SKILL.md](https://raw.githubusercontent.com/hooooolea/agent-skills/main/skills/productivity/session-summary/SKILL.md) — drop it into your agent's skills folder (e.g. `~/.claude/skills/session-summary/SKILL.md` for Claude Code, or `~/.hermes/skills/session-summary/SKILL.md` for Hermes).
 2. **At the end of any complex session**, say: "Summarize the session and write `.session_summary.md`"
 3. **Next session**: "Read `.session_summary.md` and resume from where we left off"
 
@@ -66,7 +66,7 @@ Here's what triggers it:
 - A complex session is ending with work still in progress
 - You hit a milestone you want to checkpoint
 
-**[Download the skill file](/downloads/session-summary-skill.md)** — save it as `.session_summary.md` in your project, or add it to your Claude skills folder if you're using any agent that supports skills.
+**[Download the skill file](https://raw.githubusercontent.com/hooooolea/agent-skills/main/skills/productivity/session-summary/SKILL.md)** — save it to your agent's skills folder, or browse the full repo at [hooooolea/agent-skills](https://github.com/hooooolea/agent-skills).
 
 ## What the Summary Looks Like
 
