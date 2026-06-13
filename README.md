@@ -1,4 +1,4 @@
-[English](README.md) | [中文](README.zh.md)
+English | [中文](README.zh.md)
 
 # AI Toolkit Guide
 
@@ -65,13 +65,19 @@ All published articles live in `src/content/posts/`. Drop a new `*.md` file in t
 ## 🧞 Running Locally
 
 ```bash
-npm install
-npm run dev        # http://localhost:4321
-npm run build      # type-check, build, run pagefind, copy index to public/
-npm run preview    # preview the production build
+pnpm install
+pnpm run dev        # http://localhost:4321
+pnpm run build      # type-check, build, run pagefind, copy index to public/
+pnpm run preview    # preview the production build
 ```
 
 Requires Node ≥ 22.12.
+
+Or run with Docker:
+
+```bash
+docker compose up          # http://localhost:80
+```
 
 ## ✍️ Writing a New Post
 
@@ -104,7 +110,7 @@ The slug (filename) becomes the URL. Subdirectories work too — they get prepen
 
 ## 🚀 Deployment
 
-Push to `main` → GitHub Action runs `npm run build` → Cloudflare Pages deploys `dist/`.
+Push to `main` → GitHub Action runs `pnpm run build` → Cloudflare Pages deploys `dist/`.
 
 Secrets required in repo settings:
 - `CLOUDFLARE_API_TOKEN`

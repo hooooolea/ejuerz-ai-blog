@@ -1,4 +1,4 @@
-[English](README.md) | [中文](README.zh.md)
+[English](README.md) | 中文
 
 # AI Toolkit Guide
 
@@ -65,13 +65,19 @@
 ## 🧞 本地运行
 
 ```bash
-npm install
-npm run dev        # http://localhost:4321
-npm run build      # 类型检查 + 构建 + 跑 pagefind + 拷贝索引到 public/
-npm run preview    # 本地预览生产构建
+pnpm install
+pnpm run dev        # http://localhost:4321
+pnpm run build      # 类型检查 + 构建 + 跑 pagefind + 拷贝索引到 public/
+pnpm run preview    # 本地预览生产构建
 ```
 
 需要 Node ≥ 22.12。
+
+或者用 Docker 跑：
+
+```bash
+docker compose up          # http://localhost:80
+```
 
 ## ✍️ 写一篇新文章
 
@@ -104,7 +110,7 @@ draft: false
 
 ## 🚀 部署
 
-推到 `main` → GitHub Action 跑 `npm run build` → Cloudflare Pages 部署 `dist/`。
+推到 `main` → GitHub Action 跑 `pnpm run build` → Cloudflare Pages 部署 `dist/`。
 
 仓库 Settings 需要的 secrets：
 - `CLOUDFLARE_API_TOKEN`
