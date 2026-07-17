@@ -134,14 +134,27 @@ const sectionPosts = btbuerPosts
   });
 
   async function loadDynamicPosts(section: string) {
-    const existingUl = document.querySelector("section.py-10 ul");
-    if (!existingUl) return;
+    const articlesSection = document.querySelector("section.py-10");
+    if (!articlesSection) return;
+
+    // Find or create the list container
+    let listEl = articlesSection.querySelector("ul");
+    if (!listEl) {
+      // No static content — replace empty state with a ul
+      const emptyDiv = articlesSection.querySelector("div.py-20");
+      if (emptyDiv) {
+        listEl = document.createElement("ul");
+        emptyDiv.replaceWith(listEl);
+      } else {
+        return;
+      }
+    }
 
     let dynContainer = document.getElementById("dynamic-posts-list");
     if (!dynContainer) {
       dynContainer = document.createElement("div");
       dynContainer.id = "dynamic-posts-list";
-      existingUl.parentElement?.appendChild(dynContainer);
+      listEl.parentElement?.appendChild(dynContainer);
     }
 
     try {
