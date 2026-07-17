@@ -52,8 +52,7 @@ export const onRequest: PagesFunction<Env> = async ({ request, env }) => {
     httpMetadata: { contentType: file.type },
   });
 
-  // Replace with your actual R2 public URL after creating the bucket
-  const url = `https://pub-YOUR_R2_ID.r2.dev/${key}`;
+  const url = `https://pub-1195a2151a624a57b173ba11534b4e76.r2.dev/${key}`;
 
   return Response.json({ url }, { headers: CORS });
 };
