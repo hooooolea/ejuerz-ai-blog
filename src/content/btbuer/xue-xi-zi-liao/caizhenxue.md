@@ -8,7 +8,7 @@ tags:
   - 真题
   - 期末
 featured: false
-draft: true
+draft: false
 ---
 
 - [2022-2023-1 财政学试题 A 卷](/resources/caizhenxue/2022-2023-1学期《财政学》试题（A）.pdf)

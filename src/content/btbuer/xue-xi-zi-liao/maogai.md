@@ -8,7 +8,7 @@ tags:
   - 真题
   - 期末
 featured: false
-draft: true
+draft: false
 ---
 
 - [2018-2019 毛概期末试卷](/resources/maogai/北京工商大学《毛泽东思想和中国特色社会主义理论体系概论》2018-2019期末考试试卷.pdf)

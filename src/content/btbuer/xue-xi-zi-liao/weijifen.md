@@ -8,7 +8,7 @@ tags:
   - 真题
   - 期末
 featured: false
-draft: true
+draft: false
 ---
 
 - [2022-2023-1 微积分上试卷 A 卷](/resources/weijifen/2022-2023-1微积分上试卷a卷.pdf)

@@ -8,7 +8,7 @@ tags:
   - 真题
   - 期末
 featured: false
-draft: true
+draft: false
 ---
 
 - [2019-2020 期末试卷 A](/resources/gailvlun/北京工商大学《概率论与数理统计》2019-2020学年第二学期期末试卷A.pdf)

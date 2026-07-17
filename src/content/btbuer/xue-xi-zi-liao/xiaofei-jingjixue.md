@@ -8,7 +8,7 @@ tags:
   - 真题
   - 期末
 featured: false
-draft: true
+draft: false
 ---
 
 - [消费经济学试卷 A 卷（贸经 201-2）](/resources/xiaofei-jingjixue/消费经济学试卷A卷（贸经201-2）.pdf)

@@ -8,7 +8,7 @@ tags:
   - 真题
   - 期末
 featured: false
-draft: true
+draft: false
 ---
 
 - [2022-2023 计算机网络期末试题](/resources/jisuanjiwangluo/2022～2023计算机网络期末试题.pdf)

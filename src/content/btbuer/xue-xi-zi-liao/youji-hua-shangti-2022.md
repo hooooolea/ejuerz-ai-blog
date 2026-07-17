@@ -8,7 +8,7 @@ tags:
   - 真题
   - 期末
 featured: false
-draft: true
+draft: false
 ---
 
 - [2022 期末试题 A](/resources/youjihua/A-2022年春季学期《有机化学》期末试题.pdf)

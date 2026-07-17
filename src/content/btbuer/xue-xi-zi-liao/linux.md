@@ -8,7 +8,7 @@ tags:
   - 真题
   - 期末
 featured: false
-draft: true
+draft: false
 ---
 
 - [2023-2024 第一学期 Linux 期末](/resources/linux/2023-2024第一学期Linux期末（含答案）.pdf)

@@ -8,7 +8,7 @@ tags:
   - 真题
   - 期末
 featured: false
-draft: true
+draft: false
 ---
 
 - [2019–2020 期末试卷 A](/resources/gaoshu/2019-2020-gaoshu-xia-A.pdf)
