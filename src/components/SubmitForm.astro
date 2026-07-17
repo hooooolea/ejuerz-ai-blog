@@ -1,0 +1,230 @@
+---
+export interface Props {
+  section: string;
+  sectionLabel: string;
+}
+
+const { sectionLabel } = Astro.props;
+---
+
+<div class="mt-8 border-t border-border pt-8 pb-8" id="submit-form-section">
+  <button
+    id="toggle-submit-form"
+    class="bg-foreground text-background hover:opacity-80 active:opacity-60 rounded-lg px-5 py-2.5 text-sm font-semibold transition-all"
+  >
+    ✦ 添加内容
+  </button>
+
+  <div id="submit-form-wrapper" class="hidden mt-6 border border-border rounded-lg p-6 max-w-lg">
+    <h3 class="text-lg font-semibold mb-4">向「{sectionLabel}」投稿</h3>
+    <form id="submit-form" class="flex flex-col gap-4">
+      <div>
+        <label class="text-sm font-medium block mb-1">标题 <span class="text-red-500">*</span></label>
+        <input
+          id="submit-name"
+          type="text"
+          placeholder="标题"
+          maxlength="100"
+          class="border-border bg-background text-foreground rounded-md border px-4 py-2 text-sm outline-none focus:ring-1 focus:ring-current w-full"
+        />
+      </div>
+
+      <div>
+        <label class="text-sm font-medium block mb-1">简短描述 <span class="text-red-500">*</span></label>
+        <input
+          id="submit-desc"
+          type="text"
+          placeholder="一句话描述（最多 200 字）"
+          maxlength="200"
+          class="border-border bg-background text-foreground rounded-md border px-4 py-2 text-sm outline-none focus:ring-1 focus:ring-current w-full"
+        />
+      </div>
+
+      <div>
+        <label class="text-sm font-medium block mb-1">详细内容</label>
+        <textarea
+          id="submit-content"
+          placeholder="正文内容（可选，支持纯文本）"
+          rows="4"
+          class="border-border bg-background text-foreground rounded-md border px-4 py-2 text-sm outline-none focus:ring-1 focus:ring-current resize-none w-full"
+        ></textarea>
+      </div>
+
+      <div>
+        <label class="text-sm font-medium block mb-1">封面图片</label>
+        <div class="flex items-center gap-3 flex-wrap">
+          <label class="cursor-pointer text-sm bg-background border border-border hover:border-foreground rounded-md px-4 py-2 transition-colors">
+            选择图片
+            <input id="submit-cover-input" type="file" accept="image/*" class="hidden" />
+          </label>
+          <img id="submit-cover-preview" class="hidden h-20 w-20 rounded-md object-cover" src="" alt="" />
+          <button type="button" id="submit-cover-remove" class="hidden text-xs text-red-500 hover:underline">移除</button>
+          <span id="submit-cover-status" class="text-xs text-muted-foreground"></span>
+        </div>
+      </div>
+
+      <div>
+        <label class="text-sm font-medium block mb-1">额外图片（最多 10 张）</label>
+        <div class="flex items-center gap-3 flex-wrap">
+          <label class="cursor-pointer text-sm bg-background border border-border hover:border-foreground rounded-md px-4 py-2 transition-colors">
+            添加图片
+            <input id="submit-images-input" type="file" accept="image/*" multiple class="hidden" />
+          </label>
+          <span id="submit-images-status" class="text-xs text-muted-foreground"></span>
+        </div>
+        <div id="submit-images-previews" class="flex gap-2 mt-2 flex-wrap"></div>
+      </div>
+
+      <div>
+        <label class="text-sm font-medium block mb-1">你的昵称</label>
+        <input
+          id="submit-author"
+          type="text"
+          placeholder="不填默认匿名"
+          maxlength="20"
+          class="border-border bg-background text-foreground rounded-md border px-4 py-2 text-sm outline-none focus:ring-1 focus:ring-current w-full"
+        />
+      </div>
+
+      <div class="flex items-center gap-4">
+        <button
+          type="submit"
+          class="bg-foreground text-background rounded-md px-5 py-2 text-sm font-medium active:opacity-70 transition-opacity"
+        >
+          提交
+        </button>
+        <span id="submit-form-status" class="text-muted-foreground text-sm"></span>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  (() => {
+    const section = (Astro.props as any).section as string;
+    const PETS_API = "/api/pets";
+    const UPLOAD_API = "/api/upload";
+    let coverUrl: string | null = null;
+    let imageUrls: string[] = [];
+
+    function resetForm() {
+      (document.getElementById("submit-name") as HTMLInputElement).value = "";
+      (document.getElementById("submit-desc") as HTMLInputElement).value = "";
+      (document.getElementById("submit-content") as HTMLTextAreaElement).value = "";
+      (document.getElementById("submit-author") as HTMLInputElement).value = "";
+      (document.getElementById("submit-cover-input") as HTMLInputElement).value = "";
+      (document.getElementById("submit-images-input") as HTMLInputElement).value = "";
+      document.getElementById("submit-cover-preview")?.classList.add("hidden");
+      document.getElementById("submit-cover-remove")?.classList.add("hidden");
+      (document.getElementById("submit-cover-status") as HTMLSpanElement).textContent = "";
+      (document.getElementById("submit-images-status") as HTMLSpanElement).textContent = "";
+      (document.getElementById("submit-images-previews") as HTMLDivElement).innerHTML = "";
+      coverUrl = null;
+      imageUrls = [];
+    }
+
+    document.addEventListener("astro:page-load", () => {
+      const toggleBtn = document.getElementById("toggle-submit-form");
+      const wrapper = document.getElementById("submit-form-wrapper");
+
+      if (toggleBtn && wrapper) {
+        toggleBtn.addEventListener("click", () => {
+          const isHidden = wrapper.classList.contains("hidden");
+          wrapper.classList.toggle("hidden");
+          toggleBtn.textContent = isHidden ? "收起" : "✦ 添加内容";
+        });
+      }
+
+      // Cover image
+      const coverInput = document.getElementById("submit-cover-input") as HTMLInputElement | null;
+      const coverPreview = document.getElementById("submit-cover-preview") as HTMLImageElement | null;
+      const coverRemove = document.getElementById("submit-cover-remove") as HTMLButtonElement | null;
+      const coverStatus = document.getElementById("submit-cover-status") as HTMLSpanElement | null;
+
+      if (coverInput && coverPreview && coverRemove && coverStatus) {
+        coverInput.addEventListener("change", async () => {
+          const file = coverInput.files?.[0];
+          if (!file) return;
+          const reader = new FileReader();
+          reader.onload = (e) => {
+            coverPreview.src = e.target?.result as string;
+            coverPreview.classList.remove("hidden");
+            coverRemove.classList.remove("hidden");
+          };
+          reader.readAsDataURL(file);
+          coverStatus.textContent = "上传中...";
+          const fd = new FormData();
+          fd.append("file", file);
+          try {
+            const res = await fetch(UPLOAD_API, { method: "POST", body: fd });
+            const data = await res.json();
+            if (data.url) { coverUrl = data.url; coverStatus.textContent = "上传成功 ✓"; }
+            else { coverStatus.textContent = data.error ?? "上传失败"; coverPreview.classList.add("hidden"); coverRemove.classList.add("hidden"); }
+          } catch { coverStatus.textContent = "上传失败"; coverPreview.classList.add("hidden"); coverRemove.classList.add("hidden"); }
+        });
+        coverRemove.addEventListener("click", () => {
+          coverUrl = null; coverInput.value = ""; coverPreview.classList.add("hidden"); coverRemove.classList.add("hidden"); coverStatus.textContent = "";
+        });
+      }
+
+      // Extra images
+      const imagesInput = document.getElementById("submit-images-input") as HTMLInputElement | null;
+      const imagesStatus = document.getElementById("submit-images-status") as HTMLSpanElement | null;
+      const imagesPreviews = document.getElementById("submit-images-previews") as HTMLDivElement | null;
+
+      if (imagesInput && imagesStatus && imagesPreviews) {
+        imagesInput.addEventListener("change", async () => {
+          const files = imagesInput.files;
+          if (!files || files.length === 0) return;
+          imageUrls = []; imagesPreviews.innerHTML = ""; imagesStatus.textContent = `上传 ${files.length} 张...`;
+          for (const file of Array.from(files)) {
+            const reader = new FileReader();
+            const img = document.createElement("img");
+            img.className = "h-16 w-16 rounded-md object-cover";
+            reader.onload = (e) => { img.src = e.target?.result as string; };
+            reader.readAsDataURL(file);
+            imagesPreviews.appendChild(img);
+            const fd = new FormData(); fd.append("file", file);
+            try { const res = await fetch(UPLOAD_API, { method: "POST", body: fd }); const data = await res.json(); if (data.url) imageUrls.push(data.url); } catch {}
+          }
+          imagesStatus.textContent = imageUrls.length > 0 ? `${imageUrls.length}/${files.length} 张上传成功 ✓` : "上传失败";
+        });
+      }
+
+      // Submit
+      const form = document.getElementById("submit-form") as HTMLFormElement | null;
+      const formStatus = document.getElementById("submit-form-status") as HTMLSpanElement | null;
+
+      if (form && formStatus) {
+        form.addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const lastSent = localStorage.getItem(`submit_last_${section}`);
+          if (lastSent && Date.now() - parseInt(lastSent) < 5 * 60 * 1000) {
+            formStatus.textContent = "提交太频繁，请 5 分钟后再试"; return;
+          }
+          const name = (document.getElementById("submit-name") as HTMLInputElement).value.trim();
+          const description = (document.getElementById("submit-desc") as HTMLInputElement).value.trim();
+          const content = (document.getElementById("submit-content") as HTMLTextAreaElement).value.trim();
+          const author = (document.getElementById("submit-author") as HTMLInputElement).value.trim();
+          if (!name || !description) { formStatus.textContent = "标题和描述不能为空"; return; }
+          formStatus.textContent = "提交中...";
+          try {
+            const res = await fetch(PETS_API, {
+              method: "POST", headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ name, description, content, cover: coverUrl ?? "", images: imageUrls, author: author || "匿名", section }),
+            });
+            if (res.ok) {
+              localStorage.setItem(`submit_last_${section}`, String(Date.now()));
+              formStatus.textContent = "提交成功 ✓";
+              resetForm();
+              setTimeout(() => window.location.reload(), 1500);
+            } else {
+              const err = await res.json();
+              formStatus.textContent = (err as any).error ?? "提交失败";
+            }
+          } catch { formStatus.textContent = "网络错误，请重试"; }
+        });
+      }
+    });
+  })();
+</script>

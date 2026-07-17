@@ -15,7 +15,7 @@ function slugify(text: string): string {
     .replace(/[^a-z0-9一-鿿]+/g, "-")
     .replace(/^-+|-+$/g, "")
     .slice(0, 60)
-    || "pet";
+    || "post";
 }
 
 export const onRequest: PagesFunction<Env> = async ({ request, env }) => {
@@ -25,7 +25,7 @@ export const onRequest: PagesFunction<Env> = async ({ request, env }) => {
 
   const url = new URL(request.url);
 
-  // GET — list all user-submitted pets, or get one by slug
+  // GET — list all user-submitted posts, or get one by slug
   if (request.method === "GET") {
     const slug = url.searchParams.get("slug");
     if (slug) {
@@ -41,21 +41,35 @@ export const onRequest: PagesFunction<Env> = async ({ request, env }) => {
       return Response.json(result, { headers: CORS });
     }
 
+    const section = url.searchParams.get("section");
+    if (section) {
+      const result = await env.DB.prepare(
+        "SELECT * FROM pets WHERE section = ? ORDER BY created_at DESC LIMIT 100"
+      ).bind(section).all();
+      const posts = result.results.map(p => {
+        if (p.images && typeof p.images === "string") {
+          try { p.images = JSON.parse(p.images); } catch { p.images = []; }
+        }
+        return p;
+      });
+      return Response.json(posts, { headers: CORS });
+    }
+
     const result = await env.DB.prepare(
       "SELECT * FROM pets ORDER BY created_at DESC LIMIT 100"
     ).all();
-    const pets = result.results.map(p => {
+    const posts = result.results.map(p => {
       if (p.images && typeof p.images === "string") {
         try { p.images = JSON.parse(p.images); } catch { p.images = []; }
       }
       return p;
     });
-    return Response.json(pets, { headers: CORS });
+    return Response.json(posts, { headers: CORS });
   }
 
-  // POST — create a new pet
+  // POST — create a new post
   if (request.method === "POST") {
-    let body: { name?: string; description?: string; content?: string; cover?: string; images?: string[]; author?: string };
+    let body: { name?: string; description?: string; content?: string; cover?: string; images?: string[]; author?: string; section?: string };
     try {
       body = await request.json();
     } catch {
@@ -68,19 +82,19 @@ export const onRequest: PagesFunction<Env> = async ({ request, env }) => {
     const cover = (body.cover ?? "").trim().slice(0, 500);
     const images = Array.isArray(body.images) ? body.images.slice(0, 10).map(i => String(i).trim().slice(0, 500)) : [];
     const author = (body.author ?? "").trim().slice(0, 20) || "匿名";
+    const section = (body.section ?? "").trim().slice(0, 50) || "campus-pets";
 
     if (!name || !description) {
       return Response.json({ error: "名字和描述不能为空" }, { status: 400, headers: CORS });
     }
 
-    // Generate unique slug
-    const baseSlug = `user-${slugify(name)}`;
+    const baseSlug = `${section}-${slugify(name)}`;
     const ts = Date.now();
     const slug = `${baseSlug}-${ts}`;
 
     const stmt = env.DB.prepare(
-      "INSERT INTO pets (slug, name, description, content, cover, images, author) VALUES (?, ?, ?, ?, ?, ?, ?)"
-    ).bind(slug, name, description, content, cover, JSON.stringify(images), author);
+      "INSERT INTO pets (slug, name, description, content, cover, images, author, section) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
+    ).bind(slug, name, description, content, cover, JSON.stringify(images), author, section);
 
     const result = await stmt.run();
 

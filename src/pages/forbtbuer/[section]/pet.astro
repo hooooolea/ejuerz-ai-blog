@@ -1,0 +1,295 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+
+export function getStaticPaths() {
+  const sections = ["jing-sai", "ke-she", "qiu-zhi", "xue-xi-zi-liao", "cai-keng", "hao-dong-xi", "campus-pets"];
+  return sections.map(section => ({ params: { section } }));
+}
+
+const SECTIONS: Record<string, string> = {
+  "jing-sai": "竞赛经验",
+  "ke-she": "课设项目",
+  "qiu-zhi": "求职实习",
+  "xue-xi-zi-liao": "学习资料",
+  "cai-keng": "踩坑记录",
+  "hao-dong-xi": "好东西",
+  "campus-pets": "校园宠物",
+};
+
+const { section } = Astro.params;
+const sectionKey = section ?? "";
+const sectionLabel = SECTIONS[sectionKey] ?? sectionKey;
+---
+
+<Layout
+  title={`投稿详情 | ${sectionLabel} | 工商人共享`}
+  description="同学投稿"
+  noAds={true}
+>
+  <Header />
+  <main id="main-content" class="app-layout mt-8">
+
+    <a
+      href={`/forbtbuer/${section}`}
+      class="text-muted-foreground hover:text-foreground mb-6 inline-block text-sm transition-colors"
+    >
+      ← {sectionLabel}
+    </a>
+
+    <!-- Loading -->
+    <div id="post-loading" class="py-20 text-center">
+      <p class="text-muted-foreground text-sm">加载中...</p>
+    </div>
+
+    <!-- Error -->
+    <div id="post-error" class="hidden py-20 text-center">
+      <p class="text-muted-foreground text-lg" id="post-error-msg"></p>
+      <a href={`/forbtbuer/${sectionKey}`} class="text-foreground mt-4 inline-block text-sm underline underline-offset-4">
+        返回{sectionLabel}
+      </a>
+    </div>
+
+    <!-- Detail -->
+    <div id="post-detail" class="hidden">
+      <h1 id="post-title" class="text-accent mt-4 block text-2xl font-bold sm:text-3xl"></h1>
+
+      <div class="my-2 flex items-center gap-x-3">
+        <span id="post-date" class="text-muted-foreground text-sm"></span>
+        <span id="post-author" class="text-muted-foreground text-sm before:mr-3 before:content-['·']"></span>
+      </div>
+
+      <article class="mt-8 w-full app-prose max-w-app prose-pre:bg-(--shiki-light-bg) dark:prose-pre:bg-(--shiki-dark-bg)">
+        <img id="post-cover" src="" alt="" class="w-full max-w-lg rounded-lg object-cover mb-6 hidden" />
+        <div id="post-images" class="grid gap-3 mb-6 hidden" style="grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));">
+        </div>
+        <p id="post-desc" class="text-lg text-muted-foreground mb-4"></p>
+        <div id="post-content" class="whitespace-pre-wrap leading-relaxed hidden"></div>
+      </article>
+
+      <!-- Comments injected client-side -->
+      <div id="post-comments"></div>
+    </div>
+  </main>
+  <Footer />
+</Layout>
+
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const slug = params.get("slug");
+
+  function escHtml(str: string) {
+    return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+  }
+
+  async function loadPost() {
+    const loading = document.getElementById("post-loading")!;
+    const errorEl = document.getElementById("post-error")!;
+    const detail = document.getElementById("post-detail")!;
+
+    if (!slug) {
+      loading.classList.add("hidden");
+      errorEl.classList.remove("hidden");
+      document.getElementById("post-error-msg")!.textContent = "无效的链接";
+      return;
+    }
+
+    try {
+      const res = await fetch(`/api/pets?slug=${encodeURIComponent(slug)}`);
+      if (!res.ok) {
+        loading.classList.add("hidden");
+        errorEl.classList.remove("hidden");
+        document.getElementById("post-error-msg")!.textContent = res.status === 404 ? "内容未找到" : "加载失败，请稍后重试";
+        return;
+      }
+
+      const post = await res.json();
+      loading.classList.add("hidden");
+      detail.classList.remove("hidden");
+
+      document.getElementById("post-title")!.textContent = post.name;
+      document.getElementById("post-desc")!.textContent = post.description;
+      document.getElementById("post-author")!.textContent = post.author || "";
+
+      const date = new Date(post.created_at);
+      document.getElementById("post-date")!.textContent = date.toLocaleDateString("en-US", {
+        month: "short", day: "numeric", year: "numeric"
+      });
+
+      if (post.cover) {
+        const coverImg = document.getElementById("post-cover") as HTMLImageElement;
+        coverImg.src = post.cover;
+        coverImg.alt = post.name;
+        coverImg.classList.remove("hidden");
+      }
+
+      if (post.images && Array.isArray(post.images) && post.images.length > 0) {
+        const imagesDiv = document.getElementById("post-images")!;
+        imagesDiv.classList.remove("hidden");
+        imagesDiv.innerHTML = post.images.filter(Boolean).map((img: string) =>
+          `<img src="${img}" alt="" class="w-full rounded-md object-cover aspect-3/4" />`
+        ).join("");
+      }
+
+      if (post.content) {
+        const contentDiv = document.getElementById("post-content")!;
+        contentDiv.classList.remove("hidden");
+        contentDiv.textContent = post.content;
+      }
+
+      // Inject comments
+      const commentsDiv = document.getElementById("post-comments")!;
+      commentsDiv.innerHTML = `
+        <div class="mt-12 border-t border-border pt-8" id="comments">
+          <h2 class="text-xl font-semibold mb-6">评论区</h2>
+          <div id="comment-list" class="space-y-4 mb-8">
+            <p class="text-muted-foreground text-sm">加载中...</p>
+          </div>
+          <div class="border border-border rounded-lg p-4">
+            <h3 class="text-sm font-medium mb-3">添加评论</h3>
+            <form id="comment-form" class="flex flex-col gap-3 max-w-lg">
+              <input id="comment-author" type="text" placeholder="你的昵称（最多 20 字）" maxlength="20"
+                class="border-border bg-background text-foreground rounded-md border px-4 py-2 text-sm outline-none focus:ring-1 focus:ring-current" />
+              <textarea id="comment-content" placeholder="评论内容（最多 500 字，支持照片上传）" maxlength="500" rows="3"
+                class="border-border bg-background text-foreground rounded-md border px-4 py-2 text-sm outline-none focus:ring-1 focus:ring-current resize-none"></textarea>
+              <div class="flex items-center gap-3 flex-wrap">
+                <label class="cursor-pointer text-sm text-muted-foreground hover:text-foreground transition-colors">
+                  📷 添加照片
+                  <input id="comment-image-input" type="file" accept="image/*" class="hidden" />
+                </label>
+                <img id="comment-image-preview" class="hidden h-16 w-16 rounded-md object-cover" src="" alt="" />
+                <button type="button" id="comment-image-remove" class="hidden text-xs text-red-500 hover:underline">移除</button>
+                <span id="comment-image-status" class="text-xs text-muted-foreground"></span>
+              </div>
+              <div class="flex items-center gap-4">
+                <button type="submit"
+                  class="bg-foreground text-background rounded-md px-5 py-2 text-sm font-medium active:opacity-70 transition-opacity">
+                  发送
+                </button>
+                <span id="comment-status" class="text-muted-foreground text-sm"></span>
+              </div>
+            </form>
+          </div>
+        </div>`;
+
+      initComments(slug);
+    } catch {
+      loading.classList.add("hidden");
+      errorEl.classList.remove("hidden");
+      document.getElementById("post-error-msg")!.textContent = "加载失败，请稍后重试";
+    }
+  }
+
+  function initComments(petSlug: string) {
+    const COMMENTS_API = "/api/comments";
+    const UPLOAD_API = "/api/upload";
+    let uploadedImageUrl: string | null = null;
+
+    function formatDate(iso: string) {
+      const d = new Date(iso);
+      return d.toLocaleDateString("zh-CN", { month: "long", day: "numeric", hour: "2-digit", minute: "2-digit" });
+    }
+
+    function renderComments(comments: any[]) {
+      const list = document.getElementById("comment-list")!;
+      if (comments.length === 0) {
+        list.innerHTML = '<p class="text-muted-foreground text-sm">还没有评论，来说点什么吧。</p>';
+        return;
+      }
+      list.innerHTML = comments.map((c: any) => `
+        <div class="border-border rounded-lg border p-4">
+          <p class="text-foreground text-sm leading-relaxed whitespace-pre-wrap">${escHtml(c.content)}</p>
+          ${c.image_url ? `<img src="${escHtml(c.image_url)}" alt="评论图片" class="mt-2 max-h-48 rounded-md object-cover" />` : ""}
+          <div class="mt-3 flex items-center justify-between">
+            <span class="text-accent text-sm font-medium">${escHtml(c.author_name)}</span>
+            <span class="text-muted-foreground text-xs">${formatDate(c.created_at)}</span>
+          </div>
+        </div>`
+      ).join("");
+    }
+
+    async function loadComments() {
+      const list = document.getElementById("comment-list")!;
+      list.innerHTML = '<p class="text-muted-foreground text-sm">加载中...</p>';
+      try {
+        const res = await fetch(`${COMMENTS_API}?pet_slug=${encodeURIComponent(petSlug)}`);
+        const data = await res.json();
+        renderComments(Array.isArray(data) ? data : []);
+      } catch {
+        list.innerHTML = '<p class="text-muted-foreground text-sm">加载失败，请刷新重试。</p>';
+      }
+    }
+
+    loadComments();
+
+    const imageInput = document.getElementById("comment-image-input") as HTMLInputElement | null;
+    const imagePreview = document.getElementById("comment-image-preview") as HTMLImageElement | null;
+    const imageRemove = document.getElementById("comment-image-remove") as HTMLButtonElement | null;
+    const imageStatus = document.getElementById("comment-image-status") as HTMLSpanElement | null;
+
+    if (imageInput && imagePreview && imageRemove && imageStatus) {
+      imageInput.addEventListener("change", async () => {
+        const file = imageInput.files?.[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          imagePreview.src = e.target?.result as string;
+          imagePreview.classList.remove("hidden");
+          imageRemove.classList.remove("hidden");
+        };
+        reader.readAsDataURL(file);
+        imageStatus.textContent = "上传中...";
+        const fd = new FormData(); fd.append("file", file);
+        try {
+          const res = await fetch(UPLOAD_API, { method: "POST", body: fd });
+          const data = await res.json();
+          if (data.url) { uploadedImageUrl = data.url; imageStatus.textContent = "上传成功 ✓"; }
+          else { imageStatus.textContent = data.error ?? "上传失败"; imagePreview.classList.add("hidden"); imageRemove.classList.add("hidden"); }
+        } catch { imageStatus.textContent = "上传失败"; imagePreview.classList.add("hidden"); imageRemove.classList.add("hidden"); }
+      });
+      imageRemove.addEventListener("click", () => {
+        uploadedImageUrl = null; imageInput.value = ""; imagePreview.classList.add("hidden"); imageRemove.classList.add("hidden"); imageStatus.textContent = "";
+      });
+    }
+
+    const form = document.getElementById("comment-form") as HTMLFormElement | null;
+    const statusEl = document.getElementById("comment-status") as HTMLSpanElement | null;
+
+    if (form && statusEl) {
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const lastSent = localStorage.getItem(`comment_last_${petSlug}`);
+        if (lastSent && Date.now() - parseInt(lastSent) < 2 * 60 * 1000) { statusEl.textContent = "发送太频繁，请稍后再试"; return; }
+        const authorName = (document.getElementById("comment-author") as HTMLInputElement).value.trim();
+        const content = (document.getElementById("comment-content") as HTMLTextAreaElement).value.trim();
+        if (!authorName || !content) { statusEl.textContent = "昵称和内容不能为空"; return; }
+        statusEl.textContent = "发送中...";
+        try {
+          const res = await fetch(COMMENTS_API, {
+            method: "POST", headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ pet_slug: petSlug, author_name: authorName, content, image_url: uploadedImageUrl ?? "" }),
+          });
+          if (res.ok) {
+            localStorage.setItem(`comment_last_${petSlug}`, String(Date.now()));
+            (document.getElementById("comment-author") as HTMLInputElement).value = "";
+            (document.getElementById("comment-content") as HTMLTextAreaElement).value = "";
+            if (imageInput) imageInput.value = "";
+            if (imagePreview) imagePreview.classList.add("hidden");
+            if (imageRemove) imageRemove.classList.add("hidden");
+            if (imageStatus) imageStatus.textContent = "";
+            uploadedImageUrl = null;
+            statusEl.textContent = "发送成功 ✓";
+            await loadComments();
+            setTimeout(() => (statusEl.textContent = ""), 3000);
+          } else {
+            const err = await res.json();
+            statusEl.textContent = (err as any).error ?? "发送失败";
+          }
+        } catch { statusEl.textContent = "网络错误，请重试"; }
+      });
+    }
+  }
+
+  loadPost();
+</script>

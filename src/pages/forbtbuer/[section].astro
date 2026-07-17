@@ -4,7 +4,7 @@ import Layout from "@/layouts/Layout.astro";
 import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
 import Card from "@/components/Card.astro";
-import PetForm from "@/components/PetForm.astro";
+import SubmitForm from "@/components/SubmitForm.astro";
 
 export function getStaticPaths() {
   const SECTIONS = [
@@ -111,7 +111,7 @@ const sectionPosts = btbuerPosts
       )}
     </section>
 
-      {section === "campus-pets" && <PetForm />}
+      <SubmitForm section={section} sectionLabel={label} />
 
   </main>
   <Footer />
@@ -127,58 +127,58 @@ const sectionPosts = btbuerPosts
       sessionStorage.setItem("backUrl", `/forbtbuer/${sec}`);
     }
 
-    // Dynamic pets loading for campus-pets section
-    if (sec === "campus-pets") {
-      loadDynamicPets();
+    // Dynamic posts loading for this section
+    if (sec) {
+      loadDynamicPosts(sec);
     }
   });
 
-  async function loadDynamicPets() {
+  async function loadDynamicPosts(section: string) {
     const existingUl = document.querySelector("section.py-10 ul");
     if (!existingUl) return;
 
-    let dynContainer = document.getElementById("dynamic-pets-list");
+    let dynContainer = document.getElementById("dynamic-posts-list");
     if (!dynContainer) {
       dynContainer = document.createElement("div");
-      dynContainer.id = "dynamic-pets-list";
+      dynContainer.id = "dynamic-posts-list";
       existingUl.parentElement?.appendChild(dynContainer);
     }
 
     try {
-      const res = await fetch("/api/pets");
-      const pets = await res.json();
-      if (!Array.isArray(pets) || pets.length === 0) {
+      const res = await fetch(`/api/pets?section=${encodeURIComponent(section)}`);
+      const posts = await res.json();
+      if (!Array.isArray(posts) || posts.length === 0) {
         return;
       }
 
       const separator = document.createElement("div");
       separator.className = "border-t border-border my-8 pt-2";
-      separator.innerHTML = '<span class="text-xs text-muted-foreground">同学发现的</span>';
+      separator.innerHTML = '<span class="text-xs text-muted-foreground">同学投稿</span>';
 
-      const petCards = pets.map((pet: any) => {
-        const href = `/forbtbuer/campus-pets/pet/?slug=${pet.slug}`;
-        const dateStr = new Date(pet.created_at).toLocaleDateString("en-US", {
+      const cards = posts.map((post: any) => {
+        const href = `/forbtbuer/${section}/pet/?slug=${post.slug}`;
+        const dateStr = new Date(post.created_at).toLocaleDateString("en-US", {
           month: "short", day: "numeric", year: "numeric"
         });
         return `
           <li class="my-6">
             <a href="${href}" class="flex gap-4 items-start active:opacity-60 transition-opacity">
-              ${pet.cover ? `<img src="${pet.cover}" alt="" style="width:72px;height:72px;border-radius:8px;object-fit:cover;flex-shrink:0;" />` : ""}
+              ${post.cover ? `<img src="${post.cover}" alt="" style="width:72px;height:72px;border-radius:8px;object-fit:cover;flex-shrink:0;" />` : ""}
               <div class="flex-1">
-                <h3 class="text-accent text-lg font-medium hover:underline underline-offset-4">${pet.name}</h3>
+                <h3 class="text-accent text-lg font-medium hover:underline underline-offset-4">${post.name}</h3>
                 <div class="flex items-center gap-x-3">
                   <span class="text-muted-foreground text-sm">${dateStr}</span>
-                  ${pet.author ? `<span class="text-muted-foreground text-sm before:mr-3 before:content-['·']">${pet.author}</span>` : ""}
+                  ${post.author ? `<span class="text-muted-foreground text-sm before:mr-3 before:content-['·']">${post.author}</span>` : ""}
                 </div>
-                <p>${pet.description}</p>
+                <p>${post.description}</p>
               </div>
             </a>
           </li>`;
       }).join("");
 
-      dynContainer.innerHTML = separator.outerHTML + `<ul>${petCards}</ul>`;
+      dynContainer.innerHTML = separator.outerHTML + `<ul>${cards}</ul>`;
     } catch {
-      // silently fail — static pets still display
+      // silently fail — static content still displays
     }
   }
 </script>
