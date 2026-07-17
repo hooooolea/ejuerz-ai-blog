@@ -123,30 +123,6 @@ const isActive = (path: string) => {
             </li>
           )
         }
-        <li class="col-span-1 flex items-center justify-center">
-          <LinkButton
-            href="/trending"
-            class:list={[
-              "focus-outline relative size-8",
-              { "active-nav": isActive("/trending") },
-            ]}
-            title="GitHub Trending"
-            aria-label="GitHub Trending"
-          >
-            <IconFlame
-              class="absolute top-1/2 left-1/2 size-6 -translate-x-1/2 -translate-y-1/2"
-            />
-            <span class="sr-only">GitHub Trending</span>
-            {
-              isActive("/trending") && (
-                <IconUnderline
-                  aria-hidden="true"
-                  class="max-sm:inset-s-2 absolute bottom-0 w-6 scale-125"
-                />
-              )
-            }
-          </LinkButton>
-        </li>
         {
           features.search !== false && (
             <li class="col-span-1 flex items-center justify-center">

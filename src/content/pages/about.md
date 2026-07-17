@@ -5,13 +5,9 @@ description: "About ejuer and AI Toolkit Guide."
 
 Hey, I'm **ejuer** — and this is my first website.
 
-I built AI Toolkit Guide as a place to share practical guides on AI agent skills, CLI tools, and multi-agent workflows. No fluff, no hype — just honest takes on tools like Claude Code, Hermes, Aider, and whatever else is worth paying attention to.
+I built AI Toolkit Guide as a place to share practical guides on AI agent skills, CLI tools, and multi-agent workflows.
 
 I'm still figuring out the direction as I go, but the goal is simple: make AI less intimidating and more useful for everyday people.
-
----
-
-I also run a [GitHub Trending](/trending) section that tracks what's gaining momentum in the open source world — mostly because I find it interesting, and maybe you will too.
 
 ---
 
