@@ -1,0 +1,137 @@
+name: Build EduAgent preview artifact
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout blog
+        uses: actions/checkout@v4
+        with:
+          path: blog
+          persist-credentials: false
+
+      - name: Checkout EduAgent
+        uses: actions/checkout@v4
+        with:
+          repository: hooooolea/eduagent-system
+          # This public commit is immutable; the build guard below fails closed until it includes the /eduagent/ adaptation.
+          ref: 9e925ddf03251cb30a18e87dfec68627689a8363
+          path: eduagent
+          persist-credentials: false
+
+      - name: Setup EduAgent Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Validate EduAgent build configuration and source adaptation
+        working-directory: eduagent/frontend
+        env:
+          # These are public browser settings. The anon key is embedded in the browser artifact; never use a service_role key.
+          VITE_SUPABASE_URL: ${{ vars.EDUAGENT_SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ vars.EDUAGENT_SUPABASE_ANON_KEY }}
+          VITE_API_BASE_URL: ${{ vars.EDUAGENT_API_BASE_URL }}
+          VITE_SUPABASE_EMAIL_REDIRECT_URL: ${{ vars.EDUAGENT_SUPABASE_EMAIL_REDIRECT_URL }}
+        run: |
+          set -eu
+          test -n "$VITE_SUPABASE_URL" || { echo 'Missing EDUAGENT_SUPABASE_URL variable'; exit 1; }
+          test -n "$VITE_SUPABASE_ANON_KEY" || { echo 'Missing EDUAGENT_SUPABASE_ANON_KEY variable'; exit 1; }
+          test -n "$VITE_API_BASE_URL" || { echo 'Missing EDUAGENT_API_BASE_URL variable'; exit 1; }
+          test -n "$VITE_SUPABASE_EMAIL_REDIRECT_URL" || { echo 'Missing EDUAGENT_SUPABASE_EMAIL_REDIRECT_URL variable'; exit 1; }
+          node --input-type=module <<'NODE'
+          import { readFileSync } from 'node:fs';
+          const apiBase = process.env.VITE_API_BASE_URL;
+          if (apiBase !== 'https://ejuerz.com/eduagent') {
+            throw new Error('VITE_API_BASE_URL must be exactly https://ejuerz.com/eduagent');
+          }
+          const api = new URL(apiBase);
+          if (api.protocol !== 'https:' || api.origin !== 'https://ejuerz.com' || api.pathname !== '/eduagent' || api.username || api.password || api.search || api.hash) {
+            throw new Error('VITE_API_BASE_URL must be exactly https://ejuerz.com/eduagent');
+          }
+          const redirectValue = process.env.VITE_SUPABASE_EMAIL_REDIRECT_URL;
+          if (redirectValue !== 'https://ejuerz.com/eduagent/') {
+            throw new Error('VITE_SUPABASE_EMAIL_REDIRECT_URL must be exactly https://ejuerz.com/eduagent/');
+          }
+          const redirect = new URL(redirectValue);
+          if (redirect.href !== 'https://ejuerz.com/eduagent/') {
+            throw new Error('VITE_SUPABASE_EMAIL_REDIRECT_URL must be exactly https://ejuerz.com/eduagent/');
+          }
+          const supabase = new URL(process.env.VITE_SUPABASE_URL);
+          if (supabase.href !== 'https://bgcjkkcijzyvunkcqyev.supabase.co/') {
+            throw new Error('VITE_SUPABASE_URL must be the approved Supabase project URL');
+          }
+          if (!process.env.VITE_SUPABASE_ANON_KEY.startsWith('sb_publishable_')) {
+            throw new Error('VITE_SUPABASE_ANON_KEY must have the sb_publishable_ prefix');
+          }
+          const viteConfig = readFileSync('vite.config.js', 'utf8');
+          const apiSource = readFileSync('src/api.js', 'utf8');
+          const hasBase = /base\s*:\s*['"]\/eduagent\/['"]/.test(viteConfig);
+          const hasApiHelper = /export\s+(?:const|function)\s+apiUrlFor\b/.test(apiSource);
+          const usesApiBase = /import\.meta\.env\.VITE_API_BASE_URL/.test(apiSource);
+          const usesApiPath = /['"`]\/api(?:\/|['"`])/.test(apiSource);
+          if (!hasBase || !hasApiHelper || !usesApiBase || !usesApiPath) {
+            throw new Error('EduAgent checkout lacks the required /eduagent/ API source adaptation');
+          }
+          NODE
+
+      - name: Build EduAgent
+        working-directory: eduagent/frontend
+        env:
+          VITE_SUPABASE_URL: ${{ vars.EDUAGENT_SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ vars.EDUAGENT_SUPABASE_ANON_KEY }}
+          VITE_API_BASE_URL: ${{ vars.EDUAGENT_API_BASE_URL }}
+          VITE_SUPABASE_EMAIL_REDIRECT_URL: ${{ vars.EDUAGENT_SUPABASE_EMAIL_REDIRECT_URL }}
+        run: |
+          npm ci
+          npm run build
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.11.1
+
+      - name: Setup blog Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: pnpm
+          cache-dependency-path: blog/pnpm-lock.yaml
+
+      - name: Build blog and assemble artifact
+        working-directory: blog
+        run: |
+          pnpm install --frozen-lockfile
+          pnpm run build:ci
+          mkdir -p dist/eduagent
+          cp -R ../eduagent/frontend/dist/. dist/eduagent/
+          test -f dist/index.html
+          test -f dist/eduagent/index.html
+          test -d functions/api
+
+      - name: Build Pages Functions Worker
+        working-directory: blog
+        run: |
+          pnpm dlx wrangler@4.83.0 pages functions build functions --build-output-directory dist --outfile /tmp/eduagent-worker.js --output-routes-path /tmp/eduagent-routes.json
+          test -s /tmp/eduagent-worker.js
+          test -s /tmp/eduagent-routes.json
+          cp /tmp/eduagent-worker.js dist/_worker.js
+          cp /tmp/eduagent-routes.json dist/_routes.json
+
+      - name: Verify Pages Functions Worker
+        working-directory: blog
+        run: test -s dist/_worker.js && grep -Fq '/eduagent/api/:path*' dist/_worker.js
+
+      - name: Upload preview artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: blog-with-eduagent-preview
+          path: blog/dist
+          if-no-files-found: error
+          retention-days: 7

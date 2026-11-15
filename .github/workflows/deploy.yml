@@ -40,6 +40,17 @@ jobs:
       - name: Build
         run: pnpm run build:ci
 
+      - name: Build Pages Functions Worker
+        run: |
+          pnpm dlx wrangler@4.83.0 pages functions build functions --build-output-directory dist --outfile /tmp/eduagent-worker.js --output-routes-path /tmp/eduagent-routes.json
+          test -s /tmp/eduagent-worker.js
+          test -s /tmp/eduagent-routes.json
+          cp /tmp/eduagent-worker.js dist/_worker.js
+          cp /tmp/eduagent-routes.json dist/_routes.json
+
+      - name: Verify Pages Functions Worker
+        run: test -s dist/_worker.js && grep -Fq '/eduagent/api/:path*' dist/_worker.js
+
       - name: Deploy to Cloudflare Pages
         if: github.ref == 'refs/heads/main'
         uses: cloudflare/wrangler-action@v3
