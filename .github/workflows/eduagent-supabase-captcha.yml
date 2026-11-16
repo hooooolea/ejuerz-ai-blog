@@ -2,6 +2,11 @@ name: EduAgent Supabase CAPTCHA config
 
 on:
   workflow_dispatch:
+    inputs:
+      mode:
+        description: 'enable / disable'
+        required: true
+        default: 'disable'
 
 jobs:
   apply:
@@ -13,32 +18,45 @@ jobs:
           SUPABASE_PROJECT_REF: ${{ vars.EDUAGENT_SUPABASE_PROJECT_REF }}
           TURNSTILE_SITE_KEY: ${{ vars.EDUAGENT_TURNSTILE_SITE_KEY }}
           TURNSTILE_SECRET_KEY: ${{ secrets.EDUAGENT_TURNSTILE_SECRET_KEY }}
+          MODE: ${{ inputs.mode }}
         run: |
           set -euo pipefail
-          for name in SUPABASE_ACCESS_TOKEN SUPABASE_PROJECT_REF TURNSTILE_SITE_KEY TURNSTILE_SECRET_KEY; do
-            value="$(printenv "$name")"
-            if [ -z "${value}" ]; then
+          for name in SUPABASE_ACCESS_TOKEN SUPABASE_PROJECT_REF MODE; do
+            if [ -z "$(printenv "$name")" ]; then
               echo "::error::missing ${name}"
               exit 1
             fi
           done
-          payload=$(jq -nc \
-            --arg site "$TURNSTILE_SITE_KEY" \
-            --arg secret "$TURNSTILE_SECRET_KEY" \
-            '{captcha_enabled: true, captcha_provider: "turnstile", captcha_site_key: $site, captcha_secret_key: $secret}')
+          if [ "$MODE" = "enable" ]; then
+            for name in TURNSTILE_SITE_KEY TURNSTILE_SECRET_KEY; do
+              if [ -z "$(printenv "$name")" ]; then
+                echo "::error::missing ${name} (needed for enable)"
+                exit 1
+              fi
+            done
+            payload=$(jq -nc --arg site "$TURNSTILE_SITE_KEY" --arg secret "$TURNSTILE_SECRET_KEY" \
+              '{captcha_enabled: true, captcha_provider: "turnstile", captcha_site_key: $site, captcha_secret_key: $secret}')
+          else
+            payload='{"captcha_enabled": false}'
+          fi
           curl -sS -X PATCH \
             "https://api.supabase.com/v1/projects/${SUPABASE_PROJECT_REF}/config/auth" \
             -H "Authorization: Bearer ${SUPABASE_ACCESS_TOKEN}" \
             -H "Content-Type: application/json" \
             -d "$payload" > /tmp/result.json
+          if ! jq -e '.captcha_enabled != null' /tmp/result.json >/dev/null 2>&1; then
+            echo "::error::unexpected response: $(head -c 400 /tmp/result.json)"
+            exit 1
+          fi
           jq -r '{captcha_enabled, captcha_provider, captcha_site_key, captcha_secret_key: (if .captcha_secret_key then "***" else null end)}' /tmp/result.json
 
-      - name: Verify enforcement
+      - name: Verify enforcement state
         env:
           SUPABASE_URL: ${{ vars.EDUAGENT_SUPABASE_URL }}
           SUPABASE_ANON_KEY: ${{ vars.EDUAGENT_SUPABASE_ANON_KEY }}
         run: |
           set -euo pipefail
+          echo "probe signup without a captcha token:"
           curl -sS -X POST "${SUPABASE_URL}/auth/v1/signup" \
             -H "apikey: ${SUPABASE_ANON_KEY}" \
             -H "Content-Type: application/json" \
