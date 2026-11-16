@@ -1,0 +1,67 @@
+name: EduAgent Turnstile setup
+
+on:
+  workflow_dispatch:
+    inputs:
+      widget_name:
+        description: 'Turnstile widget name'
+        default: 'EduAgent'
+      domains:
+        description: 'Comma separated allowed hostnames'
+        default: 'eduagent.ejuerz.com,ejuerz.com,localhost,127.0.0.1'
+      mode:
+        description: 'managed / non-interactive / invisible'
+        default: 'managed'
+
+permissions:
+  contents: read
+  variables: write
+  secrets: write
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create Turnstile widget
+        id: widget
+        env:
+          CF_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CF_ACCOUNT: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          WIDGET_NAME: ${{ inputs.widget_name }}
+          DOMAINS: ${{ inputs.domains }}
+          MODE: ${{ inputs.mode }}
+        run: |
+          set -euo pipefail
+          if [ -z "${CF_TOKEN:-}" ] || [ -z "${CF_ACCOUNT:-}" ]; then
+            echo "::error::CLOUDFLARE_API_TOKEN / CLOUDFLARE_ACCOUNT_ID secrets are missing"
+            exit 1
+          fi
+          payload=$(jq -nc --arg n "$WIDGET_NAME" --arg m "$MODE" --arg d "$DOMAINS" \
+            '{name:$n, mode:$m, domains:($d|split(",")|map(gsub("^\\s+|\\s+$";""))|map(select(length>0)))}')
+          curl -sS -X POST "https://api.cloudflare.com/client/v4/accounts/${CF_ACCOUNT}/challenges/turnstile/widgets" \
+            -H "Authorization: Bearer ${CF_TOKEN}" \
+            -H "Content-Type: application/json" \
+            -d "$payload" > /tmp/widget.json
+          if [ "$(jq -r '.success' /tmp/widget.json)" != "true" ]; then
+            echo "::error::Cloudflare API error: $(jq -c '.errors' /tmp/widget.json)"
+            exit 1
+          fi
+          sitekey=$(jq -r '.result.sitekey' /tmp/widget.json)
+          secret=$(jq -r '.result.secret' /tmp/widget.json)
+          echo "::add-mask::${secret}"
+          echo "created widget id=$(jq -r '.result.id' /tmp/widget.json) domains=$(jq -r '.result.domains|join(",")' /tmp/widget.json)"
+          echo "sitekey=${sitekey}" >> "$GITHUB_OUTPUT"
+          printf '%s' "${sitekey}" | gh variable set EDUAGENT_TURNSTILE_SITE_KEY --repo "${GITHUB_REPOSITORY}"
+          printf '%s' "${secret}" | gh secret set EDUAGENT_TURNSTILE_SECRET_KEY --repo "${GITHUB_REPOSITORY}"
+
+      - name: Summary
+        env:
+          SITEKEY: ${{ steps.widget.outputs.sitekey }}
+        run: |
+          {
+            echo '### Turnstile widget created'
+            echo
+            echo '- site key (public, frontend): `'${SITEKEY}'`'
+            echo '- secret key: stored as the repository secret `EDUAGENT_TURNSTILE_SECRET_KEY` (not printed)'
+            echo '- next: paste the secret key into Supabase → Authentication → Attack Protection → Turnstile, then enable the protected flows.'
+          } >> "$GITHUB_STEP_SUMMARY"
