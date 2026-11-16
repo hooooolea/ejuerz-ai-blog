@@ -13,11 +13,6 @@ on:
         description: 'managed / non-interactive / invisible'
         default: 'managed'
 
-permissions:
-  contents: read
-  variables: write
-  secrets: write
-
 jobs:
   setup:
     runs-on: ubuntu-latest
@@ -47,21 +42,32 @@ jobs:
             exit 1
           fi
           sitekey=$(jq -r '.result.sitekey' /tmp/widget.json)
-          secret=$(jq -r '.result.secret' /tmp/widget.json)
-          echo "::add-mask::${secret}"
-          echo "created widget id=$(jq -r '.result.id' /tmp/widget.json) domains=$(jq -r '.result.domains|join(",")' /tmp/widget.json)"
           echo "sitekey=${sitekey}" >> "$GITHUB_OUTPUT"
-          printf '%s' "${sitekey}" | gh variable set EDUAGENT_TURNSTILE_SITE_KEY --repo "${GITHUB_REPOSITORY}"
-          printf '%s' "${secret}" | gh secret set EDUAGENT_TURNSTILE_SECRET_KEY --repo "${GITHUB_REPOSITORY}"
+          {
+            echo "widget_id=$(jq -r '.result.id' /tmp/widget.json)"
+            echo "domains=$(jq -r '.result.domains|join(",")' /tmp/widget.json)"
+          } >> "$GITHUB_OUTPUT"
+          # 公开的 site key 写入仓库变量，secret 永不输出到日志
+          if command -v gh >/dev/null 2>&1; then
+            printf '%s' "${sitekey}" | gh variable set EDUAGENT_TURNSTILE_SITE_KEY --repo "${GITHUB_REPOSITORY}" \
+              || echo "::warning::could not write the repository variable automatically"
+          fi
 
       - name: Summary
         env:
           SITEKEY: ${{ steps.widget.outputs.sitekey }}
+          WIDGET_ID: ${{ steps.widget.outputs.widget_id }}
+          DOMAINS: ${{ steps.widget.outputs.domains }}
         run: |
           {
             echo '### Turnstile widget created'
             echo
-            echo '- site key (public, frontend): `'${SITEKEY}'`'
-            echo '- secret key: stored as the repository secret `EDUAGENT_TURNSTILE_SECRET_KEY` (not printed)'
-            echo '- next: paste the secret key into Supabase → Authentication → Attack Protection → Turnstile, then enable the protected flows.'
+            echo "- widget id: \`${WIDGET_ID}\`"
+            echo "- allowed domains: ${DOMAINS}"
+            echo "- site key (public, goes into the frontend build): \`${SITEKEY}\`"
+            echo
+            echo 'Next steps:'
+            echo '1. Open Cloudflare dashboard → Turnstile → this widget → copy the **secret key** (it is not printed here on purpose).'
+            echo '2. Paste it into Supabase → Authentication → Attack Protection → Turnstile, then enable the protected flows (signup / signin / password reset).'
+            echo '3. The frontend build picks up the site key from the repository variable `EDUAGENT_TURNSTILE_SITE_KEY`.'
           } >> "$GITHUB_STEP_SUMMARY"
