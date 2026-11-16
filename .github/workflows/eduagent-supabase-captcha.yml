@@ -1,0 +1,46 @@
+name: EduAgent Supabase CAPTCHA config
+
+on:
+  workflow_dispatch:
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Apply CAPTCHA configuration
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          SUPABASE_PROJECT_REF: ${{ vars.EDUAGENT_SUPABASE_PROJECT_REF }}
+          TURNSTILE_SITE_KEY: ${{ vars.EDUAGENT_TURNSTILE_SITE_KEY }}
+          TURNSTILE_SECRET_KEY: ${{ secrets.EDUAGENT_TURNSTILE_SECRET_KEY }}
+        run: |
+          set -euo pipefail
+          for name in SUPABASE_ACCESS_TOKEN SUPABASE_PROJECT_REF TURNSTILE_SITE_KEY TURNSTILE_SECRET_KEY; do
+            value="$(printenv "$name")"
+            if [ -z "${value}" ]; then
+              echo "::error::missing ${name}"
+              exit 1
+            fi
+          done
+          payload=$(jq -nc \
+            --arg site "$TURNSTILE_SITE_KEY" \
+            --arg secret "$TURNSTILE_SECRET_KEY" \
+            '{captcha_enabled: true, captcha_provider: "turnstile", captcha_site_key: $site, captcha_secret_key: $secret}')
+          curl -sS -X PATCH \
+            "https://api.supabase.com/v1/projects/${SUPABASE_PROJECT_REF}/config/auth" \
+            -H "Authorization: Bearer ${SUPABASE_ACCESS_TOKEN}" \
+            -H "Content-Type: application/json" \
+            -d "$payload" > /tmp/result.json
+          jq -r '{captcha_enabled, captcha_provider, captcha_site_key, captcha_secret_key: (if .captcha_secret_key then "***" else null end)}' /tmp/result.json
+
+      - name: Verify enforcement
+        env:
+          SUPABASE_URL: ${{ vars.EDUAGENT_SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ vars.EDUAGENT_SUPABASE_ANON_KEY }}
+        run: |
+          set -euo pipefail
+          curl -sS -X POST "${SUPABASE_URL}/auth/v1/signup" \
+            -H "apikey: ${SUPABASE_ANON_KEY}" \
+            -H "Content-Type: application/json" \
+            -d '{"email":"eduagent-config-probe@example.com","password":"EduAgent!2026"}' \
+            -w '\nhttp=%{http_code}\n'
