@@ -1,0 +1,267 @@
+---
+import { getRelativeLocaleUrl } from "astro:i18n";
+import Layout from "@/layouts/Layout.astro";
+import Header from "@/components/Header.astro";
+import Main from "@/components/Main.astro";
+import Footer from "@/components/Footer.astro";
+import config from "@/config";
+import { harnessApps, harnessMeta } from "@/config/harness";
+
+const locale = Astro.currentLocale ?? config.site.lang;
+const primary = harnessApps[0];
+const others = harnessApps.slice(1);
+---
+
+<Layout
+  title={`${harnessMeta.title} | ${config.site.title}`}
+  description={harnessMeta.subtitle}
+>
+  <Header />
+
+  <Main pageTitle={harnessMeta.title} class="app-prose">
+    <section class="harness" aria-labelledby="harness-heading">
+      <p class="harness-eyebrow">HARNESS</p>
+      <h1 id="harness-heading" class="harness-title">{harnessMeta.title}</h1>
+      <p class="harness-subtitle">{harnessMeta.subtitle}</p>
+
+      {
+        primary && (
+          <a
+            class="harness-primary"
+            href={primary.url}
+            data-harness-app={primary.id}
+            target={primary.external ? "_blank" : undefined}
+            rel={primary.external ? "noopener noreferrer" : undefined}
+          >
+            <span
+              class="harness-glyph"
+              style={`--harness-accent: ${primary.accent ?? "#4f6ef7"}`}
+              aria-hidden="true"
+            >
+              {primary.glyph ?? primary.name.slice(0, 1)}
+            </span>
+            <span class="harness-body">
+              <span class="harness-name-row">
+                <span class="harness-name">{primary.name}</span>
+                {primary.badge && (
+                  <span class="harness-badge">{primary.badge}</span>
+                )}
+              </span>
+              <span class="harness-desc">{primary.description}</span>
+            </span>
+            <span class="harness-open">
+              {harnessMeta.open}
+              <span aria-hidden="true">→</span>
+            </span>
+          </a>
+        )
+      }
+
+      {
+        others.length > 0 && (
+          <ul class="harness-grid" role="list">
+            {others.map(app => (
+              <li>
+                <a
+                  class="harness-card"
+                  href={app.url}
+                  data-harness-app={app.id}
+                  target={app.external ? "_blank" : undefined}
+                  rel={app.external ? "noopener noreferrer" : undefined}
+                >
+                  <span
+                    class="harness-glyph harness-glyph-sm"
+                    style={`--harness-accent: ${app.accent ?? "#4f6ef7"}`}
+                    aria-hidden="true"
+                  >
+                    {app.glyph ?? app.name.slice(0, 1)}
+                  </span>
+                  <span class="harness-name">{app.name}</span>
+                  <span class="harness-desc">{app.description}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        )
+      }
+
+      <p class="harness-foot">
+        <a href={getRelativeLocaleUrl(locale, "")} class="harness-back">
+          ← {harnessMeta.backToSite}
+        </a>
+      </p>
+    </section>
+  </Main>
+
+  <Footer />
+</Layout>
+
+<style>
+  .harness {
+    display: grid;
+    gap: var(--space-6, 1.5rem);
+    max-width: 46rem;
+    margin-inline: auto;
+  }
+
+  .harness-eyebrow {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    color: var(--accent, #4f6ef7);
+    margin: 0;
+  }
+
+  .harness-title {
+    font-size: 1.9rem;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.2;
+    margin: 0;
+  }
+
+  .harness-subtitle {
+    color: var(--fg-muted, #64748b);
+    margin: 0;
+  }
+
+  .harness-primary {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.25rem;
+    border: 1px solid var(--border, #e2e8f0);
+    border-radius: 14px;
+    background: var(--surface, #fff);
+    color: inherit;
+    text-decoration: none;
+    transition: border-color 0.18s ease, transform 0.18s ease,
+      box-shadow 0.18s ease;
+  }
+
+  .harness-primary:hover {
+    border-color: var(--accent, #4f6ef7);
+    box-shadow: 0 10px 30px rgb(16 24 40 / 8%);
+    transform: translateY(-1px);
+  }
+
+  .harness-primary:focus-visible,
+  .harness-card:focus-visible,
+  .harness-back:focus-visible {
+    outline: 2px solid var(--accent, #4f6ef7);
+    outline-offset: 3px;
+  }
+
+  .harness-glyph {
+    display: inline-flex;
+    width: 46px;
+    height: 46px;
+    flex: 0 0 46px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    background: var(--harness-accent, #4f6ef7);
+    color: #fff;
+    font-size: 1.25rem;
+    font-weight: 800;
+  }
+
+  .harness-glyph-sm {
+    width: 36px;
+    height: 36px;
+    flex-basis: 36px;
+    border-radius: 10px;
+    font-size: 1rem;
+  }
+
+  .harness-body {
+    display: grid;
+    gap: 0.25rem;
+    min-width: 0;
+    flex: 1 1 auto;
+  }
+
+  .harness-name-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .harness-name {
+    font-weight: 700;
+    font-size: 1.05rem;
+  }
+
+  .harness-badge {
+    padding: 0.1rem 0.5rem;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--accent, #4f6ef7) 12%, transparent);
+    color: var(--accent, #4f6ef7);
+    font-size: 0.7rem;
+    font-weight: 700;
+  }
+
+  .harness-desc {
+    color: var(--fg-muted, #64748b);
+    font-size: 0.9rem;
+    line-height: 1.55;
+  }
+
+  .harness-open {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    flex: 0 0 auto;
+    color: var(--accent, #4f6ef7);
+    font-weight: 700;
+    font-size: 0.9rem;
+  }
+
+  .harness-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+    gap: 0.9rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .harness-card {
+    display: grid;
+    gap: 0.4rem;
+    justify-items: start;
+    padding: 1rem;
+    border: 1px solid var(--border, #e2e8f0);
+    border-radius: 12px;
+    background: var(--surface, #fff);
+    color: inherit;
+    text-decoration: none;
+    transition: border-color 0.18s ease;
+  }
+
+  .harness-card:hover {
+    border-color: var(--accent, #4f6ef7);
+  }
+
+  .harness-foot {
+    margin: 0;
+    font-size: 0.9rem;
+  }
+
+  .harness-back {
+    color: var(--accent, #4f6ef7);
+  }
+
+  @media (max-width: 640px) {
+    .harness-primary {
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    .harness-open {
+      width: 100%;
+      justify-content: flex-end;
+    }
+  }
+</style>
